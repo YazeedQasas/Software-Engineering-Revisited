@@ -124,44 +124,33 @@
   margin: 10px 0;
 }
 
-.table-wrap {
-  overflow-x: auto;
-  margin: 12px 0 4px;
-}
-
-table.bigo-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 560px;
-  font-size: 15px;
-}
-
-table.bigo-table th,
-table.bigo-table td {
-  border: 1px dashed var(--border);
-  padding: 8px 12px;
-  text-align: left;
-}
-
-table.bigo-table thead th {
-  font-family: var(--hand);
-  font-size: 16px;
-  color: var(--text-h);
+/* An image pinned into the page, e.g. a scanned or hand-drawn diagram */
+.pinned-photo {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 18px 0 22px;
+  padding: 10px 10px 14px;
   background: var(--code-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transform: rotate(-0.6deg);
 }
 
-table.bigo-table tbody tr:nth-child(even) {
-  background: rgba(0, 0, 0, 0.02);
+.pinned-photo::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 56px;
+  height: 20px;
+  margin-left: -28px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: rotate(-3deg);
 }
 
-table.bigo-table td:first-child {
-  font-weight: 600;
-  color: var(--text-h);
-}
-
-.table-note {
-  font-size: 14px;
-  color: var(--text);
-  margin-top: 10px;
-  line-height: 150%;
+.pinned-photo img {
+  display: block;
+  max-width: 100%;
 }

@@ -1,3 +1,5 @@
+import bigOChart from '../assets/image.png'
+
 const outline = [
   {
     category: 'Foundation (asked about constantly)',
@@ -32,17 +34,6 @@ const outline = [
   },
 ]
 
-const bigORows = [
-  { name: 'Array', access: 'O(1)', search: 'O(n)', insert: 'O(n)', del: 'O(n)' },
-  { name: 'Linked List', access: 'O(n)', search: 'O(n)', insert: 'O(1)', del: 'O(1)' },
-  { name: 'Stack', access: 'O(n)', search: 'O(n)', insert: 'O(1)', del: 'O(1)' },
-  { name: 'Queue', access: 'O(n)', search: 'O(n)', insert: 'O(1)', del: 'O(1)' },
-  { name: 'Hash Map', access: '—', search: 'O(1)*', insert: 'O(1)*', del: 'O(1)*' },
-  { name: 'Binary Search Tree', access: 'O(log n)*', search: 'O(log n)*', insert: 'O(log n)*', del: 'O(log n)*' },
-  { name: 'Balanced BST (AVL / Red-Black)', access: 'O(log n)', search: 'O(log n)', insert: 'O(log n)', del: 'O(log n)' },
-  { name: 'Binary Heap', access: '—', search: 'O(n)', insert: 'O(log n)', del: 'O(log n)' },
-]
-
 function DataStructures() {
   return (
     <article className="topic-page">
@@ -72,60 +63,12 @@ function DataStructures() {
 
       <section id="big-o" className="notebook-section">
         <h3>Big-O Complexity</h3>
-        <p>
-          State the time <em>and</em> space complexity for every operation
-          you mention &mdash; interviewers expect both, not just time.
-        </p>
-
-        <div className="table-wrap">
-          <table className="bigo-table">
-            <thead>
-              <tr>
-                <th>Data Structure</th>
-                <th>Access</th>
-                <th>Search</th>
-                <th>Insertion</th>
-                <th>Deletion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bigORows.map((row) => (
-                <tr key={row.name}>
-                  <td>{row.name}</td>
-                  <td><code>{row.access}</code></td>
-                  <td><code>{row.search}</code></td>
-                  <td><code>{row.insert}</code></td>
-                  <td><code>{row.del}</code></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="pinned-photo">
+          <img
+            src={bigOChart}
+            alt="Hand-drawn graph of time vs. input size (n) comparing Big-O growth curves, from best to worst: O(1), O(log n), O(√n), O(n), O(n log n), O(n²), O(2^n), O(n!)"
+          />
         </div>
-        <p className="table-note">
-          * Average case. Hash maps degrade to <code>O(n)</code> on heavy
-          collisions; unbalanced BSTs degrade to <code>O(n)</code> on sorted
-          input (they become a linked list in disguise).
-        </p>
-        <p className="table-note">
-          Space: each structure above uses <code>O(n)</code> extra space to
-          hold n elements. Recursive tree operations also carry a call-stack
-          cost &mdash; <code>O(log n)</code> for a balanced BST,
-          <code> O(n)</code> for an unbalanced one.
-        </p>
-
-        <h4>Amortized cost</h4>
-        <p>
-          Not every operation costs the same every time &mdash;{' '}
-          <strong>amortized analysis</strong> looks at the average cost over
-          a sequence of operations, not the worst single one. Example:
-          appending to a dynamic array is usually <code>O(1)</code>, but
-          occasionally the array is full and has to resize into new memory,
-          copying every existing element &mdash; an <code>O(n)</code> hit.
-          Because that resize happens rarely (capacity doubles each time),
-          the cost of copying is spread out over all the cheap appends that
-          came before it, so the <strong>amortized</strong> cost per append
-          still works out to <code>O(1)</code>.
-        </p>
       </section>
 
       {outline.map((group) => (
