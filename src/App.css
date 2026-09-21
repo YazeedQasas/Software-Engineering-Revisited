@@ -1,0 +1,12 @@
+.app {
+  display: flex;
+  min-height: 100svh;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  text-align: left;
+}

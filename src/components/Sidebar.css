@@ -1,0 +1,46 @@
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  min-height: 100svh;
+  border-right: 1px solid var(--border);
+  box-sizing: border-box;
+  padding: 24px 16px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  line-height: 130%;
+  margin: 0 0 24px;
+  padding: 0 8px;
+}
+
+.topic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topic-button {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 8px;
+  cursor: pointer;
+}
+
+.topic-button:hover {
+  background: var(--code-bg);
+}
+
+.topic-button.active {
+  color: var(--accent);
+  background: var(--accent-bg);
+  font-weight: 500;
+}
