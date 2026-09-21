@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar.jsx'
 import { topics } from './topics.js'
+import { topicPages } from './pages/index.js'
 import './App.css'
 
 function App() {
   const [activeTopicId, setActiveTopicId] = useState(topics[0].id)
   const activeTopic = topics.find((topic) => topic.id === activeTopicId)
+  const ActivePage = topicPages[activeTopicId]
 
   return (
     <div className="app">
@@ -14,9 +16,16 @@ function App() {
         activeTopicId={activeTopicId}
         onSelect={setActiveTopicId}
       />
+      <div className="rings" aria-hidden="true" />
       <main className="content">
-        <h2>{activeTopic.label}</h2>
-        <p>Content coming soon.</p>
+        {ActivePage ? (
+          <ActivePage />
+        ) : (
+          <>
+            <h2>{activeTopic.label}</h2>
+            <p>Content coming soon.</p>
+          </>
+        )}
       </main>
     </div>
   )

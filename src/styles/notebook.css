@@ -1,0 +1,167 @@
+.topic-page {
+  max-width: 760px;
+}
+
+.topic-page > h2 {
+  margin-bottom: 20px;
+}
+
+/* Sticky-note style callout, e.g. for interviewer tips */
+.callout {
+  position: relative;
+  background: var(--sticky);
+  border: 1px solid var(--sticky-border);
+  color: var(--text-h);
+  font-family: var(--hand);
+  font-size: 19px;
+  line-height: 140%;
+  padding: 18px 20px 16px;
+  border-radius: 2px;
+  box-shadow: var(--shadow);
+  transform: rotate(-1deg);
+  margin: 8px 6px 28px;
+}
+
+.callout::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  width: 46px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: rotate(-4deg);
+}
+
+/* Index-card style box, e.g. for a table of contents */
+.index-card {
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--margin-line);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 0 0 32px;
+  background: var(--code-bg);
+}
+
+.index-card h3 {
+  margin-bottom: 10px;
+}
+
+.index-card ol {
+  margin: 0;
+  padding-left: 20px;
+  columns: 2;
+  column-gap: 24px;
+}
+
+.index-card li {
+  break-inside: avoid;
+  margin-bottom: 4px;
+}
+
+.index-card a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.index-card a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.notebook-category {
+  margin: 36px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--border);
+}
+
+/* A topic that hasn't been written up yet */
+.topic-card {
+  border: 1.5px dashed var(--border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  scroll-margin-top: 16px;
+}
+
+.topic-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topic-card p {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 150%;
+}
+
+.status-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* A topic with real content underneath it */
+.notebook-section {
+  margin: 28px 0 40px;
+  scroll-margin-top: 16px;
+}
+
+.notebook-section p {
+  font-size: 16px;
+  line-height: 155%;
+  margin: 10px 0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0 4px;
+}
+
+table.bigo-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: 15px;
+}
+
+table.bigo-table th,
+table.bigo-table td {
+  border: 1px dashed var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+table.bigo-table thead th {
+  font-family: var(--hand);
+  font-size: 16px;
+  color: var(--text-h);
+  background: var(--code-bg);
+}
+
+table.bigo-table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+table.bigo-table td:first-child {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.table-note {
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 10px;
+  line-height: 150%;
+}

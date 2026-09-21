@@ -1,17 +1,20 @@
 .sidebar {
-  width: 260px;
+  width: 250px;
   flex-shrink: 0;
   min-height: 100svh;
-  border-right: 1px solid var(--border);
   box-sizing: border-box;
-  padding: 24px 16px;
+  padding: 28px 0 28px 20px;
+  background: linear-gradient(160deg, #2f2a24, #221d18);
+  color: #f3e9d2;
 }
 
 .sidebar-title {
-  font-size: 18px;
+  font-family: var(--hand);
+  font-size: 21px;
   line-height: 130%;
-  margin: 0 0 24px;
-  padding: 0 8px;
+  color: #f3e9d2;
+  margin: 0 20px 28px 0;
+  padding: 0 4px;
 }
 
 .topic-list {
@@ -20,27 +23,29 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .topic-button {
   width: 100%;
   text-align: left;
-  font: inherit;
-  color: var(--text);
-  background: none;
+  font-family: var(--hand);
+  font-size: 17px;
+  color: #f3e9d2;
+  background: rgba(255, 255, 255, 0.05);
   border: none;
-  border-radius: 6px;
-  padding: 10px 8px;
+  border-radius: 6px 999px 999px 6px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
 .topic-button:hover {
-  background: var(--code-bg);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .topic-button.active {
-  color: var(--accent);
-  background: var(--accent-bg);
-  font-weight: 500;
+  background: var(--bg);
+  color: var(--text-h);
+  font-weight: 700;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
 }

@@ -4,9 +4,39 @@
   width: 100%;
 }
 
+.rings {
+  width: 26px;
+  flex-shrink: 0;
+  background: var(--bg);
+  background-image: radial-gradient(circle, var(--border) 4px, transparent 4.5px);
+  background-size: 26px 28px;
+  background-position: center 10px;
+  background-repeat: repeat-y;
+  box-shadow:
+    inset 6px 0 8px -6px rgba(0, 0, 0, 0.25),
+    inset -6px 0 8px -6px rgba(0, 0, 0, 0.25);
+}
+
 .content {
   flex: 1;
   box-sizing: border-box;
-  padding: 24px 32px;
   text-align: left;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--rule-line) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 46px,
+      var(--margin-line) 46px,
+      var(--margin-line) 48px,
+      transparent 48px
+    );
+  background-size:
+    100% 32px,
+    100% 100%;
+  background-position:
+    0 12px,
+    0 0;
+  padding: 32px 32px 48px 64px;
 }
