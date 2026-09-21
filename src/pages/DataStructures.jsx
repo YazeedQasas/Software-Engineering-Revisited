@@ -63,6 +63,8 @@ function DataStructures() {
 
       <section id="big-o" className="notebook-section">
         <h3>Big-O Complexity</h3>
+
+        <h4>Time Complexity</h4>
         <div className="pinned-photo">
           <img
             src={bigOChart}
