@@ -1,5 +1,11 @@
-import DataStructures from './DataStructures.jsx'
+import DataStructuresOverview from './dataStructures/Overview.jsx'
+import BigO from './dataStructures/BigO.jsx'
 
 export const topicPages = {
-  'data-structures': DataStructures,
+  'data-structures': {
+    overview: DataStructuresOverview,
+    subtopics: {
+      'big-o': BigO,
+    },
+  },
 }

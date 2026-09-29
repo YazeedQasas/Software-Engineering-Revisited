@@ -3,18 +3,20 @@
   flex-shrink: 0;
   min-height: 100svh;
   box-sizing: border-box;
-  padding: 28px 0 28px 20px;
-  background: linear-gradient(160deg, #2f2a24, #221d18);
-  color: #f3e9d2;
+  padding: 28px 20px;
+  background: var(--code-bg);
+  border-right: 1px solid var(--border);
+  color: var(--text-h);
 }
 
 .sidebar-title {
   font-family: var(--hand);
   font-size: 21px;
   line-height: 130%;
-  color: #f3e9d2;
-  margin: 0 20px 28px 0;
-  padding: 0 4px;
+  color: var(--text-h);
+  margin: 0 0 24px;
+  padding: 0 4px 14px;
+  border-bottom: 1px dashed var(--border);
 }
 
 .topic-list {
@@ -23,29 +25,103 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
+}
+
+.topic-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .topic-button {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   text-align: left;
   font-family: var(--hand);
   font-size: 17px;
-  color: #f3e9d2;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  background: transparent;
   border: none;
-  border-radius: 6px 999px 999px 6px;
-  padding: 10px 16px;
+  border-radius: 6px;
+  padding: 10px 14px;
   cursor: pointer;
 }
 
 .topic-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--accent-bg);
+  color: var(--text-h);
 }
 
 .topic-button.active {
-  background: var(--bg);
-  color: var(--text-h);
+  background: var(--accent-bg);
+  color: var(--accent);
   font-weight: 700;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.chevron-button {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.chevron-button:hover {
+  background: var(--accent-bg);
+}
+
+.chevron {
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+}
+
+.chevron-button.open .chevron {
+  transform: rotate(45deg);
+}
+
+.subtopic-list {
+  list-style: none;
+  margin: 2px 0 8px;
+  padding-left: 13px;
+  border-left: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.subtopic-button {
+  width: 100%;
+  text-align: left;
+  font-family: var(--hand);
+  font-size: 15px;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.subtopic-button:hover {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.subtopic-button.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--accent);
 }
