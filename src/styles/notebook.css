@@ -101,8 +101,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  align-items: start;
-  margin-top: 28px;
+  align-items: center;
+  margin-top: 24px;
 }
 
 .concept-row:first-of-type {
@@ -160,13 +160,6 @@
   height: 9px;
   border-radius: 2px;
   flex-shrink: 0;
-}
-
-.visual-caption {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 150%;
-  margin: 10px 0 0;
 }
 
 /* An image pinned into the page, e.g. a scanned or hand-drawn diagram */
