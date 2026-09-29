@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar.jsx'
+import SubtopicSidebar from './components/SubtopicSidebar.jsx'
 import Placeholder from './pages/Placeholder.jsx'
 import { topics } from './topics.js'
 import { topicPages } from './pages/index.js'
@@ -8,9 +9,7 @@ import './App.css'
 function App() {
   const firstTopic = topics[0]
   const [activeTopicId, setActiveTopicId] = useState(firstTopic.id)
-  const [activeSubtopicId, setActiveSubtopicId] = useState(
-    firstTopic.children?.[0]?.id ?? null,
-  )
+  const [activeSubtopicId, setActiveSubtopicId] = useState(null)
 
   const activeTopic = topics.find((topic) => topic.id === activeTopicId)
   const activeChild = activeTopic?.children?.find(
@@ -57,8 +56,11 @@ function App() {
       <Sidebar
         topics={topics}
         activeTopicId={activeTopicId}
-        activeSubtopicId={activeSubtopicId}
         onSelectTopic={selectTopic}
+      />
+      <SubtopicSidebar
+        topic={activeTopic}
+        activeSubtopicId={activeSubtopicId}
         onSelectSubtopic={selectSubtopic}
       />
       <div className="rings" aria-hidden="true" />

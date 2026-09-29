@@ -14,13 +14,14 @@
   --shadow:
     rgba(30, 30, 30, 0.14) 0 10px 15px -3px, rgba(30, 30, 30, 0.07) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --hand: 'Kalam', cursive;
-  --heading: var(--hand);
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  --heading: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/150% var(--sans);
+  letter-spacing: normal;
   color-scheme: light;
   color: var(--text);
   background: var(--bg);
@@ -29,10 +30,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 body {
@@ -50,35 +47,35 @@ h2,
 h3,
 h4 {
   font-family: var(--heading);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-h);
+  letter-spacing: -0.01em;
   scroll-margin-top: 16px;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
+  font-size: 48px;
+  letter-spacing: -0.02em;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: 34px;
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 28px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
+  font-size: 26px;
+  line-height: 122%;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 24px;
+    font-size: 22px;
   }
 }
 h3 {
-  font-size: 21px;
+  font-size: 19px;
   margin: 0 0 4px;
 }
 h4 {
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
 }
 p {

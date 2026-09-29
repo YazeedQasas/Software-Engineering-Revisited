@@ -1,0 +1,75 @@
+.subtopic-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding: 28px 16px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+}
+
+.subtopic-sidebar-title {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin: 0 0 20px;
+  padding: 0 12px;
+}
+
+.subtopic-group {
+  margin-bottom: 18px;
+}
+
+.subtopic-group:last-child {
+  margin-bottom: 0;
+}
+
+.subtopic-group-label {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  opacity: 0.6;
+  margin: 0 0 4px;
+  padding: 0 12px;
+}
+
+.subtopic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.subtopic-button {
+  width: 100%;
+  text-align: left;
+  font-family: var(--heading);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.subtopic-button:hover {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.subtopic-button.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--accent);
+}

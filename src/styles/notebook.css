@@ -20,13 +20,14 @@
   background: var(--sticky);
   border: 1px solid var(--sticky-border);
   color: var(--text-h);
-  font-family: var(--hand);
-  font-size: 19px;
-  line-height: 140%;
-  padding: 18px 20px 16px;
-  border-radius: 2px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 150%;
+  padding: 16px 20px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
-  transform: rotate(-1deg);
+  transform: rotate(-0.5deg);
   margin: 8px 6px 28px;
 }
 
@@ -40,32 +41,6 @@
   background: rgba(255, 255, 255, 0.55);
   border: 1px solid rgba(0, 0, 0, 0.05);
   transform: rotate(-4deg);
-}
-
-/* A plain list of items with a short description, e.g. on an overview page */
-.plain-list {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.plain-list li {
-  font-size: 15px;
-  line-height: 150%;
-  color: var(--text);
-}
-
-.plain-list strong {
-  color: var(--text-h);
-}
-
-.notebook-category {
-  margin: 36px 0 8px;
-  padding-bottom: 4px;
-  border-bottom: 1px dashed var(--border);
 }
 
 /* A topic that hasn't been written up yet */
