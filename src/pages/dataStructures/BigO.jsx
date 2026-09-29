@@ -1,5 +1,11 @@
 import { useState } from 'react'
 import bigOChart from '../../assets/image.png'
+import {
+  GrowthVsSpeedVisual,
+  BoundsVisual,
+  DominantTermVisual,
+  AmortizedCostVisual,
+} from './BigOVisuals.jsx'
 
 const cheatSheet = [
   { notation: 'O(1)', name: 'Constant', time: 'Array index access, hash map get/set', space: 'A fixed number of variables' },
@@ -94,6 +100,92 @@ function BigO() {
       <h2>Big-O Complexity</h2>
 
       <section className="notebook-section">
+        <h3>What Is Big-O Notation?</h3>
+        <p>
+          Big-O notation describes how an algorithm&rsquo;s running time (or
+          memory use) grows as its input size, n, grows &mdash; not the exact
+          number of seconds or bytes it takes. It&rsquo;s a way to talk about{' '}
+          <em>scalability</em>, independent of hardware, language, or how
+          fast your machine happens to be today.
+        </p>
+        <div className="definition">
+          In short: Big-O answers the question &ldquo;if I double the input,
+          roughly how much more work does this do?&rdquo;
+        </div>
+      </section>
+
+      <section className="notebook-section">
+        <h3>Key Concepts</h3>
+
+        <div className="concept-row">
+          <div className="concept-text">
+            <h4>It measures growth, not speed</h4>
+            <p>
+              An O(n) algorithm on a slow computer can easily run slower in
+              wall-clock time than an O(n&sup2;) algorithm on a fast one for
+              small inputs. Big-O only tells you how the work scales as n
+              gets large &mdash; it says nothing about constant factors like
+              CPU speed, so two algorithms with the same Big-O can still
+              have very different real-world running times.
+            </p>
+          </div>
+          <GrowthVsSpeedVisual />
+        </div>
+
+        <div className="concept-row">
+          <div className="concept-text">
+            <h4>Worst, average, and best case</h4>
+            <p>
+              Big-O most commonly describes the <strong>worst case</strong>{' '}
+              &mdash; the most work an algorithm could do on the hardest
+              possible input. Technically, worst/best/tight case have their
+              own notation (Big-O for an upper bound, Big-Omega &Omega; for
+              a best-case bound, Big-Theta &Theta; for a tight bound
+              that&rsquo;s both), but in interviews &ldquo;Big-O&rdquo; is
+              almost always used loosely to mean &ldquo;worst case,&rdquo;
+              and that&rsquo;s a safe default unless you&rsquo;re asked
+              otherwise.
+            </p>
+          </div>
+          <BoundsVisual />
+        </div>
+
+        <div className="concept-row">
+          <div className="concept-text">
+            <h4>Drop constants and lower-order terms</h4>
+            <p>
+              O(2n), O(n + 100), and O(n) are all just <code>O(n)</code>.
+              Once n gets large enough, constant multipliers and smaller
+              terms stop mattering compared to the dominant term &mdash; so
+              an algorithm that does 3n + 5 operations is still described
+              as <code>O(n)</code>, not <code>O(3n + 5)</code>.
+            </p>
+          </div>
+          <DominantTermVisual />
+        </div>
+
+        <div className="concept-row">
+          <div className="concept-text">
+            <h4>Amortized cost</h4>
+            <p>
+              Not every operation costs the same every time &mdash;{' '}
+              <strong>amortized analysis</strong> looks at the average cost
+              over a sequence of operations, not the worst single one.
+              Example: appending to a dynamic array is usually{' '}
+              <code>O(1)</code>, but occasionally the array is full and has
+              to resize into new memory, copying every existing element
+              &mdash; an <code>O(n)</code> hit. Because that resize happens
+              rarely (capacity doubles each time), the cost of copying is
+              spread out over all the cheap appends that came before it, so
+              the <strong>amortized</strong> cost per append still works
+              out to <code>O(1)</code>.
+            </p>
+          </div>
+          <AmortizedCostVisual />
+        </div>
+      </section>
+
+      <section className="notebook-section">
         <h3>Time Complexity</h3>
         <div className="pinned-photo">
           <img
@@ -134,7 +226,7 @@ function BigO() {
       <section className="notebook-section">
         <h3>Test Yourself</h3>
         <p>Guess the time (and space) complexity before revealing the answer.</p>
-        <div className="quiz-list">
+        <div className="quiz-grid">
           {examples.map((example) => (
             <ComplexityExample key={example.id} {...example} />
           ))}
