@@ -245,6 +245,18 @@ arr.pop()            # removes 6            -> O(1) amortized
 arr.insert(0, 99)    # [99, 1, 2, 3, 4, 5] -> O(n), shifts everything right
 arr.pop(0)            # removes 99           -> O(n), shifts everything left`}</code>
         </div>
+        <div className="definition">
+          Auxiliary space, not total size: <code>insert</code> and{' '}
+          <code>pop</code> shift elements within the array&rsquo;s own
+          memory &mdash; they never allocate a second n-element array to
+          hold the result. That&rsquo;s why their space cost is{' '}
+          <code>O(1)</code>: &ldquo;space complexity&rdquo; means memory{' '}
+          <em>beyond</em> the input, not the size of the array itself. An
+          operation that returns a fresh copy instead &mdash; like{' '}
+          <code>arr[i:j]</code> or <code>sorted(arr)</code> &mdash; really
+          does cost <code>O(n)</code> space, because a second array exists
+          at the same time.
+        </div>
       </section>
 
       <section className="notebook-section">
