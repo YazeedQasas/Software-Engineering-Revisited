@@ -14,6 +14,28 @@
   margin: 0 0 6px;
 }
 
+/* A block of sample code, e.g. a Python snippet */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+
+.code-block code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  background: none;
+  padding: 0;
+  font-size: 13.5px;
+  line-height: 165%;
+  white-space: pre;
+  color: var(--text-h);
+}
+
 /* Sticky-note style callout, e.g. for interviewer tips */
 .callout {
   position: relative;
