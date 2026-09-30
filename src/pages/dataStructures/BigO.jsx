@@ -18,54 +18,73 @@ const cheatSheet = [
   { notation: 'O(n!)', name: 'Factorial', time: 'Generating every permutation', space: 'Storing every permutation' },
 ]
 
+const complexityOptions = [
+  'O(1)',
+  'O(log n)',
+  'O(√n)',
+  'O(n)',
+  'O(n log n)',
+  'O(n²)',
+  'O(2ⁿ)',
+  'O(n!)',
+]
+
 const examples = [
   {
     id: 'array-access',
     prompt: 'Accessing arr[5] in an array.',
-    answer: 'O(1) time, O(1) space',
+    time: 'O(1)',
+    space: 'O(1)',
     explanation: 'Arrays support direct index access — one lookup, no matter how big the array is.',
   },
   {
     id: 'single-loop',
     prompt: 'Looping through every element of an n-element array once.',
-    answer: 'O(n) time, O(1) space',
+    time: 'O(n)',
+    space: 'O(1)',
     explanation: 'Each element is visited exactly once; no extra memory grows with n.',
   },
   {
     id: 'binary-search',
     prompt: 'Binary search for a target in a sorted array of n elements.',
-    answer: 'O(log n) time, O(1) space',
+    time: 'O(log n)',
+    space: 'O(1)',
     explanation: 'Each comparison halves the search space; the iterative version uses no extra memory.',
   },
   {
     id: 'primality',
     prompt: 'Checking whether n is prime by testing divisors up to √n.',
-    answer: 'O(√n) time, O(1) space',
+    time: 'O(√n)',
+    space: 'O(1)',
     explanation: 'A factor larger than √n would need a matching factor smaller than √n, so you never need to check past it.',
   },
   {
     id: 'nested-loop',
     prompt: 'Comparing every pair of elements in an n-element array (nested loop).',
-    answer: 'O(n²) time, O(1) space',
+    time: 'O(n²)',
+    space: 'O(1)',
     explanation: 'The outer loop runs n times, and for each pass the inner loop runs n times too.',
   },
   {
     id: 'merge-sort',
     prompt: 'Merge sort on an n-element array.',
-    answer: 'O(n log n) time, O(n) space',
+    time: 'O(n log n)',
+    space: 'O(n)',
     explanation: 'log n levels of splitting, each doing O(n) work to merge, plus O(n) temporary arrays.',
   },
   {
     id: 'fibonacci',
     prompt: 'Naive recursive Fibonacci, fib(n), with no memoization.',
-    answer: 'O(2ⁿ) time, O(n) space',
+    time: 'O(2ⁿ)',
+    space: 'O(n)',
     explanation: 'Each call branches into two more calls, so the call tree has ~2ⁿ nodes — but the call stack only ever goes n deep.',
   },
   {
     id: 'permutations',
     prompt: 'Generating every permutation of an n-element array.',
-    answer: 'O(n!) time, O(n!) space to store them all',
-    explanation: 'There are n! possible orderings, and producing each one costs work proportional to that count.',
+    time: 'O(n!)',
+    space: 'O(n!)',
+    explanation: 'There are n! possible orderings, and producing each one costs work proportional to that count — including storing them all.',
   },
 ]
 
@@ -78,26 +97,75 @@ function shuffled(list) {
   return copy
 }
 
-function ComplexityExample({ prompt, answer, explanation }) {
+function OptionRow({ label, correct, guess, revealed, onGuess }) {
+  const answered = guess !== null || revealed
+
+  return (
+    <div className="quiz-option-row">
+      <span className="quiz-option-label">{label}</span>
+      <div className="quiz-option-buttons">
+        {complexityOptions.map((option) => {
+          const isCorrect = option === correct
+          const isGuess = option === guess
+          let className = 'option-chip'
+          if (answered) {
+            if (isCorrect) className += ' correct'
+            else if (isGuess) className += ' incorrect'
+            else className += ' muted'
+          }
+          return (
+            <button
+              key={option}
+              type="button"
+              className={className}
+              disabled={answered}
+              onClick={() => onGuess(option)}
+            >
+              {option}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function ComplexityExample({ prompt, time, space, explanation }) {
+  const [timeGuess, setTimeGuess] = useState(null)
+  const [spaceGuess, setSpaceGuess] = useState(null)
   const [revealed, setRevealed] = useState(false)
+
+  const answered = revealed || (timeGuess !== null && spaceGuess !== null)
 
   return (
     <div className="quiz-card">
-      <p className="quiz-prompt">{prompt}</p>
-      {revealed ? (
-        <div className="quiz-answer">
-          <span className="quiz-answer-badge">{answer}</span>
-          <p className="quiz-explanation">{explanation}</p>
-        </div>
-      ) : (
-        <button
-          type="button"
-          className="quiz-reveal"
-          onClick={() => setRevealed(true)}
-        >
-          Show answer
-        </button>
-      )}
+      <div className="quiz-card-header">
+        <p className="quiz-prompt">{prompt}</p>
+        {!answered && (
+          <button
+            type="button"
+            className="quiz-reveal"
+            onClick={() => setRevealed(true)}
+          >
+            Show answer
+          </button>
+        )}
+      </div>
+      <OptionRow
+        label="Time"
+        correct={time}
+        guess={timeGuess}
+        revealed={revealed}
+        onGuess={setTimeGuess}
+      />
+      <OptionRow
+        label="Space"
+        correct={space}
+        guess={spaceGuess}
+        revealed={revealed}
+        onGuess={setSpaceGuess}
+      />
+      {answered && <p className="quiz-explanation">{explanation}</p>}
     </div>
   )
 }

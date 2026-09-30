@@ -11,6 +11,12 @@
   --margin-line: rgba(196, 74, 74, 0.55);
   --sticky: #ffe27a;
   --sticky-border: #e8c34d;
+  --success: #2f9e44;
+  --success-bg: rgba(47, 158, 68, 0.12);
+  --success-border: rgba(47, 158, 68, 0.4);
+  --danger: #c44a4a;
+  --danger-bg: rgba(196, 74, 74, 0.12);
+  --danger-border: rgba(196, 74, 74, 0.4);
   --shadow:
     rgba(30, 30, 30, 0.14) 0 10px 15px -3px, rgba(30, 30, 30, 0.07) 0 4px 6px -2px;
 
