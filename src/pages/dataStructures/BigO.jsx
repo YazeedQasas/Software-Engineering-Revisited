@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import bigOChart from '../../assets/image.png'
 import {
   GrowthVsSpeedVisual,
@@ -6,6 +5,7 @@ import {
   DominantTermVisual,
   AmortizedCostVisual,
 } from './BigOVisuals.jsx'
+import ComplexityQuiz from '../../components/ComplexityQuiz.jsx'
 
 const cheatSheet = [
   { notation: 'O(1)', name: 'Constant', time: 'Array index access, hash map get/set', space: 'A fixed number of variables' },
@@ -16,17 +16,6 @@ const cheatSheet = [
   { notation: 'O(n²)', name: 'Quadratic', time: 'Nested loop comparing every pair', space: 'An n × n matrix' },
   { notation: 'O(2ⁿ)', name: 'Exponential', time: 'Naive recursive Fibonacci', space: 'Call stack of depth n' },
   { notation: 'O(n!)', name: 'Factorial', time: 'Generating every permutation', space: 'Storing every permutation' },
-]
-
-const complexityOptions = [
-  'O(1)',
-  'O(log n)',
-  'O(√n)',
-  'O(n)',
-  'O(n log n)',
-  'O(n²)',
-  'O(2ⁿ)',
-  'O(n!)',
 ]
 
 const examples = [
@@ -88,91 +77,7 @@ const examples = [
   },
 ]
 
-function shuffled(list) {
-  const copy = [...list]
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[copy[i], copy[j]] = [copy[j], copy[i]]
-  }
-  return copy
-}
-
-function OptionRow({ label, correct, guess, revealed, onGuess }) {
-  const answered = guess !== null || revealed
-
-  return (
-    <div className="quiz-option-row">
-      <span className="quiz-option-label">{label}</span>
-      <div className="quiz-option-buttons">
-        {complexityOptions.map((option) => {
-          const isCorrect = option === correct
-          const isGuess = option === guess
-          let className = 'option-chip'
-          if (answered) {
-            if (isCorrect) className += ' correct'
-            else if (isGuess) className += ' incorrect'
-            else className += ' muted'
-          }
-          return (
-            <button
-              key={option}
-              type="button"
-              className={className}
-              disabled={answered}
-              onClick={() => onGuess(option)}
-            >
-              {option}
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-function ComplexityExample({ prompt, time, space, explanation }) {
-  const [timeGuess, setTimeGuess] = useState(null)
-  const [spaceGuess, setSpaceGuess] = useState(null)
-  const [revealed, setRevealed] = useState(false)
-
-  const answered = revealed || (timeGuess !== null && spaceGuess !== null)
-
-  return (
-    <div className="quiz-card">
-      <div className="quiz-card-header">
-        <p className="quiz-prompt">{prompt}</p>
-        {!answered && (
-          <button
-            type="button"
-            className="quiz-reveal"
-            onClick={() => setRevealed(true)}
-          >
-            Show answer
-          </button>
-        )}
-      </div>
-      <OptionRow
-        label="Time"
-        correct={time}
-        guess={timeGuess}
-        revealed={revealed}
-        onGuess={setTimeGuess}
-      />
-      <OptionRow
-        label="Space"
-        correct={space}
-        guess={spaceGuess}
-        revealed={revealed}
-        onGuess={setSpaceGuess}
-      />
-      {answered && <p className="quiz-explanation">{explanation}</p>}
-    </div>
-  )
-}
-
 function BigO() {
-  const [shuffledExamples] = useState(() => shuffled(examples))
-
   return (
     <article className="topic-page">
       <p className="eyebrow">Data Structures</p>
@@ -277,7 +182,7 @@ function BigO() {
       <section className="notebook-section">
         <h3>Cheat Sheet</h3>
         <div className="table-wrap">
-          <table className="bigo-table">
+          <table className="ref-table">
             <thead>
               <tr>
                 <th>Notation</th>
@@ -305,11 +210,7 @@ function BigO() {
       <section className="notebook-section">
         <h3>Test Yourself</h3>
         <p>Guess the time (and space) complexity before revealing the answer.</p>
-        <div className="quiz-grid">
-          {shuffledExamples.map((example) => (
-            <ComplexityExample key={example.id} {...example} />
-          ))}
-        </div>
+        <ComplexityQuiz examples={examples} />
       </section>
     </article>
   )

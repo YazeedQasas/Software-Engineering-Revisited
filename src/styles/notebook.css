@@ -199,32 +199,32 @@
   margin: 12px 0 4px;
 }
 
-table.bigo-table {
+table.ref-table {
   border-collapse: collapse;
   width: 100%;
   min-width: 600px;
   font-size: 14px;
 }
 
-table.bigo-table th,
-table.bigo-table td {
+table.ref-table th,
+table.ref-table td {
   border: 1px solid var(--border);
   padding: 8px 12px;
   text-align: left;
   vertical-align: top;
 }
 
-table.bigo-table thead th {
+table.ref-table thead th {
   font-weight: 600;
   color: var(--text-h);
   background: var(--code-bg);
 }
 
-table.bigo-table tbody tr:nth-child(even) {
+table.ref-table tbody tr:nth-child(even) {
   background: rgba(0, 0, 0, 0.015);
 }
 
-table.bigo-table td:first-child {
+table.ref-table td:first-child {
   font-weight: 600;
   color: var(--text-h);
   white-space: nowrap;
