@@ -69,6 +69,15 @@ const examples = [
   },
 ]
 
+function shuffled(list) {
+  const copy = [...list]
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+  }
+  return copy
+}
+
 function ComplexityExample({ prompt, answer, explanation }) {
   const [revealed, setRevealed] = useState(false)
 
@@ -94,6 +103,8 @@ function ComplexityExample({ prompt, answer, explanation }) {
 }
 
 function BigO() {
+  const [shuffledExamples] = useState(() => shuffled(examples))
+
   return (
     <article className="topic-page">
       <p className="eyebrow">Data Structures</p>
@@ -227,7 +238,7 @@ function BigO() {
         <h3>Test Yourself</h3>
         <p>Guess the time (and space) complexity before revealing the answer.</p>
         <div className="quiz-grid">
-          {examples.map((example) => (
+          {shuffledExamples.map((example) => (
             <ComplexityExample key={example.id} {...example} />
           ))}
         </div>
