@@ -1,3 +1,5 @@
+import './StringsVisuals.css'
+
 function StringBasicsVisual() {
   const chars = ['P', 'Y', 'T', 'H', 'O', 'N']
 
@@ -18,9 +20,11 @@ function StringBasicsVisual() {
             </g>
           )
         })}
-        <text x="150" y="88" fontSize="11" textAnchor="middle" fill="var(--text-h)">s[0] = &apos;p&apos;</text>
-        <line x1="110" y1="76" x2="190" y2="98" stroke="var(--margin-line)" strokeWidth="2" />
-        <line x1="110" y1="98" x2="190" y2="76" stroke="var(--margin-line)" strokeWidth="2" />
+        <g className="anim-shake">
+          <text x="150" y="88" fontSize="11" textAnchor="middle" fill="var(--text-h)">s[0] = &apos;p&apos;</text>
+        </g>
+        <line className="anim-draw-line1" x1="110" y1="76" x2="190" y2="98" stroke="var(--margin-line)" strokeWidth="2" />
+        <line className="anim-draw-line2" x1="110" y1="98" x2="190" y2="76" stroke="var(--margin-line)" strokeWidth="2" />
       </svg>
       <ul className="visual-legend">
         <li><span className="swatch" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }} /> character (read-only)</li>
@@ -44,6 +48,8 @@ function ConcatenationVisual() {
         {naiveHeights.map((h, i) => (
           <rect
             key={i}
+            className="anim-bar"
+            style={{ animationDelay: `${i * 0.15}s` }}
             x={15 + i * 18}
             y={100 - h}
             width="12"
@@ -56,6 +62,8 @@ function ConcatenationVisual() {
         {joinHeights.map((h, i) => (
           <rect
             key={i}
+            className="anim-bar"
+            style={{ animationDelay: `${i * 0.08}s` }}
             x={175 + i * 16}
             y={100 - h}
             width="11"
@@ -63,7 +71,7 @@ function ConcatenationVisual() {
             fill="var(--accent)"
           />
         ))}
-        <rect x="271" y="52" width="14" height="48" fill="var(--accent)" />
+        <rect className="anim-bar" style={{ animationDelay: '0.9s' }} x="271" y="52" width="14" height="48" fill="var(--accent)" />
         <text x="228" y="114" fontSize="9" textAnchor="middle" fill="var(--text)">list + join()</text>
 
         <line x1="8" y1="100" x2="292" y2="100" stroke="var(--border)" />
@@ -78,50 +86,40 @@ function ConcatenationVisual() {
 
 function PalindromeVisual() {
   const chars = ['R', 'A', 'C', 'E', 'C', 'A', 'R']
-  const left = 1
-  const right = 5
+  const step = 38
+  const rightStartX = 12 + 6 * step
 
   return (
     <div className="visual-card">
       <svg
         viewBox="0 0 300 90"
         role="img"
-        aria-label="The string RACECAR with a left pointer at index 1 and a right pointer at index 5, both pointing at the letter A, showing the two-pointer palindrome check."
+        aria-label="The string RACECAR with animated left and right pointers walking inward from both ends, checking that each pair of characters matches, until they meet in the middle."
       >
         <text x="150" y="12" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--text-h)">
-          s[1] == s[5] &#8594; match
+          checking each pair from the outside in
         </text>
         {chars.map((ch, i) => {
-          const x = 12 + i * 38
-          const active = i === left || i === right
+          const x = 12 + i * step
           return (
             <g key={i}>
-              <rect
-                x={x}
-                y="20"
-                width="34"
-                height="30"
-                rx="3"
-                fill={active ? 'var(--accent-bg)' : 'var(--bg)'}
-                stroke={active ? 'var(--accent)' : 'var(--border)'}
-                strokeWidth={active ? '2' : '1'}
-              />
+              <rect x={x} y="20" width="34" height="30" rx="3" fill="var(--bg)" stroke="var(--border)" />
               <text x={x + 17} y="39" fontSize="13" textAnchor="middle" fill="var(--text-h)">{ch}</text>
-              {i === left && (
-                <>
-                  <polygon points={`${x + 12},64 ${x + 22},64 ${x + 17},54`} fill="var(--accent)" />
-                  <text x={x + 17} y="76" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">L</text>
-                </>
-              )}
-              {i === right && (
-                <>
-                  <polygon points={`${x + 12},64 ${x + 22},64 ${x + 17},54`} fill="var(--accent)" />
-                  <text x={x + 17} y="76" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">R</text>
-                </>
-              )}
             </g>
           )
         })}
+
+        <g className="anim-ptr-left">
+          <rect x="12" y="20" width="34" height="30" rx="3" fill="none" stroke="var(--accent)" strokeWidth="2" />
+          <polygon points="24,64 34,64 29,54" fill="var(--accent)" />
+          <text x="29" y="76" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">L</text>
+        </g>
+
+        <g className="anim-ptr-right">
+          <rect x={rightStartX} y="20" width="34" height="30" rx="3" fill="none" stroke="var(--accent)" strokeWidth="2" />
+          <polygon points={`${rightStartX + 12},64 ${rightStartX + 22},64 ${rightStartX + 17},54`} fill="var(--accent)" />
+          <text x={rightStartX + 17} y="76" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">R</text>
+        </g>
       </svg>
       <ul className="visual-legend">
         <li><span className="swatch" style={{ background: 'var(--accent)' }} /> left &amp; right pointers</li>
@@ -151,9 +149,9 @@ function AnagramVisual() {
             </g>
           )
         })}
-        <text x="66" y="62" fontSize="10" textAnchor="middle" fill="var(--text)">A: 2  B: 2</text>
+        <text className="anim-pulse" x="66" y="62" fontSize="10" textAnchor="middle" fill="var(--text)">A: 2  B: 2</text>
 
-        <text x="150" y="35" fontSize="18" textAnchor="middle" fill="var(--text-h)">=</text>
+        <text className="anim-pulse" x="150" y="35" fontSize="18" textAnchor="middle" fill="var(--text-h)">=</text>
 
         {right.map((ch, i) => {
           const x = 188 + i * 24
@@ -164,7 +162,7 @@ function AnagramVisual() {
             </g>
           )
         })}
-        <text x="234" y="62" fontSize="10" textAnchor="middle" fill="var(--text)">A: 2  B: 2</text>
+        <text className="anim-pulse" x="234" y="62" fontSize="10" textAnchor="middle" fill="var(--text)">A: 2  B: 2</text>
 
         <text x="150" y="88" fontSize="9" textAnchor="middle" fill="var(--text)">same letters, same counts &#8594; anagram</text>
       </svg>
@@ -183,10 +181,10 @@ function SubstringSearchVisual() {
       <svg
         viewBox="0 0 300 90"
         role="img"
-        aria-label="The haystack ABCABD with a needle window ABD checked at position 0 (a mismatch, dashed red outline) and at position 3 (a match, solid green outline)."
+        aria-label="The haystack ABCABD with a needle window ABD sliding across positions 0, 1, and 2 (each a mismatch) before landing on position 3, which matches."
       >
-        <rect x="8" y="25" width="118" height="40" rx="6" fill="none" stroke="var(--margin-line)" strokeWidth="2" strokeDasharray="5 3" />
-        <rect x="122" y="25" width="118" height="40" rx="6" fill="var(--accent-bg)" stroke="var(--accent)" strokeWidth="2" />
+        <rect className="anim-needle-try" x="8" y="25" width="118" height="40" rx="6" fill="none" stroke="var(--margin-line)" strokeWidth="2" strokeDasharray="5 3" />
+        <rect className="anim-needle-match" x="122" y="25" width="118" height="40" rx="6" fill="var(--accent-bg)" stroke="var(--accent)" strokeWidth="2" />
 
         {haystack.map((ch, i) => {
           const x = 12 + i * 38
