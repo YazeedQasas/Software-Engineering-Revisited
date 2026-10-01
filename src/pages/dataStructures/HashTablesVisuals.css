@@ -1,0 +1,17 @@
+@keyframes reveal-hold {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.anim-reveal {
+  animation: reveal-hold 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-reveal {
+    animation: none;
+    opacity: 1;
+  }
+}
