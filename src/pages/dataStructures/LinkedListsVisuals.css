@@ -1,0 +1,25 @@
+/* Pointer walking across nodes, step by step (used by cycle detection) */
+@keyframes slow-move {
+  0%, 10% { transform: translateX(0); }
+  35%, 45% { transform: translateX(40px); }
+  70%, 100% { transform: translateX(80px); }
+}
+@keyframes fast-move {
+  0%, 10% { transform: translateX(0); }
+  30%, 38% { transform: translateX(80px); }
+  50%, 58% { transform: translateX(160px); }
+  70%, 100% { transform: translateX(80px); }
+}
+.anim-slow-ptr {
+  animation: slow-move 5s ease-in-out infinite;
+}
+.anim-fast-ptr {
+  animation: fast-move 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-slow-ptr,
+  .anim-fast-ptr {
+    animation: none;
+  }
+}

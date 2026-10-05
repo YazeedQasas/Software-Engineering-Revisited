@@ -1,5 +1,3 @@
-import './HashTablesVisuals.css'
-
 function HashFunctionVisual() {
   return (
     <div className="visual-card">

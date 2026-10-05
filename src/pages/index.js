@@ -3,6 +3,7 @@ import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import Strings from './dataStructures/Strings.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
+import LinkedLists from './dataStructures/LinkedLists.jsx'
 
 export const topicPages = {
   'data-structures': {
@@ -12,6 +13,7 @@ export const topicPages = {
       arrays: Arrays,
       strings: Strings,
       'hash-tables': HashTables,
+      'linked-lists': LinkedLists,
     },
   },
 }

@@ -165,6 +165,20 @@ result = ''.join(pieces)    # O(n), one single copy at the end`}</code>
           In short: collect pieces in a list, join once at the end. Never
           build a string with += inside a loop.
         </div>
+        <p>
+          Worth untangling: the naive loop is <code>O(n&sup2;)</code>{' '}
+          <strong>time</strong> but only <code>O(n)</code>{' '}
+          <strong>space</strong>, and those aren&rsquo;t the same question.
+          At each step the old string becomes garbage the instant{' '}
+          <code>result</code> is rebound to the new one, so it&rsquo;s freed
+          &mdash; the strings from early iterations don&rsquo;t pile up in
+          memory, they come and go. What never goes away is the{' '}
+          <em>time</em> already spent copying them, which is why 1 + 2 +
+          3 + ... + n copies still adds up to <code>O(n&sup2;)</code>. Same
+          auxiliary-space idea as <code>insert</code>/<code>pop</code> back
+          in Arrays: peak memory at any one moment, not a running total of
+          everything ever allocated.
+        </p>
       </section>
 
       <section className="notebook-section">
