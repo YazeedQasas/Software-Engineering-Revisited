@@ -4,6 +4,7 @@ import Arrays from './dataStructures/Arrays.jsx'
 import Strings from './dataStructures/Strings.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
 import LinkedLists from './dataStructures/LinkedLists.jsx'
+import StacksQueues from './dataStructures/StacksQueues.jsx'
 
 export const topicPages = {
   'data-structures': {
@@ -14,6 +15,7 @@ export const topicPages = {
       strings: Strings,
       'hash-tables': HashTables,
       'linked-lists': LinkedLists,
+      'stacks-queues': StacksQueues,
     },
   },
 }
