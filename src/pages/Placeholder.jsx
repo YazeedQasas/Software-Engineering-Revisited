@@ -5,7 +5,7 @@ function Placeholder({ eyebrow, title, blurb }) {
       <h2>{title}</h2>
       <div className="topic-card">
         <span className="status-tag">Not started</span>
-        <p>{blurb}</p>
+        {blurb && <p>{blurb}</p>}
       </div>
     </article>
   )

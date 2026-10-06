@@ -1,23 +1,21 @@
 import './SubtopicSidebar.css'
 
-const categoryOrder = [
-  'Foundation',
-  'Core Linear Structures',
-  'Trees & Graphs',
-  'Good to Know',
-]
-
 function SubtopicSidebar({ topic, activeSubtopicId, onSelectSubtopic }) {
   if (!topic?.children?.length) {
     return null
   }
 
-  const groups = categoryOrder
-    .map((category) => ({
-      category,
-      items: topic.children.filter((child) => child.category === category),
-    }))
-    .filter((group) => group.items.length > 0)
+  const categoryOrder = []
+  for (const child of topic.children) {
+    if (!categoryOrder.includes(child.category)) {
+      categoryOrder.push(child.category)
+    }
+  }
+
+  const groups = categoryOrder.map((category) => ({
+    category,
+    items: topic.children.filter((child) => child.category === category),
+  }))
 
   return (
     <aside className="subtopic-sidebar">
