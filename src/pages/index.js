@@ -15,7 +15,9 @@ export const topicPages = {
       strings: Strings,
       'hash-tables': HashTables,
       'linked-lists': LinkedLists,
-      'stacks-queues': StacksQueues,
+      stacks: StacksQueues,
+      queues: StacksQueues,
+      deques: StacksQueues,
     },
   },
 }
