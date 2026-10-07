@@ -371,3 +371,77 @@ table.ref-table td:first-child {
   line-height: 150%;
   margin: 10px 0 0;
 }
+
+/* One-page "paper" summary: two columns of quick-reference notes */
+.paper-page {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: 28px 32px 20px;
+  margin: 18px 0;
+  background-image: linear-gradient(
+    to right,
+    transparent 15px,
+    var(--margin-line) 15px,
+    var(--margin-line) 16px,
+    transparent 16px
+  );
+}
+
+.paper-page > .paper-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--text-h);
+}
+
+.paper-cols {
+  column-count: 2;
+  column-gap: 36px;
+  column-rule: 1px solid var(--border);
+}
+
+.paper-block {
+  break-inside: avoid;
+  margin: 0 0 18px;
+}
+
+.paper-block h4 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+
+.paper-block ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.paper-block li {
+  font-size: 14px;
+  line-height: 145%;
+  margin-bottom: 4px;
+}
+
+.paper-block li code {
+  font-size: 12.5px;
+  padding: 1px 4px;
+}
+
+@media (max-width: 760px) {
+  .paper-page {
+    padding: 22px 18px 14px 26px;
+  }
+
+  .paper-cols {
+    column-count: 1;
+    column-rule: none;
+  }
+}

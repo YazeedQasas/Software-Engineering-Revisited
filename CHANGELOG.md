@@ -2,8 +2,65 @@
 
 All notable changes to this project are logged here, newest first.
 
+## [Unreleased]
 
-## [Released]
+
+## [0.1] - 2026-10-07
+
+### Added
+
+- **Arrays & Dynamic Arrays** page, rebuilt from scratch: a one-page recap
+  up front, then what an array is, the problem it solves, the address-math
+  trick behind O(1) access, a step-by-step walkthrough (reads, writes,
+  appends, front inserts), an operations cost table with time and extra
+  space, trade-offs against linked lists and hash tables, and when to use
+  it. Includes two diagrams (memory layout and the shift on insert) and a
+  5-question self-quiz.
+- **Linked Lists** page, rebuilt to the same structure: a one-page recap up
+  front, then what a linked list is, the problem it solves, the
+  pointer-instead-of-address trick, a walkthrough (walking to a node,
+  inserting, pushing to the front, deleting), the dummy node trick, singly
+  vs. doubly vs. circular lists, an operations cost table with time and
+  extra space, trade-offs against arrays and hash tables, and when to use
+  one. Includes four diagrams and an 8-question self-quiz.
+- **Queues** is now its own page, built to the same structure: a one-page
+  recap up front, then what a queue is, why arrival order matters, the
+  two-pointer (front and back) trick, a walkthrough with `collections.deque`
+  and a from-scratch version, deques, circular queues and priority queues,
+  building a queue from two stacks, an operations cost table with time and
+  extra space, trade-offs against lists, stacks and priority queues, and
+  when to use one. Includes two new diagrams and an 8-question self-quiz.
+- **Stacks** is now its own page, built to the same structure: a one-page
+  recap up front, then what a stack is, the problem of finding your way
+  back, the one-open-end trick, a walkthrough with a bracket-matching
+  diagram, the call stack, min-stacks and monotonic stacks, an operations
+  cost table with time and extra space, trade-offs against lists, queues
+  and recursion, and when to use one. Includes three diagrams and an
+  8-question self-quiz.
+- **Hash Tables (Maps & Sets)** page, rebuilt to the same structure and
+  opening with a plain-language explanation of hashing (hash functions,
+  fingerprints, why only immutable values can be hashed). Then a one-page
+  recap, why searching is the problem, the hash-then-jump trick, a
+  walkthrough with `dict` and `set`, collisions (chaining vs. open
+  addressing), load factor and rehashing, an operations cost table with
+  time and extra space, why it is average O(1) but worst-case O(n),
+  trade-offs against lists and sorted structures, and when to use one.
+  Includes two new diagrams and an 8-question self-quiz.
+- Reusable "paper page" style for two-column recap sheets.
+
+### Removed
+
+- The earlier Arrays content (two pointers, sliding window and prefix sums)
+  is gone from the page; it is in git history if it gets its own page.
+- The combined Stacks & Queues page is gone, split into separate Stacks
+  and Queues pages (its diagrams moved with them).
+- Linked Lists no longer has its reversal, cycle detection and merge
+  sections (fast and slow pointers remain a card on the Problem Solving
+  Techniques page).
+- Hash Tables no longer has its Two-Sum section and diagram (the
+  duplicate-check and frequency-counting examples remain).
+
+## [0.0] - 2026-10-07
 
 ### Added
 

@@ -3,7 +3,8 @@ import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
 import LinkedLists from './dataStructures/LinkedLists.jsx'
-import StacksQueues from './dataStructures/StacksQueues.jsx'
+import Queues from './dataStructures/Queues.jsx'
+import Stacks from './dataStructures/Stacks.jsx'
 import ProblemSolving from './dataStructures/ProblemSolving.jsx'
 
 export const topicPages = {
@@ -12,8 +13,8 @@ export const topicPages = {
     subtopics: {
       arrays: Arrays,
       'linked-lists': LinkedLists,
-      queues: StacksQueues,
-      stacks: StacksQueues,
+      queues: Queues,
+      stacks: Stacks,
       'hash-tables': HashTables,
       'big-o': BigO,
       'problem-solving': ProblemSolving,

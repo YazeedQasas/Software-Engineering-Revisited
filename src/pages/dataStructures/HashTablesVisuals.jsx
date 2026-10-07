@@ -225,51 +225,112 @@ function WorstCaseVisual() {
   )
 }
 
-function TwoSumVisual() {
-  const values = [2, 7, 11, 15]
+function HashingIdeaVisual() {
+  const rows = [
+    { input: '"amy"', output: '7351', note: '' },
+    { input: '"amy"', output: '7351', note: 'same input, same number' },
+    { input: '"amz"', output: '2208', note: 'tiny change, very different' },
+  ]
 
   return (
     <div className="visual-card">
       <svg
-        viewBox="0 0 300 120"
+        viewBox="0 0 300 150"
         role="img"
-        aria-label="Scanning [2, 7, 11, 15] for a pair that sums to 9: 2 is stored in a seen map, then 7's complement (2) is found in the map, confirming a match at indices 0 and 1."
+        aria-label="Three examples of a hash function turning text into a number: amy becomes 7351, amy again becomes the same 7351, and amz, one letter different, becomes a very different 2208."
       >
-        <text x="150" y="12" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--text-h)">target = 9</text>
-
-        {values.map((v, i) => {
-          const x = 20 + i * 60
+        {rows.map((r, i) => {
+          const y = 8 + i * 46
+          const repeat = i === 1
           return (
             <g key={i}>
-              <rect x={x} y="20" width="44" height="30" rx="3" fill="var(--bg)" stroke="var(--border)" />
-              <text x={x + 22} y="40" fontSize="13" textAnchor="middle" fill="var(--text-h)">{v}</text>
+              <rect x="10" y={y} width="62" height="28" rx="4" fill="var(--bg)" stroke="var(--border)" />
+              <text x="41" y={y + 18} fontSize="11" textAnchor="middle" fill="var(--text-h)">{r.input}</text>
+              <line x1="76" y1={y + 14} x2="104" y2={y + 14} stroke="var(--accent)" strokeWidth="2" />
+              <rect x="108" y={y} width="62" height="28" rx="4" fill="var(--code-bg)" stroke="var(--border)" />
+              <text x="139" y={y + 18} fontSize="10" textAnchor="middle" fill="var(--text-h)">hash()</text>
+              <line x1="174" y1={y + 14} x2="202" y2={y + 14} stroke="var(--accent)" strokeWidth="2" />
+              <rect
+                x="206"
+                y={y}
+                width="62"
+                height="28"
+                rx="4"
+                fill={repeat ? 'var(--accent-bg)' : 'var(--bg)'}
+                stroke={repeat ? 'var(--accent)' : 'var(--border)'}
+              />
+              <text x="237" y={y + 18} fontSize="12" textAnchor="middle" fill={repeat ? 'var(--accent)' : 'var(--text-h)'}>{r.output}</text>
+              {r.note && (
+                <text x="206" y={y + 41} fontSize="8" fill="var(--text)">{r.note}</text>
+              )}
             </g>
           )
         })}
-
-        <g className="anim-reveal" style={{ animationDelay: '0.3s' }}>
-          <rect x="20" y="20" width="44" height="30" rx="3" fill="none" stroke="var(--accent)" strokeWidth="2" />
-          <rect x="20" y="62" width="60" height="20" rx="3" fill="var(--code-bg)" stroke="var(--accent)" />
-          <text x="50" y="76" fontSize="9" textAnchor="middle" fill="var(--text-h)">seen: 2&#8594;0</text>
-        </g>
-
-        <g className="anim-reveal" style={{ animationDelay: '1.8s' }}>
-          <rect x="20" y="20" width="104" height="30" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" strokeWidth="2" />
-          <text x="150" y="98" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">7&apos;s complement (2) is in the map &#8594; match!</text>
-        </g>
       </svg>
       <ul className="visual-legend">
-        <li><span className="swatch" style={{ background: 'var(--code-bg)', border: '1px solid var(--accent)' }} /> values seen so far</li>
-        <li><span className="swatch" style={{ background: 'var(--accent-bg)', border: '1px solid var(--accent)' }} /> match found</li>
+        <li>numbers are illustrative &mdash; real ones are much bigger</li>
+      </ul>
+    </div>
+  )
+}
+
+function HashTableVisual() {
+  const slots = [
+    { key: 'cara', value: 28 },
+    null,
+    { key: 'amy', value: 30 },
+    null,
+    { key: 'ben', value: 25 },
+  ]
+  const target = 4
+
+  return (
+    <div className="visual-card">
+      <svg
+        viewBox="0 0 300 140"
+        role="img"
+        aria-label="A hash table with five buckets holding cara at 0, amy at 2 and ben at 4. Looking up ben computes hash of ben mod 5 equals 4 and goes straight to bucket 4."
+      >
+        {slots.map((slot, i) => {
+          const y = 8 + i * 25
+          const hit = i === target
+          return (
+            <g key={i}>
+              <text x="14" y={y + 15} fontSize="10" textAnchor="middle" fill="var(--text)">{i}</text>
+              <rect
+                x="26"
+                y={y}
+                width="120"
+                height="22"
+                rx="3"
+                fill={hit ? 'var(--accent-bg)' : 'var(--bg)'}
+                stroke={hit ? 'var(--accent)' : 'var(--border)'}
+                strokeWidth={hit ? '2' : '1'}
+              />
+              {slot && (
+                <text x="86" y={y + 15} fontSize="11" textAnchor="middle" fill={hit ? 'var(--accent)' : 'var(--text-h)'}>
+                  {slot.key}: {slot.value}
+                </text>
+              )}
+            </g>
+          )
+        })}
+        <text x="160" y="92" fontSize="9" fill="var(--text)">look up &quot;ben&quot;:</text>
+        <text x="160" y="106" fontSize="9" fill="var(--text)">hash(&quot;ben&quot;) % 5 = 4</text>
+        <text x="160" y="124" fontSize="9" fontWeight="600" fill="var(--accent)">&#8592; jump straight there</text>
+      </svg>
+      <ul className="visual-legend">
+        <li><span className="swatch" style={{ background: 'var(--accent-bg)', border: '1px solid var(--accent)' }} /> bucket we jumped to</li>
       </ul>
     </div>
   )
 }
 
 export {
+  HashingIdeaVisual,
   HashFunctionVisual,
+  HashTableVisual,
   CollisionVisual,
   LoadFactorVisual,
   WorstCaseVisual,
-  TwoSumVisual,
 }

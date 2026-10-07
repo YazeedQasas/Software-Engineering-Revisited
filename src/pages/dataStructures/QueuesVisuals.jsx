@@ -1,29 +1,90 @@
-function StackVisual() {
+function QueueLinkedVisual() {
+  const xs = [14, 104, 194]
+  const values = [1, 2, 3]
+
   return (
     <div className="visual-card">
       <svg
-        viewBox="0 0 300 130"
+        viewBox="0 0 300 100"
         role="img"
-        aria-label="A vertical stack of boxes with a fourth box repeatedly appearing and disappearing on top, showing that push and pop only ever touch the top of the stack."
+        aria-label="A queue built from a linked list. A front pointer marks the first node, where items leave, and a back pointer marks the last node, where new items join."
       >
-        <rect x="80" y="93" width="70" height="22" rx="3" fill="var(--bg)" stroke="var(--border)" />
-        <text x="115" y="108" fontSize="12" textAnchor="middle" fill="var(--text-h)">1</text>
-        <rect x="80" y="68" width="70" height="22" rx="3" fill="var(--bg)" stroke="var(--border)" />
-        <text x="115" y="83" fontSize="12" textAnchor="middle" fill="var(--text-h)">2</text>
-        <rect x="80" y="43" width="70" height="22" rx="3" fill="var(--bg)" stroke="var(--border)" />
-        <text x="115" y="58" fontSize="12" textAnchor="middle" fill="var(--text-h)">3</text>
+        {xs.map((x, i) => {
+          const split = x + 56 * 0.58
+          return (
+            <g key={i}>
+              <rect x={x} y="30" width="56" height="32" rx="4" fill="var(--bg)" stroke="var(--border)" />
+              <line x1={split} y1="30" x2={split} y2="62" stroke="var(--border)" />
+              <text x={x + (split - x) / 2} y="50" fontSize="13" textAnchor="middle" fill="var(--text-h)">{values[i]}</text>
+            </g>
+          )
+        })}
+        {[0, 1].map((i) => (
+          <g key={i}>
+            <line x1={xs[i] + 56} y1="46" x2={xs[i + 1]} y2="46" stroke="var(--accent)" strokeWidth="2" />
+            <circle cx={xs[i + 1]} cy="46" r="3" fill="var(--accent)" />
+          </g>
+        ))}
+        <line x1="250" y1="46" x2="270" y2="46" stroke="var(--accent)" strokeWidth="2" />
+        <text x="274" y="50" fontSize="9" fill="var(--text)">None</text>
 
-        <g className="anim-reveal">
-          <rect x="80" y="18" width="70" height="22" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" strokeWidth="2" />
-          <text x="115" y="33" fontSize="12" textAnchor="middle" fill="var(--accent)">4</text>
-        </g>
+        <polygon points="37,24 47,24 42,32" fill="var(--accent)" />
+        <text x="42" y="18" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--accent)">front</text>
+        <text x="42" y="82" fontSize="9" textAnchor="middle" fill="var(--text)">dequeue here</text>
 
-        <line x1="158" y1="29" x2="180" y2="29" stroke="var(--text)" strokeWidth="1" />
-        <text x="184" y="33" fontSize="9" fill="var(--text)">top</text>
+        <polygon points="217,24 227,24 222,32" fill="var(--margin-line)" />
+        <text x="222" y="18" fontSize="10" fontWeight="600" textAnchor="middle" fill="var(--margin-line)">back</text>
+        <text x="222" y="82" fontSize="9" textAnchor="middle" fill="var(--text)">enqueue here</text>
       </svg>
       <ul className="visual-legend">
-        <li><span className="swatch" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }} /> in the stack</li>
-        <li>push and pop only ever touch the top &mdash; LIFO</li>
+        <li>two pointers, one per end, so both ends are <code>O(1)</code></li>
+      </ul>
+    </div>
+  )
+}
+
+function PriorityVisual() {
+  const arrival = [
+    { label: 'A', p: 3 },
+    { label: 'B', p: 1 },
+    { label: 'C', p: 2 },
+  ]
+  const served = [arrival[1], arrival[2], arrival[0]]
+
+  const row = (items, y, label, highlight) => (
+    <g>
+      <text x="10" y={y + 19} fontSize="9" fill="var(--text)">{label}</text>
+      {items.map((it, i) => (
+        <g key={it.label}>
+          <rect
+            x={80 + i * 70}
+            y={y}
+            width="60"
+            height="28"
+            rx="3"
+            fill={highlight ? 'var(--accent-bg)' : 'var(--bg)'}
+            stroke={highlight ? 'var(--accent)' : 'var(--border)'}
+          />
+          <text x={110 + i * 70} y={y + 18} fontSize="12" textAnchor="middle" fill="var(--text-h)">
+            {it.label} (p{it.p})
+          </text>
+        </g>
+      ))}
+    </g>
+  )
+
+  return (
+    <div className="visual-card">
+      <svg
+        viewBox="0 0 300 90"
+        role="img"
+        aria-label="Three tasks arrive in the order A, B, C with priorities 3, 1, 2. A priority queue serves them in priority order: B, then C, then A."
+      >
+        {row(arrival, 8, 'arrives', false)}
+        {row(served, 52, 'served', true)}
+      </svg>
+      <ul className="visual-legend">
+        <li>served by priority (lowest number first), not by arrival</li>
       </ul>
     </div>
   )
@@ -102,48 +163,6 @@ function TwoStacksQueueVisual() {
   )
 }
 
-function MonotonicStackVisual() {
-  const nums = [3, 1, 4]
-
-  return (
-    <div className="visual-card">
-      <svg
-        viewBox="0 0 300 110"
-        role="img"
-        aria-label="Scanning [3, 1, 4]: when 4 is reached, it is bigger than both 1 and 3 sitting on the stack, so both get popped and resolved as having 4 for their next greater element."
-      >
-        {nums.map((v, i) => {
-          const x = 100 + i * 50
-          const isCurrent = i === 2
-          return (
-            <g key={i}>
-              <rect x={x} y="10" width="40" height="28" rx="3" fill={isCurrent ? 'var(--accent-bg)' : 'var(--bg)'} stroke={isCurrent ? 'var(--accent)' : 'var(--border)'} strokeWidth={isCurrent ? '2' : '1'} />
-              <text x={x + 20} y="29" fontSize="13" textAnchor="middle" fill={isCurrent ? 'var(--accent)' : 'var(--text-h)'}>{v}</text>
-            </g>
-          )
-        })}
-        <text x="200" y="8" fontSize="8" textAnchor="middle" fill="var(--accent)">current</text>
-
-        <text x="16" y="12" fontSize="9" fill="var(--text)">stack</text>
-        <rect x="16" y="68" width="36" height="24" rx="3" fill="var(--bg)" stroke="var(--border)" />
-        <text x="34" y="85" fontSize="12" textAnchor="middle" fill="var(--text-h)">1</text>
-        <rect x="16" y="40" width="36" height="24" rx="3" fill="var(--bg)" stroke="var(--border)" />
-        <text x="34" y="57" fontSize="12" textAnchor="middle" fill="var(--text-h)">3</text>
-
-        <g className="anim-reveal" style={{ animationDelay: '0s' }}>
-          <text x="90" y="85" fontSize="10" fontWeight="600" fill="var(--accent)">&#8594; next greater = 4</text>
-        </g>
-        <g className="anim-reveal" style={{ animationDelay: '0.6s' }}>
-          <text x="90" y="57" fontSize="10" fontWeight="600" fill="var(--accent)">&#8594; next greater = 4</text>
-        </g>
-      </svg>
-      <ul className="visual-legend">
-        <li>while top &lt; current: pop it, record the answer &mdash; then push current</li>
-      </ul>
-    </div>
-  )
-}
-
 function DequeVisual() {
   const values = [2, 3, 4]
 
@@ -185,10 +204,4 @@ function DequeVisual() {
   )
 }
 
-export {
-  StackVisual,
-  QueueVisual,
-  TwoStacksQueueVisual,
-  MonotonicStackVisual,
-  DequeVisual,
-}
+export { QueueVisual, QueueLinkedVisual, PriorityVisual, TwoStacksQueueVisual, DequeVisual }

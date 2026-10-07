@@ -1,26 +1,15 @@
 import ComplexityQuiz from '../../components/ComplexityQuiz.jsx'
-import {
-  MemoryLayoutVisual,
-  ResizeVisual,
-  ShiftVisual,
-  TwoPointersVisual,
-  SlidingWindowVisual,
-  PrefixSumVisual,
-} from './ArraysVisuals.jsx'
+import { MemoryLayoutVisual, ShiftVisual } from './ArraysVisuals.jsx'
 
 const operations = [
-  { op: 'arr[i]', time: 'O(1)', why: 'Direct address calculation.' },
-  { op: 'arr[i] = x', time: 'O(1)', why: 'Direct write, no shifting.' },
-  { op: 'len(arr)', time: 'O(1)', why: 'Python lists track their length; no counting needed.' },
-  { op: 'arr.append(x)', time: 'O(1) amortized', why: 'Occasional resize-and-copy, spread out over many cheap appends.' },
-  { op: 'arr.pop()', time: 'O(1) amortized', why: 'Removes from the end — nothing else has to move.' },
-  { op: 'arr.insert(0, x)', time: 'O(n)', why: 'Shifts every existing element right.' },
-  { op: 'arr.pop(0)', time: 'O(n)', why: 'Shifts every remaining element left.' },
-  { op: 'x in arr', time: 'O(n)', why: 'Linear search — no ordering to exploit.' },
-  { op: 'arr.index(x)', time: 'O(n)', why: 'Linear search for the first match.' },
-  { op: 'arr[i:j]', time: 'O(j − i)', why: 'Copies the sliced range into a new list.' },
-  { op: 'arr.sort()', time: 'O(n log n)', why: "Python's Timsort." },
-  { op: 'arr.extend(other)', time: 'O(len(other))', why: 'Appends each element of other.' },
+  { op: 'arr[i]', time: 'O(1)', space: 'O(1)', why: 'Direct address calculation.' },
+  { op: 'arr[i] = x', time: 'O(1)', space: 'O(1)', why: 'Direct write, nothing shifts.' },
+  { op: 'arr.append(x)', time: 'O(1) amortized', space: 'O(1)', why: 'Usually a plain write; the rare resize is spread over many appends.' },
+  { op: 'arr.pop()', time: 'O(1)', space: 'O(1)', why: 'Removes from the end, so nothing else moves.' },
+  { op: 'arr.insert(0, x)', time: 'O(n)', space: 'O(1)', why: 'Every element slides one slot right.' },
+  { op: 'arr.pop(0)', time: 'O(n)', space: 'O(1)', why: 'Every element slides one slot left to close the gap.' },
+  { op: 'x in arr', time: 'O(n)', space: 'O(1)', why: 'No ordering to exploit, so it may check every element.' },
+  { op: 'arr[i:j]', time: 'O(j − i)', space: 'O(j − i)', why: 'Copies that range into a brand new list.' },
 ]
 
 const examples = [
@@ -29,7 +18,7 @@ const examples = [
     prompt: 'Reading arr[7] from an array of n elements.',
     time: 'O(1)',
     space: 'O(1)',
-    explanation: 'Direct address calculation — no scanning required.',
+    explanation: 'Direct address calculation, no scanning required.',
   },
   {
     id: 'append-end',
@@ -53,32 +42,11 @@ const examples = [
     explanation: 'With no ordering to exploit, Python may have to check every element.',
   },
   {
-    id: 'binary-search-arr',
-    prompt: 'Binary search for a value in a sorted array of n items.',
-    time: 'O(log n)',
-    space: 'O(1)',
-    explanation: 'Each comparison eliminates half of the remaining range.',
-  },
-  {
-    id: 'build-prefix',
-    prompt: 'Building a prefix-sum array from an n-element array.',
+    id: 'slice-copy',
+    prompt: 'Copying a list of n items with arr[:].',
     time: 'O(n)',
     space: 'O(n)',
-    explanation: 'One pass to compute it, and it needs its own n-element array to store the running totals.',
-  },
-  {
-    id: 'two-pointer-pair',
-    prompt: 'Two-pointer scan for a pair that sums to a target, in a sorted array of n items.',
-    time: 'O(n)',
-    space: 'O(1)',
-    explanation: 'Each step moves one pointer and rules out one element for good — no nested loop needed.',
-  },
-  {
-    id: 'tuple-hash',
-    prompt: 'Adding a tuple of fixed length to a Python set.',
-    time: 'O(1)',
-    space: 'O(1)',
-    explanation: 'Tuples are immutable and hashable, so they hash like any other set element — no scanning.',
+    explanation: 'Every element is copied into a brand new list, so both the work and the extra memory grow with n.',
   },
 ]
 
@@ -88,150 +56,183 @@ function Arrays() {
       <p className="eyebrow">Data Structures</p>
       <h2>Arrays &amp; Dynamic Arrays</h2>
       <p>
-        Let&rsquo;s build this up together, one idea at a time &mdash; starting
-        from what an array actually is in memory, through mutability, why
-        dynamic arrays grow the way they do, and finishing with three
-        patterns that turn up constantly in interviews. Every idea gets real
-        Python alongside it, not just a metaphor.
+        Almost every other data structure you&rsquo;ll meet is either built on
+        top of an array or invented to fix one of its weaknesses. So
+        it&rsquo;s worth knowing this one really well.
       </p>
 
       <section className="notebook-section">
-        <h3>Let&rsquo;s Start From the Basics</h3>
+        <h3>The Whole Page, on One Page</h3>
+        <p>A quick map of everything below. Skim it now, or come back to it for a refresher.</p>
+        <div className="paper-page">
+          <p className="paper-title">Arrays &amp; Dynamic Arrays &middot; Recap</p>
+          <div className="paper-cols">
+            <div className="paper-block">
+              <h4>1. What it is</h4>
+              <ul>
+                <li>Items stored one after another in memory, indexed from 0.</li>
+                <li>Python&rsquo;s <code>list</code> is the everyday version.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>2. The problem it solves</h4>
+              <ul>
+                <li>Scattered items force you to follow a trail to reach number k: <code>O(n)</code> just to read.</li>
+                <li>Arrays make &ldquo;give me item k&rdquo; instant.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>3. The trick</h4>
+              <ul>
+                <li>Same-size slots, no gaps, so the position is <em>calculated</em>, not searched.</li>
+                <li><code>address = start + index &times; size</code> &rarr; <code>O(1)</code> for any index.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>4. Mutability</h4>
+              <ul>
+                <li><code>list</code> is <strong>mutable</strong>: reassign, append, remove freely.</li>
+                <li><code>tuple</code> is <strong>immutable</strong>: frozen once built.</li>
+                <li>Only immutable (hashable) objects can be dict keys or set members.</li>
+                <li>Pass a tuple and nobody can change it behind your back.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>5. Growing</h4>
+              <ul>
+                <li>A real array has a fixed size; a dynamic array hides spare room at the back.</li>
+                <li>Room left: append is a plain write. Full: allocate bigger, copy everything once, then append.</li>
+                <li>The rare copy is spread over many cheap appends: <strong>amortized</strong> <code>O(1)</code>.</li>
+                <li>Any constant growth factor above 1 gives the same result.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>6. End is cheap, front is not</h4>
+              <ul>
+                <li>Items stay packed, so inserting or deleting at the front shifts everything: <code>O(n)</code>.</li>
+                <li>The middle shifts only what comes after it, but worst case is still about <code>n</code>.</li>
+                <li>The end moves nothing: <code>append</code> / <code>pop()</code> are <code>O(1)</code>.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>7. Costs at a glance</h4>
+              <ul>
+                <li><code>O(1)</code>: <code>arr[i]</code>, <code>arr[i] = x</code>, <code>append</code>, <code>pop()</code></li>
+                <li><code>O(n)</code>: <code>insert</code> / <code>pop(0)</code>, <code>x in arr</code>, slices and copies</li>
+                <li>Extra space counts memory <em>beyond</em> the array. Shifting adds none; a slice or <code>sorted(arr)</code> adds <code>O(n)</code>.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>8. What you trade away</h4>
+              <ul>
+                <li>Linked list: fast front inserts, but reaching item k means k steps.</li>
+                <li>Hash table: fast &ldquo;is it in here?&rdquo;, but no order.</li>
+                <li>Arrays keep order and sit compactly in memory.</li>
+              </ul>
+            </div>
+
+            <div className="paper-block">
+              <h4>9. Use it when</h4>
+              <ul>
+                <li>You read by position or sweep through everything.</li>
+                <li>You add and remove at the end (stack-style).</li>
+                <li>Constantly working at the front? Look at a queue or linked list.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="notebook-section">
+        <h3>Arrays in One Breath</h3>
+        <div className="definition">
+          An array stores items one after another in memory, so you can jump
+          straight to any item by its position.
+        </div>
+        <p>
+          In Python, the everyday version of this is the <code>list</code>:
+          ordered, indexed from 0, and happy to grow when you add to it.
+        </p>
+      </section>
+
+      <section className="notebook-section">
+        <h3>Where Things Get Painful Without One</h3>
+        <p>
+          Imagine your items were scattered all over memory, each one just
+          pointing to where the next lives. To reach the 500th item, you
+          would have to start at the first and follow the trail 499 times.
+          Reaching the millionth item would take a million hops.
+        </p>
+        <p>
+          That&rsquo;s <code>O(n)</code> just to <em>read</em> something you
+          already know the position of. Lots of problems are really
+          &ldquo;give me item number k&rdquo; over and over, and paying a
+          full walk each time is a terrible deal.
+        </p>
+      </section>
+
+      <section className="notebook-section">
+        <h3>The Trick: Do the Math, Skip the Search</h3>
         <div className="concept-row">
           <div className="concept-text">
             <p>
-              Picture a long shelf with numbered slots, all the same size,
-              sitting right next to each other with no gaps. That&rsquo;s an
-              array. Because every slot is the same size and they&rsquo;re
-              packed together, the computer never has to search for
-              anything &mdash; it can calculate exactly where any slot is.
+              Picture a long shelf of numbered slots, all the same size,
+              pushed right up against each other. Because the slots are
+              identical and have no gaps, you never need to look for
+              anything. You can <em>calculate</em> where slot 3 is, the way
+              you know which house is number 3 on a street where every
+              house is the same width.
             </p>
             <p>
-              Here&rsquo;s the trick: to find <code>arr[3]</code>, the
-              computer doesn&rsquo;t walk through <code>arr[0]</code>,{' '}
-              <code>arr[1]</code>, <code>arr[2]</code> first. It computes{' '}
-              <code>address = base + (index &times; size)</code> &mdash; one
-              multiplication, one addition &mdash; and jumps straight there.
-              That&rsquo;s the whole reason array access is{' '}
-              <code>O(1)</code>: the math doesn&rsquo;t get any harder no
-              matter how long the array is.
+              The computer does exactly that:{' '}
+              <code>address = start + (index &times; item size)</code>. One
+              multiply, one add, then jump. It takes the same effort for
+              slot 3 or slot 3,000,000, and that&rsquo;s the entire reason
+              array access is <code>O(1)</code>.
             </p>
           </div>
           <MemoryLayoutVisual />
         </div>
-        <p>In Python, this is just a list &mdash; indexing and assignment are both direct, O(1) operations:</p>
-        <div className="code-block">
-          <code>{`arr = [12, 7, 45, 3, 90, 21]
-
-arr[3]        # 3
-arr[3] = 99   # arr is now [12, 7, 45, 99, 90, 21]`}</code>
-        </div>
-        <div className="definition">
-          In short: contiguous, same-size slots let the computer calculate
-          any element&rsquo;s address directly, instead of searching for it.
-        </div>
       </section>
 
       <section className="notebook-section">
-        <h3>Mutable vs. Immutable</h3>
-        <p>
-          One more property matters as much as size: can you change
-          what&rsquo;s inside after it&rsquo;s created? Python actually
-          gives you both flavors of &ldquo;array&rdquo; side by side.
-        </p>
-        <p>
-          A <code>list</code> is <strong>mutable</strong> &mdash; you can
-          reassign elements, append, remove, all of it. A <code>tuple</code>{' '}
-          looks almost identical but is <strong>immutable</strong>: once
-          built, it&rsquo;s frozen. No item assignment, no append, no pop.
-        </p>
+        <h3>Watching It Work</h3>
+        <p>Let&rsquo;s walk a tiny list through its life and see what each step really does.</p>
         <div className="code-block">
-          <code>{`nums = [1, 2, 3]     # list: mutable
-nums[0] = 99          # fine -> [99, 2, 3]
-nums.append(4)        # fine -> [99, 2, 3, 4]
+          <code>{`arr = [12, 7, 45, 3]
 
-point = (1, 2)        # tuple: immutable
-point[0] = 99          # TypeError: 'tuple' object does not support item assignment`}</code>
-        </div>
-        <p>Two reasons interviewers like to poke at this:</p>
-        <p>
-          <strong>Safety.</strong> Pass a tuple into a function and you know
-          it can&rsquo;t be silently changed behind your back. Pass a list,
-          and the function is free to mutate it.
-        </p>
-        <p>
-          <strong>Hashability.</strong> Only immutable objects can be
-          dictionary keys or set members, because Python needs an
-          object&rsquo;s hash to stay the same for as long as it&rsquo;s
-          stored.
-        </p>
-        <div className="code-block">
-          <code>{`seen = set()
-seen.add((1, 2))   # fine -- tuples are hashable
-seen.add([1, 2])   # TypeError: unhashable type: 'list'`}</code>
-        </div>
-        <div className="definition">
-          In short: a list is a mutable dynamic array; a tuple is its
-          immutable, fixed-size twin &mdash; same contiguous-memory idea,
-          but nothing about it can change after creation.
-        </div>
-      </section>
+arr[2]          # 45   -> computed address, one jump
+arr[2] = 99     # [12, 7, 99, 3]   -> one write
 
-      <section className="notebook-section">
-        <h3>Now Let&rsquo;s Make It Grow</h3>
+arr.append(8)   # [12, 7, 99, 3, 8]
+arr.pop()       # back to [12, 7, 99, 3]`}</code>
+        </div>
+        <p>
+          Reads, writes, and anything at the <strong>end</strong> are cheap.
+          Appending is cheap because a list quietly keeps spare room at the
+          back. When that room runs out, Python allocates a bigger block,
+          copies everything across once, and carries on. That copy is
+          expensive, but it happens so rarely that the average append still
+          costs <code>O(1)</code>. This is the amortized idea from Big-O
+          Complexity.
+        </p>
+        <p>The front is a different story:</p>
         <div className="concept-row">
           <div className="concept-text">
             <p>
-              Here&rsquo;s a wrinkle: a real array&rsquo;s size is fixed the
-              moment it&rsquo;s created. The memory right after it might
-              already belong to something else, so you can&rsquo;t just tack
-              on a 7th slot to a 6-slot array. So how does Python&rsquo;s{' '}
-              <code>list</code> let you keep appending forever?
-            </p>
-            <p>
-              It cheats, in a very organized way. Underneath, a dynamic
-              array keeps a real fixed-size array with some spare capacity.
-              Append when there&rsquo;s room, and it&rsquo;s a simple{' '}
-              <code>O(1)</code> write. Once it&rsquo;s full, it allocates a
-              brand new array &mdash; bigger than before &mdash; copies
-              every element over, then makes the append. You saw this exact
-              idea back in Big-O Complexity: that occasional expensive copy
-              is what amortized analysis is about, and it&rsquo;s why append
-              is still <code>O(1)</code> on average.
-            </p>
-          </div>
-          <ResizeVisual />
-        </div>
-        <p>
-          We&rsquo;ve been saying &ldquo;doubles&rdquo; because that&rsquo;s
-          the classic textbook growth factor for teaching amortized
-          analysis. Real implementations vary &mdash; CPython&rsquo;s list
-          actually grows by roughly 1.125&times; (12.5%) once it&rsquo;s
-          past a few elements, Java&rsquo;s <code>ArrayList</code> uses
-          1.5&times;, and so on. The exact ratio doesn&rsquo;t matter for
-          the Big-O argument: any constant growth factor greater than 1
-          still gives amortized <code>O(1)</code> append.
-        </p>
-      </section>
-
-      <section className="notebook-section">
-        <h3>What Happens When You Insert in the Middle?</h3>
-        <div className="concept-row">
-          <div className="concept-text">
-            <p>
-              Not every insertion is created equal, and this trips people up
-              constantly. Adding to the end is the cheap case above &mdash;{' '}
-              <code>O(1)</code> amortized. But insert a new element at the
-              front, or anywhere in the middle, and every element after
-              that point has to shift over one slot to make room. In the
-              worst case &mdash; inserting at index 0 &mdash; that&rsquo;s
-              every single element: <code>O(n)</code>.
-            </p>
-            <p>
-              Deletion works the same way in reverse: remove from the end
-              and nothing else moves (<code>O(1)</code>); remove from the
-              front or middle and everything after the gap slides back to
-              close it (<code>O(n)</code>).
+              The items must stay packed with no gaps, so making room at
+              index 0 means <em>every</em> element slides one slot right.
+              Removing from the front is the same dance in reverse: the
+              whole line shuffles left to close the hole. Insert or delete
+              in the middle and only the items after that point move, but in
+              the worst case that is still almost everything.
             </p>
           </div>
           <ShiftVisual />
@@ -239,127 +240,24 @@ seen.add([1, 2])   # TypeError: unhashable type: 'list'`}</code>
         <div className="code-block">
           <code>{`arr = [1, 2, 3, 4, 5]
 
-arr.append(6)      # [1, 2, 3, 4, 5, 6]   -> O(1) amortized
-arr.pop()            # removes 6            -> O(1) amortized
-
-arr.insert(0, 99)    # [99, 1, 2, 3, 4, 5] -> O(n), shifts everything right
-arr.pop(0)            # removes 99           -> O(n), shifts everything left`}</code>
-        </div>
-        <div className="definition">
-          Auxiliary space, not total size: <code>insert</code> and{' '}
-          <code>pop</code> shift elements within the array&rsquo;s own
-          memory &mdash; they never allocate a second n-element array to
-          hold the result. That&rsquo;s why their space cost is{' '}
-          <code>O(1)</code>: &ldquo;space complexity&rdquo; means memory{' '}
-          <em>beyond</em> the input, not the size of the array itself. An
-          operation that returns a fresh copy instead &mdash; like{' '}
-          <code>arr[i:j]</code> or <code>sorted(arr)</code> &mdash; really
-          does cost <code>O(n)</code> space, because a second array exists
-          at the same time.
+arr.insert(0, 99)   # [99, 1, 2, 3, 4, 5]   -> everything shifts right
+arr.pop(0)          # [1, 2, 3, 4, 5]       -> everything shifts left`}</code>
         </div>
       </section>
 
       <section className="notebook-section">
-        <h3>Three Patterns You&rsquo;ll Use Constantly</h3>
+        <h3>What Each Move Costs</h3>
         <p>
-          These techniques turn a lot of &ldquo;obviously O(n&sup2;)&rdquo;
-          array problems into O(n) ones. They come up so often in
-          interviews that it&rsquo;s worth internalizing the shape of each
-          one, not just memorizing an example.
+          Here&rsquo;s the whole picture in one place. Notice how the pattern
+          from the walkthrough shows up: the end is cheap, the front is not.
         </p>
-
-        <div className="concept-row">
-          <div className="concept-text">
-            <h4>Two Pointers</h4>
-            <p>
-              Instead of comparing every element to every other element,
-              walk two markers through the array &mdash; often starting at
-              opposite ends and moving toward each other. On a sorted
-              array, you can decide which pointer to move just by comparing
-              the two values you&rsquo;re looking at right now, and each
-              step rules out one element for good. That turns an{' '}
-              <code>O(n&sup2;)</code> nested loop into a single{' '}
-              <code>O(n)</code> pass.
-            </p>
-          </div>
-          <TwoPointersVisual />
-        </div>
-        <div className="code-block">
-          <code>{`def has_pair_with_sum(arr, target):
-    left, right = 0, len(arr) - 1
-    while left < right:
-        total = arr[left] + arr[right]
-        if total == target:
-            return True
-        if total < target:
-            left += 1
-        else:
-            right -= 1
-    return False`}</code>
-        </div>
-
-        <div className="concept-row">
-          <div className="concept-text">
-            <h4>Sliding Window</h4>
-            <p>
-              When a problem asks about every contiguous chunk of size k (or
-              every chunk that satisfies some condition), don&rsquo;t
-              recompute the whole chunk from scratch each time you move
-              over. Keep a running total for the current window, and when
-              you slide it one step: subtract the element that just fell
-              out the back, add the element that just entered the front.
-              One subtraction and one addition replaces an entire re-scan.
-            </p>
-          </div>
-          <SlidingWindowVisual />
-        </div>
-        <div className="code-block">
-          <code>{`def max_sum_window(arr, k):
-    window_sum = sum(arr[:k])
-    best = window_sum
-    for i in range(k, len(arr)):
-        window_sum += arr[i] - arr[i - k]
-        best = max(best, window_sum)
-    return best`}</code>
-        </div>
-
-        <div className="concept-row">
-          <div className="concept-text">
-            <h4>Prefix Sums</h4>
-            <p>
-              If you&rsquo;ll be asked for the sum of a range &mdash;{' '}
-              sum(i, j) &mdash; more than once, don&rsquo;t add it up each
-              time. Build a prefix-sum array once, where{' '}
-              <code>prefix[k]</code> holds the running total of everything
-              up to index k. After that, any range sum is one subtraction:{' '}
-              <code>sum(i, j) = prefix[j] &minus; prefix[i &minus; 1]</code>.
-              The <code>O(n)</code> setup pays for itself the moment you ask
-              a second question.
-            </p>
-          </div>
-          <PrefixSumVisual />
-        </div>
-        <div className="code-block">
-          <code>{`def build_prefix(arr):
-    prefix = [arr[0]]
-    for value in arr[1:]:
-        prefix.append(prefix[-1] + value)
-    return prefix
-
-def range_sum(prefix, i, j):
-    return prefix[j] - (prefix[i - 1] if i > 0 else 0)`}</code>
-        </div>
-      </section>
-
-      <section className="notebook-section">
-        <h3>Cheat Sheet</h3>
-        <p>Common Python list operations, and what each one actually costs:</p>
         <div className="table-wrap">
           <table className="ref-table">
             <thead>
               <tr>
                 <th>Operation</th>
                 <th>Time</th>
+                <th>Extra space</th>
                 <th>Why</th>
               </tr>
             </thead>
@@ -368,12 +266,72 @@ def range_sum(prefix, i, j):
                 <tr key={row.op}>
                   <td><code>{row.op}</code></td>
                   <td><code>{row.time}</code></td>
+                  <td><code>{row.space}</code></td>
                   <td>{row.why}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <p>
+          The worst cases come from two places. <strong>Shifting</strong>{' '}
+          makes front and middle inserts or deletes <code>O(n)</code>, and
+          the occasional <strong>resize</strong> makes a single unlucky
+          append <code>O(n)</code> even though the average stays{' '}
+          <code>O(1)</code>.
+        </p>
+        <div className="definition">
+          &ldquo;Extra space&rdquo; means memory beyond the array itself.{' '}
+          <code>insert</code> and <code>pop</code> rearrange items inside the
+          existing block, so they add nothing. A slice or{' '}
+          <code>sorted(arr)</code> builds a second array, so it costs{' '}
+          <code>O(n)</code> extra.
+        </div>
+      </section>
+
+      <section className="notebook-section">
+        <h3>What You Trade Away</h3>
+        <p>
+          Arrays buy you instant access by position, and they pay for it in
+          other places. Here&rsquo;s how they stack up against the two
+          structures you&rsquo;ll meet next to them:
+        </p>
+        <p>
+          <strong>Versus a linked list.</strong> A linked list can insert or
+          delete at the front in <code>O(1)</code> because nothing has to
+          shift, but it can&rsquo;t jump to the middle: reaching item k means
+          walking k steps. Arrays are the mirror image.
+        </p>
+        <p>
+          <strong>Versus a hash table.</strong> If you want to know
+          &ldquo;is this value in here?&rdquo;, an array has to scan (
+          <code>O(n)</code>) while a hash table answers in roughly{' '}
+          <code>O(1)</code>. The array&rsquo;s advantage is that it keeps
+          items in order and sits compactly in memory, which makes walking
+          through it fast in practice.
+        </p>
+        <p>
+          One more Python detail: a <code>tuple</code> is an array that
+          can&rsquo;t change after it&rsquo;s built. You give up appending
+          and reassigning, and in return it&rsquo;s hashable, so it can be a
+          dictionary key or live in a set, which a list can&rsquo;t.
+        </p>
+      </section>
+
+      <section className="notebook-section">
+        <h3>Reach for It When&hellip;</h3>
+        <p>
+          <strong>You mostly read by position or loop through everything.</strong>{' '}
+          Scores in a game, pixels in an image row, daily temperatures: the
+          data has a natural order and you touch it by index or in a sweep.
+        </p>
+        <p>
+          <strong>You add and remove at the end.</strong> A list used as a
+          stack (<code>append</code> and <code>pop</code>) is exactly what
+          arrays do best. If you find yourself constantly working at the
+          front, that&rsquo;s the signal to look at a queue or linked list
+          instead.
+        </p>
       </section>
 
       <section className="notebook-section">
