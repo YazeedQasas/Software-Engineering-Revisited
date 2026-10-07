@@ -5,6 +5,42 @@ All notable changes to this project are logged here, newest first.
 ## [Unreleased]
 
 
+## [0.2] - 2026-10-07
+
+### Added
+
+- **Time vs Space Complexity** page (Algorithmic Complexity), built around a
+  repeatable four-step method that works the same way for time and for
+  space: name the input, find what matters, count it in terms of n, then
+  combine. Includes a one-page recap, the "running total vs. high-water
+  mark" way of seeing time and space, a step-by-step worked example (two
+  duplicate-check solutions), the call stack as hidden space, a table for
+  reading complexity off common code shapes, time-space trade-offs, and
+  how to talk about both in an interview. Includes two diagrams and an
+  8-question self-quiz.
+- **How to Calculate Complexity** page (Algorithmic Complexity), the
+  practice side of the four-step method: a one-page recap, "count first,
+  then squint" (with a table showing why constants and smaller terms
+  fade), the rules in one place, worked examples for loops (sequential,
+  nested, dependent and halving) and recursion (recursion trees, merge
+  sort, naive Fibonacci), a table of hidden costs in Python built-ins, where
+  the method bends (worst case, amortized, constants), and how to use it
+  before and after writing code. Includes three diagrams and an 8-question
+  self-quiz.
+- **Common Runtimes** page (Algorithmic Complexity): all eight families
+  from O(1) to O(n!), each with how it feels, a short Python example and
+  why, a graph for each family (drawn against a dashed O(n) line, with real
+  step counts), plus the "doubling test", a combined growth chart, a table of step counts at
+  n = 10 to 1,000,000, a guide to reading the family off the code, what
+  moves code between families, and how to use them as a budget. Includes
+  a one-page recap and an 8-question self-quiz.
+
+### Changed
+
+- README rewritten for first-time readers and reviewers: what the project
+  is, the curriculum and its status, how a finished page is structured,
+  how to run it, and how the code is laid out.
+
 ## [0.1] - 2026-10-07
 
 ### Added

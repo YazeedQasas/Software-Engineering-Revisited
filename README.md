@@ -20,7 +20,7 @@ the rest show a short plain-English summary until their turn comes.
 | # | Section | Topics | Status |
 |---|---------|--------|--------|
 | 1 | Basic Data Structures | Arrays, Linked Lists, Queues, Stacks, Hash Tables | **Written** (all 5) |
-| 2 | Algorithmic Complexity | Time vs Space, Calculating Complexity, Big-O, Common Runtimes | Big-O written; rest planned |
+| 2 | Algorithmic Complexity | Time vs Space, Calculating Complexity, Big-O, Common Runtimes | all four written |
 | 3 | Sorting Algorithms | Bubble, Insertion, Selection, Merge, Quick, Heap | Planned |
 | 4 | Search Algorithms | Linear, Binary | Planned |
 | 5 | Tree Data Structures | Tree search, Traversals, Binary Trees, BST, AVL, B-Trees, Heaps | Planned |
@@ -30,8 +30,9 @@ the rest show a short plain-English summary until their turn comes.
 | 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.1**, which covers the five Basic Data Structures
-pages.
+current release is **0.2**, which adds the Algorithmic Complexity pages
+(Time vs Space, How to Calculate Complexity, Common Runtimes) on top of the
+five Basic Data Structures pages from 0.1.
 
 ## What a finished page looks like
 
