@@ -1,17 +1,19 @@
-function DataStructuresOverview({ topic }) {
+function DataStructuresOverview({ topic, section }) {
+  const items = topic.children.filter((child) => child.category === section)
+
   return (
     <article className="topic-page">
-      <h2>{topic.label}</h2>
+      <p className="eyebrow">{topic.label}</p>
+      <h2>{section}</h2>
 
-      <div className="callout">
-        <strong>Interviewer tip:</strong> beyond knowing each structure,
-        interviewers love trade-off questions like &ldquo;array vs. linked
-        list?&rdquo; or &ldquo;hash map vs. BST?&rdquo; &mdash; for every
-        structure, be ready to say what it&rsquo;s good at, what it&rsquo;s
-        bad at, and when you&rsquo;d choose it.
-      </div>
+      <p>Pick a topic from the second sidebar to open it.</p>
 
-      <p>Pick a topic from the sidebar to open its page.</p>
+      {items.map((item) => (
+        <div className="topic-card" key={item.id}>
+          <h4>{item.label}</h4>
+          <p>{item.blurb}</p>
+        </div>
+      ))}
     </article>
   )
 }

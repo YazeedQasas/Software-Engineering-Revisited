@@ -7,23 +7,31 @@ import { topicPages } from './pages/index.js'
 import './App.css'
 
 function App() {
-  const firstTopic = topics[0]
-  const [activeTopicId, setActiveTopicId] = useState(firstTopic.id)
+  const topic = topics[0]
+  const sections = []
+  for (const child of topic.children) {
+    const existing = sections.find((s) => s.name === child.category)
+    if (existing) {
+      existing.count += 1
+    } else {
+      sections.push({ name: child.category, count: 1 })
+    }
+  }
+
+  const [activeSection, setActiveSection] = useState(sections[0].name)
   const [activeSubtopicId, setActiveSubtopicId] = useState(null)
 
-  const activeTopic = topics.find((topic) => topic.id === activeTopicId)
-  const activeChild = activeTopic?.children?.find(
+  const activeChild = topic.children.find(
     (child) => child.id === activeSubtopicId,
   )
-  const pageEntry = topicPages[activeTopicId]
+  const pageEntry = topicPages[topic.id]
 
-  const selectTopic = (topicId) => {
-    setActiveTopicId(topicId)
+  const selectSection = (sectionName) => {
+    setActiveSection(sectionName)
     setActiveSubtopicId(null)
   }
 
-  const selectSubtopic = (topicId, subtopicId) => {
-    setActiveTopicId(topicId)
+  const selectSubtopic = (subtopicId) => {
     setActiveSubtopicId(subtopicId)
   }
 
@@ -34,7 +42,7 @@ function App() {
       <SubtopicPage />
     ) : (
       <Placeholder
-        eyebrow={activeTopic.label}
+        eyebrow={activeSection}
         title={activeChild.label}
         blurb={activeChild.blurb}
       />
@@ -42,10 +50,10 @@ function App() {
   } else {
     const OverviewPage = pageEntry?.overview
     content = OverviewPage ? (
-      <OverviewPage topic={activeTopic} />
+      <OverviewPage topic={topic} section={activeSection} />
     ) : (
       <>
-        <h2>{activeTopic.label}</h2>
+        <h2>{topic.label}</h2>
         <p>Content coming soon.</p>
       </>
     )
@@ -54,12 +62,13 @@ function App() {
   return (
     <div className="app">
       <Sidebar
-        topics={topics}
-        activeTopicId={activeTopicId}
-        onSelectTopic={selectTopic}
+        sections={sections}
+        activeSection={activeSection}
+        onSelectSection={selectSection}
       />
       <SubtopicSidebar
-        topic={activeTopic}
+        topic={topic}
+        section={activeSection}
         activeSubtopicId={activeSubtopicId}
         onSelectSubtopic={selectSubtopic}
       />

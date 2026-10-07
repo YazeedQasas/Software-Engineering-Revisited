@@ -1,23 +1,24 @@
 import './Sidebar.css'
 
-function Sidebar({ topics, activeTopicId, onSelectTopic }) {
+function Sidebar({ sections, activeSection, onSelectSection }) {
   return (
     <aside className="sidebar">
       <h1 className="sidebar-title">Software Engineering Revisited</h1>
       <nav>
         <ul className="topic-list">
-          {topics.map((topic) => (
-            <li key={topic.id}>
+          {sections.map((section) => (
+            <li key={section.name}>
               <button
                 type="button"
                 className={
-                  topic.id === activeTopicId
+                  section.name === activeSection
                     ? 'topic-button active'
                     : 'topic-button'
                 }
-                onClick={() => onSelectTopic(topic.id)}
+                onClick={() => onSelectSection(section.name)}
               >
-                {topic.label}
+                {section.name}
+                <span className="topic-count">{section.count}</span>
               </button>
             </li>
           ))}

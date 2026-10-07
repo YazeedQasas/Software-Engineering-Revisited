@@ -54,3 +54,16 @@
   font-weight: 600;
   box-shadow: inset 3px 0 0 var(--accent);
 }
+
+.topic-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.topic-count {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.6;
+}
