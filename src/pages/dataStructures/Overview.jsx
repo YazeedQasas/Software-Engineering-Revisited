@@ -10,7 +10,12 @@ function DataStructuresOverview({ topic, section }) {
 
       {items.map((item) => (
         <div className="topic-card" key={item.id}>
-          <h4>{item.label}</h4>
+          <h4>
+            {item.label}
+            {item.badges?.map((badge) => (
+              <span key={badge} className="badge">{badge}</span>
+            ))}
+          </h4>
           <p>{item.blurb}</p>
         </div>
       ))}

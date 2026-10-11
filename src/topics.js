@@ -1,6 +1,7 @@
 // Plan follows the roadmap.sh "Data Structures & Algorithms" roadmap
 // (https://roadmap.sh/datastructures-and-algorithms), in the order we walk it.
 // Language: Python.
+// An entry may carry optional `badges`, short tags shown next to its name.
 export const topics = [
   {
     id: 'dsa',
@@ -20,12 +21,12 @@ export const topics = [
       { id: 'common-runtimes', label: 'Common Runtimes', category: '2. Algorithmic Complexity', blurb: 'The growth rates you will meet again and again, from fastest to slowest: constant O(1), logarithmic O(log n), linear O(n), O(n log n), polynomial O(n^2), exponential O(2^n), factorial O(n!).' },
 
       // 3. Sorting
-      { id: 'bubble-sort', label: 'Bubble Sort', category: '3. Sorting Algorithms', blurb: 'Repeatedly compare neighbouring items and swap them if they are out of order; the largest value "bubbles" to the end each pass. Simple but slow: O(n^2).' },
-      { id: 'insertion-sort', label: 'Insertion Sort', category: '3. Sorting Algorithms', blurb: 'Build a sorted section one item at a time by sliding each new item into its correct place, like sorting playing cards in your hand. O(n^2), but very fast on nearly sorted data.' },
-      { id: 'selection-sort', label: 'Selection Sort', category: '3. Sorting Algorithms', blurb: 'Find the smallest remaining item and put it at the front, repeat. Always O(n^2) but makes very few swaps.' },
-      { id: 'merge-sort', label: 'Merge Sort', category: '3. Sorting Algorithms', blurb: 'Split the list in half, sort each half, then merge the two sorted halves. A reliable O(n log n) that needs O(n) extra space.' },
-      { id: 'quick-sort', label: 'Quick Sort', category: '3. Sorting Algorithms', blurb: 'Pick a pivot, move smaller items to its left and larger to its right, then sort each side. O(n log n) on average, O(n^2) on a bad pivot, and sorts in place.' },
-      { id: 'heap-sort', label: 'Heap Sort', category: '3. Sorting Algorithms', blurb: 'Turn the list into a heap, then repeatedly pull out the largest item. Guaranteed O(n log n) and in place, though usually slower in practice than quick sort.' },
+      { id: 'bubble-sort', label: 'Bubble Sort', badges: ['Educational'], category: '3. Sorting Algorithms', blurb: 'Repeatedly compare neighbouring items and swap them if they are out of order; the largest value "bubbles" to the end each pass. Simple but slow: O(n^2).' },
+      { id: 'insertion-sort', label: 'Insertion Sort', badges: ['Small datasets'], category: '3. Sorting Algorithms', blurb: 'Build a sorted section one item at a time by sliding each new item into its correct place, like sorting playing cards in your hand. O(n^2), but very fast on nearly sorted data.' },
+      { id: 'selection-sort', label: 'Selection Sort', badges: ['Reduce writes'], category: '3. Sorting Algorithms', blurb: 'Find the smallest remaining item and put it at the front, repeat. Always O(n^2) but makes very few swaps.' },
+      { id: 'merge-sort', label: 'Merge Sort', badges: ['Large datasets', 'Linked lists', 'Guaranteed performance'], category: '3. Sorting Algorithms', blurb: 'Split the list in half, sort each half, then merge the two sorted halves. A reliable O(n log n) that needs O(n) extra space.' },
+      { id: 'quick-sort', label: 'Quick Sort', badges: ['Large datasets', 'Arrays', 'Memory efficient', 'Average speed', 'Unstable'], category: '3. Sorting Algorithms', blurb: 'Pick a pivot, move smaller items to its left and larger to its right, then sort each side. O(n log n) on average, O(n^2) on a bad pivot, and sorts in place.' },
+      { id: 'heap-sort', label: 'Heap Sort', badges: ['Guarantees O(n log n) sorting performance', 'Handles Quick Sort O(n²) worst case'], category: '3. Sorting Algorithms', blurb: 'Turn the list into a heap, then repeatedly pull out the largest item. Guaranteed O(n log n) and in place, though usually slower in practice than quick sort.' },
 
       // 4. Searching
       { id: 'linear-search', label: 'Linear Search', category: '4. Search Algorithms', blurb: 'Check every item one by one until you find the target. Works on any list, sorted or not: O(n).' },

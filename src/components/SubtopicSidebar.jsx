@@ -23,7 +23,10 @@ function SubtopicSidebar({ topic, section, activeSubtopicId, onSelectSubtopic })
                 }
                 onClick={() => onSelectSubtopic(item.id)}
               >
-                {item.label}
+                <span className="subtopic-name">{item.label}</span>
+                {item.badges?.map((badge) => (
+                  <span key={badge} className="badge">{badge}</span>
+                ))}
               </button>
             </li>
           ))}

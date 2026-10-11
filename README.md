@@ -21,7 +21,7 @@ the rest show a short plain-English summary until their turn comes.
 |---|---------|--------|--------|
 | 1 | Basic Data Structures | Arrays, Linked Lists, Queues, Stacks, Hash Tables | **Written** (all 5) |
 | 2 | Algorithmic Complexity | Time vs Space, Calculating Complexity, Big-O, Common Runtimes | all four written |
-| 3 | Sorting Algorithms | Bubble, Insertion, Selection, Merge, Quick, Heap | Planned |
+| 3 | Sorting Algorithms | Bubble, Insertion, Selection, Merge, Quick, Heap | All six written |
 | 4 | Search Algorithms | Linear, Binary | Planned |
 | 5 | Tree Data Structures | Tree search, Traversals, Binary Trees, BST, AVL, B-Trees, Heaps | Planned |
 | 6 | Graph Data Structures | Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | Planned |
@@ -30,9 +30,10 @@ the rest show a short plain-English summary until their turn comes.
 | 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.2**, which adds the Algorithmic Complexity pages
-(Time vs Space, How to Calculate Complexity, Common Runtimes) on top of the
-five Basic Data Structures pages from 0.1.
+current release is **0.3**, which adds the six Sorting Algorithms pages
+(Bubble, Insertion, Selection, Merge, Quick and Heap sort, each with an
+interactive code tracer) on top of the Algorithmic Complexity pages from 0.2
+and the five Basic Data Structures pages from 0.1.
 
 ## What a finished page looks like
 
@@ -95,6 +96,7 @@ src/
     Sidebar.jsx              Left sidebar: the 9 sections
     SubtopicSidebar.jsx      Second sidebar: the topics in the chosen section
     ComplexityQuiz.jsx       The "guess the complexity" quiz used on every page
+    CodeTracer.jsx           Play/step through code with the data animating alongside
   pages/
     index.js                 Maps a topic id to its page component
     Placeholder.jsx          Shown for topics that aren't written yet
@@ -110,7 +112,8 @@ CHANGELOG.md                 What changed in each release
 ## Adding a topic
 
 1. Add its entry to `src/topics.js` (a short summary is enough to start).
-   It shows up automatically in the sidebar with a placeholder page.
+   It shows up automatically in the sidebar with a placeholder page. Optional
+   `badges` (for example `badges: ['Educational']`) add small tags next to its name.
 2. When it's ready to write, create the page in
    `src/pages/dataStructures/`, with a `Visuals` file for its diagrams.
 3. Register the page in `src/pages/index.js` against the topic's id.

@@ -5,6 +5,74 @@ All notable changes to this project are logged here, newest first.
 ## [Unreleased]
 
 
+## [0.3] - 2026-10-11
+
+### Added
+
+- **Bubble Sort** page (Sorting Algorithms): a one-page recap, then an
+  interactive code tracer (press play and the running line of code is
+  highlighted while the bars slide, with step, back, speed, a scrubber and
+  four starting lists), a one-sentence definition, what it costs (best,
+  average and worst case, space, in place, stable) with a cost diagram,
+  when to use it, and an 8-question self-quiz.
+- **Insertion Sort** page (Sorting Algorithms), built like Bubble Sort: a
+  one-page recap, an interactive code tracer (the item being inserted
+  floats above the row while larger items shift right and the sorted section
+  grows from the left), a one-sentence definition, what it costs (best,
+  average and worst case, space, in place, stable, adaptive, online) with a
+  shifts diagram, when to use it, and an 8-question self-quiz.
+- **Selection Sort** page (Sorting Algorithms), built like the other sorts: a
+  one-page recap, an interactive code tracer (a raised bar tracks the
+  smallest item found so far, and the sorted section grows from the left),
+  a one-sentence definition, what it costs (O(n²) in every case, at most
+  n − 1 swaps, in place, not stable, not adaptive) with a diagram comparing
+  how many moves each simple sort makes, when to use it, and an
+  8-question self-quiz.
+- **Merge Sort** page (Sorting Algorithms), built like the other sorts: a
+  one-page recap, an interactive code tracer for the recursive code (the
+  piece being worked on stands out while the rest fades, finished pieces
+  turn green, and during a merge the chosen bar slides into place), a
+  one-sentence definition, what it costs (O(n log n) in every case, O(n)
+  extra space, stable, not in place, not adaptive) with the recursion-tree
+  diagram, when to use it, and an 8-question self-quiz.
+- **Quick Sort** page (Sorting Algorithms), built like the other sorts and
+  explained with the two-pointer method: pick the right-most item as the
+  pivot, walk one pointer in from each end swapping items that are on the
+  wrong side, then swap the pivot into place and repeat on each side. It has
+  a one-page recap, a seven-step worked example with a diagram for each
+  step (pivot, left and right pointers, swaps, the crossing point, the pivot
+  landing in its final place, then each side repeated), an interactive code
+  tracer (the pivot is raised, the left and right pointers are shown under the bars, and the pivot turns
+  green when it lands in its final place) with the example list from my
+  notes as the first preset, a one-sentence definition, what it costs
+  (O(n log n) best and average, O(n²) worst, why the pivot decides, in
+  place, not stable) with a good-pivots vs. bad-pivots diagram, when to use
+  it, and an 8-question self-quiz.
+- **Heap Sort** page (Sorting Algorithms), built like the other sorts: a
+  one-page recap, a short "tree hiding in a list" explanation with a diagram
+  of the same items as a row and as a tree, an interactive code tracer (the
+  list is shown as bars and, underneath, as the heap tree: watch the heap
+  being built, the biggest item swapping to the end and turning green, the
+  tree shrinking, and the new top sinking down), an eight-step worked
+  example with a diagram for each step, a one-sentence definition,
+  what it costs (building the heap in O(n), O(log n) per removal, O(n log n)
+  in every case, O(1) extra space, not stable), when to use it, and an
+  8-question self-quiz.
+- Small badges next to the sorting algorithms in the topic sidebar and the
+  section overview: Bubble Sort "Educational", Insertion Sort "Small
+  datasets", Selection Sort "Reduce writes", Merge Sort "Large datasets",
+  "Linked lists" and "Guaranteed performance", Quick Sort "Large
+  datasets", "Arrays", "Memory efficient", "Average speed" and "Unstable", and
+  Heap Sort "Guarantees O(n log n) sorting performance" and "Handles Quick Sort
+  O(n²) worst case".
+  Any topic can carry badges through an optional `badges` list.
+- Reusable `CodeTracer` component for step-through code and list animations,
+  ready for the other sorting pages. It can mark a sorted region on
+  either side, mark sorted blocks anywhere, fade everything outside the part
+  being worked on, show pointer markers under the bars, lift a held item out of
+  the list, size the bars to fit longer lists, and draw a heap
+  as a tree under the bars.
+
 ## [0.2] - 2026-10-07
 
 ### Added

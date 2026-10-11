@@ -445,3 +445,19 @@ table.ref-table td:first-child {
     column-rule: none;
   }
 }
+
+/* Small tag next to a topic name, e.g. "Educational" */
+.topic-card h4 .badge {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 8px;
+}
