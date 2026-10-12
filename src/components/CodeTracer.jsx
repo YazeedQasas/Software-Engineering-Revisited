@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import IsoRow from './IsoRow.jsx'
 import './CodeTracer.css'
 
 const speeds = [
@@ -64,6 +65,23 @@ function HeapTree({ step, total }) {
   )
 }
 
+// The list as isometric cubes: the cube being checked floats up and turns
+// blue, cubes already ruled out fade, and a match turns green.
+function IsoStage({ step }) {
+  const values = step.array.map((item) => item.value)
+  const current = step.compare ? step.compare[0] : null
+  const found = step.foundAt ?? null
+  const states = values.map((_, i) => {
+    if (found === i) return 'found'
+    if (current === i) return 'active'
+    if ((step.visited ?? []).includes(i)) return 'checked'
+    return 'plain'
+  })
+  const spot = found ?? current
+
+  return <IsoRow values={values} states={states} lifted={spot} marker={spot} target={step.target} />
+}
+
 // Plays a precomputed list of steps: the line of code that is running on one
 // side, and the list (as bars) with its variables on the other.
 //
@@ -78,16 +96,20 @@ function HeapTree({ step, total }) {
 //   range: [from, to] the part being worked on; bars outside it are dimmed,
 //   pointers: [{ pos, label, tone: 'left' | 'right' }] markers drawn under the bars,
 //   heapSize: when set, the first heapSize items are also drawn as a binary tree,
+//   (iso view) visited: indices already checked, foundAt: index of the match,
+//   target: the value being looked for,
 //   vars: { name: value }, note: string
 // }
-function CodeTracer({ code, presets, buildSteps }) {
+// `view` is 'bars' (default) or 'iso' (a row of isometric cubes, for searching).
+// buildSteps(values, preset) receives the chosen preset too, e.g. for a target.
+function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   const [presetIndex, setPresetIndex] = useState(0)
   const [stepIndex, setStepIndex] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [speedIndex, setSpeedIndex] = useState(1)
 
   const steps = useMemo(
-    () => buildSteps(presets[presetIndex].values),
+    () => buildSteps(presets[presetIndex].values, presets[presetIndex]),
     [buildSteps, presets, presetIndex],
   )
   const last = steps.length - 1
@@ -173,57 +195,61 @@ function CodeTracer({ code, presets, buildSteps }) {
         </div>
 
         <div className="tracer-stage">
-          <div
-            className="tracer-bars"
-            style={{ width, height: hasPointers ? 214 : 178, '--move-ms': `${transitionMs}ms` }}
-          >
-            {bars.map((bar) => {
-              const isKey = step.keyPos === bar.pos
-              const isCompare = step.compare && step.compare.includes(bar.pos)
-              const isSorted =
-                bar.pos >= (step.sortedFrom ?? Infinity) ||
-                (bar.pos < (step.sortedUntil ?? 0) && !isKey) ||
-                (step.sortedRanges ?? []).some(([from, to]) => bar.pos >= from && bar.pos <= to)
-              const isDim = step.range && (bar.pos < step.range[0] || bar.pos > step.range[1])
-              let state = ''
-              if (isKey) state = ' holding'
-              else if (isCompare) state = step.swapping ? ' swapping' : ' comparing'
-              else if (isSorted) state = ' sorted'
-              const height = BAR_MIN + (bar.value / maxValue) * BAR_RANGE
-              const lift = isKey ? -14 : 0
-              return (
-                <div
-                  key={bar.id}
-                  className={`tracer-bar${state}${isDim ? ' dim' : ''}`}
-                  style={{
-                    height,
-                    width: barWidth,
-                    transform: `translate(${bar.pos * (barWidth + barGap)}px, ${lift}px)`,
-                  }}
+          {view === 'iso' ? (
+            <IsoStage step={step} />
+          ) : (
+            <div
+              className="tracer-bars"
+              style={{ width, height: hasPointers ? 214 : 178, '--move-ms': `${transitionMs}ms` }}
+            >
+              {bars.map((bar) => {
+                const isKey = step.keyPos === bar.pos
+                const isCompare = step.compare && step.compare.includes(bar.pos)
+                const isSorted =
+                  bar.pos >= (step.sortedFrom ?? Infinity) ||
+                  (bar.pos < (step.sortedUntil ?? 0) && !isKey) ||
+                  (step.sortedRanges ?? []).some(([from, to]) => bar.pos >= from && bar.pos <= to)
+                const isDim = step.range && (bar.pos < step.range[0] || bar.pos > step.range[1])
+                let state = ''
+                if (isKey) state = ' holding'
+                else if (isCompare) state = step.swapping ? ' swapping' : ' comparing'
+                else if (isSorted) state = ' sorted'
+                const height = BAR_MIN + (bar.value / maxValue) * BAR_RANGE
+                const lift = isKey ? -14 : 0
+                return (
+                  <div
+                    key={bar.id}
+                    className={`tracer-bar${state}${isDim ? ' dim' : ''}`}
+                    style={{
+                      height,
+                      width: barWidth,
+                      transform: `translate(${bar.pos * (barWidth + barGap)}px, ${lift}px)`,
+                    }}
+                  >
+                    {bar.value}
+                  </div>
+                )
+              })}
+              {step.array.map((_, pos) => (
+                <span
+                  key={pos}
+                  className="tracer-index"
+                  style={{ width: barWidth, transform: `translateX(${pos * (barWidth + barGap)}px)` }}
                 >
-                  {bar.value}
-                </div>
-              )
-            })}
-            {step.array.map((_, pos) => (
-              <span
-                key={pos}
-                className="tracer-index"
-                style={{ width: barWidth, transform: `translateX(${pos * (barWidth + barGap)}px)` }}
-              >
-                {pos}
-              </span>
-            ))}
-            {pointers.map((pointer) => (
-              <span
-                key={pointer.tone}
-                className={`tracer-pointer ${pointer.tone}`}
-                style={{ width: barWidth, transform: `translateX(${pointer.pos * (barWidth + barGap)}px)` }}
-              >
-                &#9650; {pointer.label}
-              </span>
-            ))}
-          </div>
+                  {pos}
+                </span>
+              ))}
+              {pointers.map((pointer) => (
+                <span
+                  key={pointer.tone}
+                  className={`tracer-pointer ${pointer.tone}`}
+                  style={{ width: barWidth, transform: `translateX(${pointer.pos * (barWidth + barGap)}px)` }}
+                >
+                  &#9650; {pointer.label}
+                </span>
+              ))}
+            </div>
+          )}
 
           {step.heapSize !== undefined && <HeapTree step={step} total={count} />}
 

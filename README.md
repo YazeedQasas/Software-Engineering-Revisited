@@ -22,7 +22,7 @@ the rest show a short plain-English summary until their turn comes.
 | 1 | Basic Data Structures | Arrays, Linked Lists, Queues, Stacks, Hash Tables | **Written** (all 5) |
 | 2 | Algorithmic Complexity | Time vs Space, Calculating Complexity, Big-O, Common Runtimes | all four written |
 | 3 | Sorting Algorithms | Bubble, Insertion, Selection, Merge, Quick, Heap | All six written |
-| 4 | Search Algorithms | Linear, Binary | Planned |
+| 4 | Search Algorithms | Linear, Binary | All two written |
 | 5 | Tree Data Structures | Tree search, Traversals, Binary Trees, BST, AVL, B-Trees, Heaps | Planned |
 | 6 | Graph Data Structures | Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | Planned |
 | 7 | Advanced Data Structures | Trie, Segment Tree, Fenwick Tree, Union-Find, Suffix Trees | Planned |
@@ -30,10 +30,11 @@ the rest show a short plain-English summary until their turn comes.
 | 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.3**, which adds the six Sorting Algorithms pages
-(Bubble, Insertion, Selection, Merge, Quick and Heap sort, each with an
-interactive code tracer) on top of the Algorithmic Complexity pages from 0.2
-and the five Basic Data Structures pages from 0.1.
+current release is **0.4**, which adds the two Search Algorithms pages
+(Linear and Binary search, each with an interactive code tracer and
+isometric 3D cubes) on top of the six Sorting Algorithms pages from 0.3, the
+Algorithmic Complexity pages from 0.2 and the five Basic Data Structures
+pages from 0.1.
 
 ## What a finished page looks like
 
@@ -97,6 +98,7 @@ src/
     SubtopicSidebar.jsx      Second sidebar: the topics in the chosen section
     ComplexityQuiz.jsx       The "guess the complexity" quiz used on every page
     CodeTracer.jsx           Play/step through code with the data animating alongside
+    IsoRow.jsx               Isometric 3D cubes, used for the search animations
   pages/
     index.js                 Maps a topic id to its page component
     Placeholder.jsx          Shown for topics that aren't written yet

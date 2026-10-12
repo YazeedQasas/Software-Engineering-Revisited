@@ -8,6 +8,8 @@ import SelectionSort from './dataStructures/SelectionSort.jsx'
 import MergeSort from './dataStructures/MergeSort.jsx'
 import QuickSort from './dataStructures/QuickSort.jsx'
 import HeapSort from './dataStructures/HeapSort.jsx'
+import LinearSearch from './dataStructures/LinearSearch.jsx'
+import BinarySearch from './dataStructures/BinarySearch.jsx'
 import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
@@ -34,6 +36,8 @@ export const topicPages = {
       'merge-sort': MergeSort,
       'quick-sort': QuickSort,
       'heap-sort': HeapSort,
+      'linear-search': LinearSearch,
+      'binary-search': BinarySearch,
       'big-o': BigO,
       'problem-solving': ProblemSolving,
     },

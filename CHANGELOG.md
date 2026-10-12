@@ -5,6 +5,39 @@ All notable changes to this project are logged here, newest first.
 ## [Unreleased]
 
 
+## [0.4] - 2026-10-12
+
+### Added
+
+- **Binary Search** page (Search Algorithms), built exactly like the Linear
+  Search page: a one-page recap, a looping isometric animation of the idea
+  (check the middle cube, fade the half that cannot hold the target, repeat
+  on what is left until the match turns green), an interactive code tracer
+  on the same sorted list as the linear page (the middle cube floats up and
+  turns blue, thrown-away cubes fade, a match turns green, and `low`,
+  `high` and `mid` are shown as variables, with six searches to try: found
+  in the middle, dead centre as the best case, first item, last item as the
+  worst case, missing and duplicates), a one-sentence definition, what it
+  costs (O(1) best, O(log n) average and worst, with a diagram of 16 items
+  halving down to one, a table of worst-case checks for linear vs. binary
+  search from 8 items up to a billion, and the time and extra space of
+  `bisect`, `in`, `sorted` and sets), when to use it, and an 8-question
+  self-quiz that includes the recursive O(log n) space case.
+- **Linear Search** page (Search Algorithms), built to the same structure as
+  the sorting pages and explained with isometric 3D animations: a one-page
+  recap, a looping isometric animation of the idea (a marker walks along a
+  row of cubes, ruling each out until the match turns green), an
+  interactive code tracer in the same isometric style (the cube being
+  checked floats up, ruled-out cubes fade, a match turns green, with five
+  searches to try: found in the middle, first item, last item, missing and
+  duplicates), a one-sentence definition, what it costs (best, average and
+  worst case shown as three small isometric rows, plus the time and extra
+  space of Python's `in`, `index` and `count`), when to use it, and an
+  8-question self-quiz.
+- Reusable `IsoRow` component for isometric rows of cubes, and a `view="iso"`
+  option on `CodeTracer` that plays the code beside them.
+
+
 ## [0.3] - 2026-10-11
 
 ### Added

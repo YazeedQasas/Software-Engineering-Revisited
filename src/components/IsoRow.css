@@ -1,0 +1,42 @@
+.iso-row {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.iso-cube {
+  transition: transform 0.35s ease;
+}
+
+.iso-face {
+  transition: fill 0.25s ease;
+}
+
+.iso-marker {
+  transition: transform 0.35s ease;
+}
+
+.iso-pop {
+  animation: iso-pop 0.7s ease-out;
+}
+
+@keyframes iso-pop {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(-10px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-cube,
+  .iso-face,
+  .iso-marker {
+    transition: none;
+  }
+
+  .iso-pop {
+    animation: none;
+  }
+}
