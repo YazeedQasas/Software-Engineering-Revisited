@@ -5,6 +5,177 @@ All notable changes to this project are logged here, newest first.
 ## [Unreleased]
 
 
+## [0.5] - 2026-10-13
+
+### Added
+
+- **Heaps** page (Tree Data Structures), the last page of the Trees section,
+  built like the other tree pages and focused on the heap as a data structure
+  and priority queue (Heap Sort already covered the sorting side): a one-page
+  recap, the heap rule (a complete tree stored in a list, where every parent
+  is no bigger than its children in a min-heap or no smaller in a max-heap)
+  with the same seven numbers shown as both kinds of heap and as the plain
+  list each is stored in, what the rule does not say (siblings and cousins
+  are in no order), a table comparing a heap with a binary search tree, and
+  push (float up) and pop (move the last item to the top and sink down)
+  explained. The interactive code tracer has a switch for Push, Pop and Build
+  (heapify) and shows the list as bars with the same heap drawn as a tree
+  underneath, with presets for an item that stays put, rises part way or
+  rises to the top; pops from a small heap, a sorted heap, one with
+  duplicates and a heap of two; and building from a random, backwards,
+  already-a-heap and duplicate-filled list. It also covers why building a heap
+  is O(n) rather than O(n log n) with a diagram of how far each level can
+  sink, a one-sentence definition, what it costs (tables of operations and
+  properties, and how a heap compares with an unsorted list, a sorted list and
+  a search tree as a priority queue), a section on Python's `heapq` (its
+  operations with costs, and the three traps: it is a min-heap only, the list
+  is not sorted, and ties compare the next item), when to use it, and an
+  8-question self-quiz.
+- `CodeTracer` now sizes its bars over every step, so a value added later (a
+  heap push) fits.
+
+- **B-Trees** page (Tree Data Structures), built like the other tree pages:
+  a one-page recap, the problem of slow storage (a disk search costs the
+  number of blocks read, not comparisons, shown as 20 reads for a binary tree
+  against 3 for a B-tree on a million keys), what a B-tree is (a search tree
+  stretched so a node holds many sorted keys and a node with k keys has k + 1
+  children, with a labelled example and a table of the five rules for an
+  order-4 tree), searching with a looping animation of a search that reads
+  only three nodes, inserting by splitting a full node and sending the middle
+  key up (before-and-after picture and the `split_node` code) with the tree
+  growing at the top so every leaf stays on the same level, and a table of
+  the four delete cases (just remove, swap with a neighbour, borrow from a
+  sibling, merge). The interactive code tracer has a switch for Search and
+  Insert: search counts the nodes read from disk and turns the matching key
+  green, and insert shows the call stack, a node with too many keys turning
+  red, the middle key and new node being handed up to the caller, and the tree
+  growing a level, with presets for room in the leaf, a leaf split, a split
+  the parent absorbs, and a cascade that splits the root. It also covers a
+  one-sentence definition, what it costs (O(log n), but with the height set by
+  the base: 3 levels for a billion keys at 1,000 children per node against 30
+  for a binary tree, with a bar chart and tables of levels, operations and
+  properties), how it relates to AVL and B+ trees, how SQLite and Python
+  fit in, when to use it, and an 8-question self-quiz.
+- Reusable `BTreeView` component for drawing multi-key nodes, and a
+  `view="btree"` option on `CodeTracer` with a call stack and a "handed up to
+  the caller" box.
+
+- **AVL Trees** page (Tree Data Structures), built like the other tree
+  pages and picking up from the last page's warning that sorted inserts turn
+  a search tree into a chain: a one-page recap, the problem shown as the same
+  seven sorted values going into a plain search tree (a chain of height 6)
+  and an AVL tree (height 2), the balance factor (left height minus right
+  height, which must stay between −1 and +1) with a valid and a too-leaning
+  tree side by side, rotations explained with before-and-after pictures of
+  the two single rotations plus the code for `rotate_right` and
+  `rotate_left`, a picture of the double rotation that straightens a bend
+  first, and a table of the four cases (left-left, right-right, left-right,
+  right-left). The interactive code tracer inserts one value into a small AVL
+  tree with the recursive code: every node shows its balance factor,
+  refreshed as the code reaches it on the way back up, an out-of-balance node
+  turns red, and the rotation moves the nodes and highlights the new top,
+  with five cases to try (no rotation, and each of the four rotation cases).
+  It also covers a one-sentence definition, what it costs (O(log n) for
+  search, insert and delete with at most one rotation per insert, and why
+  the height is at most about 1.44 log₂ n, shown with the thinnest AVL tree
+  of each height and a table up to height 30), how AVL compares with a plain
+  search tree and a red-black tree, the Python tools that stand in for one,
+  when to use it, and an 8-question self-quiz.
+- `CodeTracer`'s tree view can now put a small badge on any node (used for
+  balance factors) and draw nodes red with their own legend label.
+
+- **Binary Search Trees** page (Tree Data Structures), built like the other
+  tree pages: a one-page recap, "the one rule" (everything on the left is
+  smaller, everything on the right is larger, at every node) with the tree
+  colour-coded either side of the root, the classic trap of a value that fits
+  its parent but not an ancestor shown as a valid and an invalid tree side by
+  side, searching explained as binary search drawn as a tree with a looping
+  animation of a search ruling out whole sides, finding the smallest and
+  largest value, how insert is a search that ends by hanging the new value
+  on an empty spot, and a table of the three delete cases (a leaf, one child,
+  two children with the successor idea). The interactive code tracer has a
+  switch for Search, Insert and Delete: search and insert walk down the tree
+  with the compared nodes numbered, insert shows the new node appearing while
+  every other node stays put, and delete is the recursive version with a live
+  call stack, a highlighted node being deleted, and the successor being found
+  and copied up (with presets for a leaf, one child, two children, the root
+  and a value that is not there). It also covers a one-sentence definition,
+  what it costs (O(h) for everything, with a diagram of the same seven values
+  inserted in two different orders giving a balanced tree or a chain, tables
+  of operations on balanced and skewed trees, properties, how a search tree
+  compares with an unsorted list, a sorted list, and a hash table, and the
+  Python tools that stand in for one), when to use it, and an 8-question
+  self-quiz.
+- `CodeTracer`'s tree view can now show a plain walk down a tree with no
+  waiting list, custom legend labels, and a tree that changes from step to
+  step. `TreeView` has a red state for a misplaced node.
+
+- **Binary Trees** page (Tree Data Structures), built like the other tree
+  pages and starting from binary search ("draw every choice you could make
+  and you get a binary tree"): a one-page recap, what makes a tree binary
+  (at most two children, left and right matter, every node is the top of
+  two smaller trees), a gallery of the five named shapes (full, perfect,
+  complete, balanced and skewed) with a table of their rules and how they
+  overlap, "the doubling trick" (each level holds twice as many nodes, so
+  height h holds at most 2^(h+1) − 1 and a tree's height lies between
+  log₂ n and n − 1) with a table up to a height of 30, two ways to store a
+  tree (linked nodes and a plain list where the children of position i are
+  at 2i + 1 and 2i + 2) with a diagram and why the list form wastes space on
+  skewed trees, an interactive code tracer that finds a tree's height
+  recursively (the call stack grows, and each node gets its answer written
+  on it as soon as it is worked out, on a balanced tree, a lopsided tree and
+  a chain), a one-sentence definition, what it costs (O(n) to look at
+  everything, O(h) to go down one path, with a diagram of the same seven
+  nodes balanced against chained, a table of operations, the properties, and
+  where `heapq` fits), when to use it, and an 8-question self-quiz.
+- `CodeTracer`'s tree view can now write a result on each finished node
+  instead of its visit number.
+
+- **Tree Traversals (In / Pre / Post-Order)** page (Tree Data Structures),
+  built like the other tree page: a one-page recap, a short primer on binary
+  trees (left and right children, a Python `Node` class, and why the example
+  values make it a binary search tree), the idea explained as "when do you
+  visit the node?" with a diagram of a node between its two subtrees and
+  three numbered moments (before, between, after), a looping animation of
+  the three orders on the same tree with numbered badges, a table of the
+  rule and output of each order, and the one traversal function shown with
+  the three places the visit can go. The interactive code tracer has a
+  switch for pre-, in- and post-order and two trees to try (balanced and
+  lopsided): the running call is blue, calls waiting on the stack are
+  yellow, visited nodes are grey and numbered, and a live call stack and an
+  output strip show recursion opening and closing and what `print` has
+  written so far. It also covers a one-sentence definition, what it costs
+  (O(n) time, O(h) space with a diagram of a shallow tree against a chain,
+  and why building new lists inside the recursion slows it to O(n log n) or
+  O(n²)), when to use each order (sorted output, copying, deleting,
+  expression trees), and an 8-question self-quiz.
+- `CodeTracer`'s tree view can now show a recursive call stack and an output
+  list, and the page reuses `TreeView` for the new trees.
+
+- **Tree Search Algorithms (BFS & DFS)** page (Tree Data Structures), the
+  first page of the Trees section, built to the same structure as the
+  search pages: a one-page recap, a "what is a tree?" primer for beginners
+  (a labelled diagram of the root, leaves and levels, a table of the words
+  node, edge, root, parent, child, leaf, level, height and subtree, and how
+  to store a tree as a Python dict of children), a looping animation of the
+  idea that searches the same tree breadth-first and depth-first side by
+  side with numbered badges showing the order, and two interactive code
+  tracers (BFS with a queue, DFS with a stack) on that tree. In the tracers
+  the node being looked at is blue, nodes waiting their turn are yellow and
+  shown in a live queue or stack strip, finished nodes are grey and numbered
+  in the order they were reached, and a match turns green, with five
+  searches to try: find C, F, H, the root, or something that is not in the
+  tree. It also covers DFS written with recursion, a one-sentence
+  definition, what it costs (O(n) time for both, O(w) space for BFS and
+  O(h) space for DFS with a diagram of a wide tree against a tall one, a
+  table counting how many nodes each search looks at, a side-by-side
+  comparison table, and why `list.pop(0)` makes BFS slow), when to use each,
+  and an 8-question self-quiz.
+- Reusable `TreeView` component for drawing a tree with colour-coded nodes
+  and order badges, and a `view="tree"` option on `CodeTracer` that plays the
+  code beside the tree and its queue or stack.
+
+
 ## [0.4] - 2026-10-12
 
 ### Added

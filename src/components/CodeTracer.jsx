@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import IsoRow from './IsoRow.jsx'
+import TreeView from './TreeView.jsx'
+import BTreeView from './BTreeView.jsx'
 import './CodeTracer.css'
 
 const speeds = [
@@ -82,6 +84,155 @@ function IsoStage({ step }) {
   return <IsoRow values={values} states={states} lifted={spot} marker={spot} target={step.target} />
 }
 
+// A tree being searched, with the queue or stack of nodes still waiting. The
+// node being looked at is blue, waiting nodes are yellow, nodes already looked
+// at are grey and numbered in the order they were reached, and a match is green.
+//
+// The waiting list is a 'queue' (BFS), a 'stack' (DFS) or the 'calls' that are
+// open in a recursive walk. A step with an `output` list also shows what has
+// been printed so far.
+//
+// With no `frontier` there is no waiting list at all, just a single walk down
+// the tree (searching or inserting in a search tree).
+function TreeStage({ step }) {
+  const kind = step.frontierKind
+  const frontier = step.frontier
+  const isQueue = kind === 'queue'
+  const isCalls = kind === 'calls'
+  const listName = isQueue ? 'Queue' : isCalls ? 'Call stack' : 'Stack'
+  // Ids are what identify a node; its label can change (e.g. a search tree
+  // delete copies a value into a node).
+  const labelOf = (id) => step.tree.nodes.find((node) => node.id === id)?.label ?? id
+  const states = {}
+  const order = {}
+  step.order.forEach((id, i) => {
+    states[id] = 'checked'
+    order[id] = step.badges?.[id] ?? i + 1
+  })
+  Object.assign(order, step.marks)
+  frontier?.forEach((id) => {
+    states[id] = 'queued'
+  })
+  if (step.pending) states[step.pending] = 'pending'
+  if (step.current) states[step.current] = 'active'
+  step.bad?.forEach((id) => {
+    states[id] = 'bad'
+  })
+  if (step.foundAt) states[step.foundAt] = 'found'
+  const next = isQueue ? 0 : (frontier?.length ?? 0) - 1 // the slot that comes out next
+
+  return (
+    <>
+      <TreeView
+        className="tracer-tree"
+        tree={step.tree}
+        states={states}
+        order={order}
+        ariaLabel={`A tree of ${step.tree.nodes.length} nodes. Visited so far, in order: ${step.order.map(labelOf).join(', ') || 'none'}.${frontier ? ` ${listName}: ${frontier.map(labelOf).join(', ') || 'empty'}.` : ''}`}
+      />
+      <ul className="visual-legend">
+        <li><span className="swatch" style={{ background: '#8aa8ea' }} /> {isCalls ? 'the call running now' : 'looking at now'}</li>
+        {frontier && <li><span className="swatch" style={{ background: '#ffe27a' }} /> {isCalls ? 'a call waiting on the stack' : 'waiting its turn'}</li>}
+        <li><span className="swatch" style={{ background: '#e4e4e2' }} /> {step.doneLabel ?? (frontier && !isCalls ? 'done (numbered in order)' : 'passed (numbered in order)')}</li>
+        {(!isCalls || step.foundLabel) && <li><span className="swatch" style={{ background: '#86d69f' }} /> {step.foundLabel ?? 'the match'}</li>}
+        {step.pendingLabel && <li><span className="swatch" style={{ background: '#fff3bf', border: '1px dashed #b8912a' }} /> {step.pendingLabel}</li>}
+        {step.bad?.length > 0 && <li><span className="swatch" style={{ background: '#f2a5a5' }} /> {step.badLabel ?? 'out of place'}</li>}
+        {step.markLabel && <li>{step.markLabel}</li>}
+      </ul>
+      {frontier && (
+        <>
+          <div className="tracer-frontier" aria-label={listName}>
+            <span className="tracer-frontier-name">{listName}</span>
+            <div className="tracer-frontier-slots">
+              {frontier.length === 0 && <span className="tracer-var-empty">empty</span>}
+              {frontier.map((id, i) => (
+                <span key={i} className={`tracer-slot${i === next ? ' next' : ''}`}>{labelOf(id)}</span>
+              ))}
+            </div>
+          </div>
+          <p className="tracer-frontier-hint">
+            {isQueue && 'The left end is next out. New nodes join on the right.'}
+            {kind === 'stack' && 'The right end (the top) is next out. New nodes go on top.'}
+            {isCalls && 'The right end is the call running right now. A new call goes on the end and comes off when it returns.'}
+          </p>
+        </>
+      )}
+      {step.output && (
+        <div className="tracer-frontier" aria-label="Output">
+          <span className="tracer-frontier-name">Output</span>
+          <div className="tracer-frontier-slots">
+            {step.output.length === 0 && <span className="tracer-var-empty">nothing printed yet</span>}
+            {step.output.map((value, i) => (
+              <span key={i} className="tracer-slot out">{value}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+// A B-tree: boxes of several keys, with the open calls of a recursive search
+// or insert listed underneath.
+//   tree: as drawn by BTreeView, frontier: ids of the open calls (the running
+//   call last), current / bad / fresh: ids drawn blue / red / green, order:
+//   ids of nodes already read (numbered), hot: { id: [key positions] } shown
+//   green, legend: [{ color, text }] for the key, carry: text for something
+//   being handed back up to the caller.
+function BTreeStage({ step }) {
+  const labelOf = (id) => {
+    const node = step.tree.nodes.find((n) => n.id === id)
+    return node ? node.keys.join(' ') : id
+  }
+  const states = {}
+  const marks = {}
+  step.frontier.forEach((id) => {
+    states[id] = 'queued'
+  })
+  step.order.forEach((id, i) => {
+    states[id] = 'checked'
+    marks[id] = i + 1
+  })
+  if (step.current) states[step.current] = 'active'
+  step.bad?.forEach((id) => {
+    states[id] = 'bad'
+  })
+  step.fresh?.forEach((id) => {
+    states[id] = 'found'
+  })
+
+  return (
+    <>
+      <BTreeView
+        className="tracer-tree tracer-btree"
+        tree={step.tree}
+        states={states}
+        marks={marks}
+        hot={step.hot}
+        ariaLabel={`A B-tree with ${step.tree.nodes.length} nodes: ${step.tree.nodes.map((n) => `[${n.keys.join(' ')}]`).join(' ')}. Open calls: ${step.frontier.map(labelOf).join(', ') || 'none'}.`}
+      />
+      <ul className="visual-legend">
+        {step.legend.map((item) => (
+          <li key={item.text}><span className="swatch" style={{ background: item.color }} /> {item.text}</li>
+        ))}
+      </ul>
+      <div className="tracer-frontier" aria-label="Call stack">
+        <span className="tracer-frontier-name">Call stack</span>
+        <div className="tracer-frontier-slots">
+          {step.frontier.length === 0 && <span className="tracer-var-empty">empty</span>}
+          {step.frontier.map((id, i) => (
+            <span key={i} className={`tracer-slot wide${i === step.frontier.length - 1 ? ' next' : ''}`}>{labelOf(id)}</span>
+          ))}
+        </div>
+      </div>
+      <p className="tracer-frontier-hint">
+        Each slot is a node being worked on. The right end is the call running right now.
+      </p>
+      {step.carry && <p className="tracer-carry"><strong>Handed up to the caller:</strong> {step.carry}</p>}
+    </>
+  )
+}
+
 // Plays a precomputed list of steps: the line of code that is running on one
 // side, and the list (as bars) with its variables on the other.
 //
@@ -98,9 +249,25 @@ function IsoStage({ step }) {
 //   heapSize: when set, the first heapSize items are also drawn as a binary tree,
 //   (iso view) visited: indices already checked, foundAt: index of the match,
 //   target: the value being looked for,
+//   (tree view) tree: { width, height, nodes, edges } as drawn by TreeView,
+//     frontier: ids waiting in the queue or stack (next out first for a queue,
+//     last for a stack) or open calls (the running call last),
+//     frontierKind: 'queue' | 'stack' | 'calls', order: ids looked at
+//     so far, current: id being looked at, pending: id about to be added,
+//     foundAt: id of the match, output: values printed so far (optional),
+//     badges: { id: text } shown on the nodes in `order` instead of their
+//     position in it, doneLabel: legend text for those nodes (optional),
+//     foundLabel / pendingLabel: legend text for the green / dashed node,
+//     marks: { id: text } a small badge on any node (e.g. its balance factor),
+//     markLabel: legend text for them, bad: ids drawn red (e.g. out of
+//     balance), badLabel: legend text for those,
+//     leave `frontier` out for a single walk down with no waiting list,
+//     (array can be left empty),
 //   vars: { name: value }, note: string
 // }
-// `view` is 'bars' (default) or 'iso' (a row of isometric cubes, for searching).
+// `view` is 'bars' (default), 'iso' (a row of isometric cubes, for searching)
+// 'tree' (a tree with its queue or stack, for BFS and DFS) or 'btree' (boxes
+// of several keys, for B-trees; see BTreeStage for its step fields).
 // buildSteps(values, preset) receives the chosen preset too, e.g. for a target.
 function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   const [presetIndex, setPresetIndex] = useState(0)
@@ -151,7 +318,8 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
     setStepIndex(0)
   }
 
-  const maxValue = Math.max(...steps[0].array.map((item) => item.value))
+  // Sized over every step, so a value added later (a heap push) still fits.
+  const maxValue = Math.max(...steps.flatMap((s) => s.array.map((item) => item.value)))
   const count = step.array.length
   const barWidth = count > 7 ? 34 : 44
   const barGap = count > 7 ? 8 : 10
@@ -197,6 +365,10 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
         <div className="tracer-stage">
           {view === 'iso' ? (
             <IsoStage step={step} />
+          ) : view === 'tree' ? (
+            <TreeStage step={step} />
+          ) : view === 'btree' ? (
+            <BTreeStage step={step} />
           ) : (
             <div
               className="tracer-bars"

@@ -1,0 +1,130 @@
+.tree-view {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.tree-node circle {
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+
+/* Two trees side by side, each with a caption underneath */
+.tree-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+}
+
+.tree-pair figure {
+  margin: 0;
+}
+
+.tree-pair figcaption {
+  text-align: center;
+  font-size: 13px;
+  line-height: 140%;
+  color: var(--text-h);
+  margin-top: 4px;
+}
+
+.tree-pair figcaption span {
+  display: block;
+  font-size: 12px;
+  color: var(--text);
+}
+
+/* A list drawn as a row of numbered cells, shown under a tree stored in it */
+.cell-row {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.cell-row span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 30px;
+  padding: 3px 0 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-h);
+}
+
+.cell-row span i {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* A row of small trees that wraps when there is not enough room */
+.tree-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px 12px;
+}
+
+.tree-grid figure {
+  margin: 0;
+}
+
+.tree-grid figcaption {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 140%;
+  color: var(--text-h);
+  margin-top: 4px;
+}
+
+.tree-grid figcaption span {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* Three trees side by side */
+.tree-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 16px;
+}
+
+.tree-trio figure {
+  margin: 0;
+}
+
+.tree-trio figcaption {
+  text-align: center;
+  font-size: 13px;
+  line-height: 140%;
+  color: var(--text-h);
+  margin-top: 4px;
+}
+
+.tree-trio figcaption span {
+  display: block;
+  font-size: 12px;
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .tree-pair,
+  .tree-trio {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-node circle {
+    transition: none;
+  }
+}

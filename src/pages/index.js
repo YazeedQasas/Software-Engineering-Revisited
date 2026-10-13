@@ -10,6 +10,13 @@ import QuickSort from './dataStructures/QuickSort.jsx'
 import HeapSort from './dataStructures/HeapSort.jsx'
 import LinearSearch from './dataStructures/LinearSearch.jsx'
 import BinarySearch from './dataStructures/BinarySearch.jsx'
+import TreeSearch from './dataStructures/TreeSearch.jsx'
+import TreeTraversals from './dataStructures/TreeTraversals.jsx'
+import BinaryTrees from './dataStructures/BinaryTrees.jsx'
+import BinarySearchTrees from './dataStructures/BinarySearchTrees.jsx'
+import AvlTrees from './dataStructures/AvlTrees.jsx'
+import BTrees from './dataStructures/BTrees.jsx'
+import Heaps from './dataStructures/Heaps.jsx'
 import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
@@ -38,6 +45,13 @@ export const topicPages = {
       'heap-sort': HeapSort,
       'linear-search': LinearSearch,
       'binary-search': BinarySearch,
+      'tree-search': TreeSearch,
+      'tree-traversals': TreeTraversals,
+      'binary-trees': BinaryTrees,
+      bst: BinarySearchTrees,
+      'avl-trees': AvlTrees,
+      'b-trees': BTrees,
+      heaps: Heaps,
       'big-o': BigO,
       'problem-solving': ProblemSolving,
     },
