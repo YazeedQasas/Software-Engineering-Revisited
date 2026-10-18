@@ -10,6 +10,11 @@ const TONES = {
   checked: ['#f1f1f0', '#dededc', '#d0d0ce', '#c9c9c7'],
   found: ['#86d69f', '#4cbc6e', '#2f9e44', '#237a35'],
   target: ['#ffe27a', '#ebc650', '#d3ab32', '#b8912a'],
+  // used by IsoGrid
+  closed: ['#d9d9d7', '#c4c4c2', '#b3b3b1', '#9d9d9b'],
+  wall: ['#8d8e93', '#6b6c70', '#55565a', '#3f4044'],
+  start: ['#9fd8e6', '#6fbcd2', '#4aa3bd', '#2f7f98'],
+  goal: ['#d2b4ee', '#b08ad8', '#9467c4', '#6f46a5'],
 }
 
 // One isometric cube. (px, py) is the centre of its footprint on the ground;
@@ -103,5 +108,5 @@ function IsoRow({ values, states, lifted = null, marker = null, target, size = 2
   )
 }
 
-export { IsoCube }
+export { IsoCube, TONES }
 export default IsoRow

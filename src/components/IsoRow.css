@@ -40,3 +40,83 @@
     animation: none;
   }
 }
+
+/* A grid of isometric tiles (IsoGrid) */
+.iso-grid {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* A numbered, step-by-step walkthrough (the A* page) */
+.walk-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+}
+
+.walk-count {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.walk-title {
+  margin: 0;
+  font-size: 17px;
+  color: var(--text-h);
+}
+
+.walk-text {
+  margin: 10px 0 0;
+  min-height: 7.5em;
+  line-height: 150%;
+}
+
+.walk-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.walk-nav .visual-dots {
+  margin: 0 0 0 auto;
+}
+
+/* Tiles turning into a graph (IsoGrid with graphable on) */
+.iso-fade {
+  transition: opacity 0.5s ease;
+}
+
+.iso-node {
+  transition: transform 0.9s ease;
+}
+
+.iso-dot {
+  transition: r 0.9s ease;
+}
+
+.grid-view-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-fade,
+  .iso-node,
+  .iso-dot {
+    transition: none;
+  }
+}

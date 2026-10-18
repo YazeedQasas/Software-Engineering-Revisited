@@ -42,6 +42,7 @@ export const topics = [
       { id: 'heaps', label: 'Heap', category: '5. Tree Data Structures', blurb: 'A tree stored in an array where each parent is smaller (min-heap) or larger (max-heap) than its children. The biggest or smallest item is always on top. Powers priority queues.' },
 
       // 6. Graphs
+      { id: 'graph-theory', label: 'Graph Theory Basics', category: '6. Graph Data Structures', blurb: 'The study of things and the connections between them. Where it began (the seven bridges of Königsberg), the few ideas everything else builds on (nodes, edges, degree, cycles, trees) and the kinds of graph you will meet.' },
       { id: 'directed-graphs', label: 'Directed Graphs', category: '6. Graph Data Structures', blurb: 'Nodes connected by edges that have a direction, like one-way streets or "follows" on social media. Can be stored as an adjacency list or matrix.' },
       { id: 'undirected-graphs', label: 'Undirected Graphs', category: '6. Graph Data Structures', blurb: 'Nodes connected by edges that work both ways, like friendships or two-way roads.' },
       { id: 'graph-search', label: 'Graph Search Algorithms (BFS & DFS)', category: '6. Graph Data Structures', blurb: 'The same two ideas as on trees, plus a "visited" set so you never loop forever. BFS finds the fewest-edges path; DFS explores deep and is good for cycles and connectivity.' },

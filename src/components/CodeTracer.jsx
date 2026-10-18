@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import IsoRow from './IsoRow.jsx'
 import TreeView from './TreeView.jsx'
 import BTreeView from './BTreeView.jsx'
+import GraphView, { GraphStore, edgeKey } from './GraphView.jsx'
+import IsoGrid, { GridViewToggle, searchCell, searchEdges } from './IsoGrid.jsx'
 import './CodeTracer.css'
 
 const speeds = [
@@ -172,6 +174,126 @@ function TreeStage({ step }) {
   )
 }
 
+// The colour key under a picture: [{ color, text }].
+function Legend({ items }) {
+  return (
+    <ul className="visual-legend">
+      {items.map((item) => (
+        <li key={item.text}><span className="swatch" style={{ background: item.color }} /> {item.text}</li>
+      ))}
+    </ul>
+  )
+}
+
+// Rows of slots: [{ name, items, next?, kind?, wide?, hint? }].
+function Strips({ strips }) {
+  return strips?.map((strip) => (
+    <div key={strip.name}>
+      <div className="tracer-frontier" aria-label={strip.name}>
+        <span className="tracer-frontier-name">{strip.name}</span>
+        <div className="tracer-frontier-slots">
+          {strip.items.length === 0 && <span className="tracer-var-empty">empty</span>}
+          {strip.items.map((item, i) => (
+            <span key={i} className={`tracer-slot${strip.kind ? ` ${strip.kind}` : ''}${strip.wide ? ' wide' : ''}${i === strip.next ? ' next' : ''}`}>{item}</span>
+          ))}
+        </div>
+      </div>
+      {strip.hint && <p className="tracer-frontier-hint">{strip.hint}</p>}
+    </div>
+  ))
+}
+
+// A grid world of isometric tiles being searched (see IsoGrid), with the
+// usual rows of slots underneath.
+//   map: { rows, cols, start, goal, walls }, closed: tiles already expanded,
+//   open: tiles waiting in the heap, current: the tile being expanded,
+//   looking: the tile being checked (a pointer floats over it), route: tiles
+//   on the finished route, labels: { 'row,col': text } for the tiles,
+//   previous: { 'row,col': [row, col] } where each tile was reached from,
+//   strips and legend as for the graph view. A switch above the picture draws
+//   the same map as a graph: a dot per open tile, a line between touching tiles.
+function GridStage({ step }) {
+  const { map, closed, open, current, looking, route, labels, previous } = step
+  const [view, setView] = useState('tiles')
+  const graph = view === 'graph'
+
+  return (
+    <>
+      <GridViewToggle value={view} onChange={setView} />
+      <IsoGrid
+        rows={map.rows}
+        cols={map.cols}
+        cell={searchCell({ map, closed, open, current, route, labels })}
+        marker={looking}
+        graphable
+        mode={view}
+        edge={searchEdges({ previous, route, current, looking })}
+        ariaLabel={`A ${map.rows} by ${map.cols} grid of tiles, drawn as ${graph ? 'a graph of dots and lines' : 'isometric tiles'}, with ${map.walls.length} walls. ${closed.length} tiles expanded, ${open.length} waiting in the heap.${route ? ` The route found is ${route.length - 1} steps long.` : ''}`}
+      />
+      <Legend items={graph ? [...step.legend.filter((item) => item.text !== 'wall'), { color: '#5cb878', text: 'green line: where a tile was reached from' }] : step.legend} />
+      <Strips strips={step.strips} />
+    </>
+  )
+}
+
+// A graph being built edge by edge, with the same graph written down as an
+// adjacency list and as an adjacency matrix. Only the first `shown` edges are
+// drawn; the one at `active` is the edge being added right now.
+//   graph, shown, active (index or null), adj ({ node: [neighbours] } or null
+//   before it exists), matrix (rows of 0 / 1 or null), hot: { cell: [row, col],
+//   chip: [node, position] } the entries that just changed.
+// Optional: leave adj and matrix out to skip the list and grid, directed:
+//   false for lines instead of arrows, nodeStates: { id: state } to colour
+//   nodes yourself, edgeStates: { edgeKey: state } likewise for edges, marks:
+//   { id: text } a badge on each node, chips: [{ label, value, hot }] a
+//   labelled row of values, strips: [{ name, items, next?, kind?, hint? }]
+//   rows of slots such as a queue (next is the slot that comes out first) or a
+//   visited set (kind: 'seen' for grey slots, 'out' for green ones, wide: true
+//   for slots that hold more than a character or two), legend: [{ color, text }].
+//   Edges with a `weight` are drawn with their cost.
+function GraphStage({ step }) {
+  const { graph, shown, active, adj, matrix, hot = {} } = step
+  const edgeStates = {}
+  const nodeStates = {}
+  if (active !== null) {
+    const edge = graph.edges[active]
+    edgeStates[edgeKey(edge)] = 'active'
+    nodeStates[edge.from] = 'active'
+    nodeStates[edge.to] = step.directed === false ? 'active' : 'queued'
+  }
+  Object.assign(nodeStates, step.nodeStates)
+  Object.assign(edgeStates, step.edgeStates)
+  const legend = step.legend ?? [
+    { color: '#8aa8ea', text: 'u: where the edge starts' },
+    { color: '#ffe27a', text: 'v: where it points' },
+  ]
+
+  return (
+    <>
+      <GraphView
+        className="tracer-graph"
+        graph={graph}
+        edges={graph.edges.slice(0, shown)}
+        directed={step.directed !== false}
+        nodeStates={nodeStates}
+        edgeStates={edgeStates}
+        nodeMarks={step.marks}
+        ariaLabel={`A ${step.directed === false ? 'graph' : 'directed graph'} with ${graph.nodes.length} nodes and ${shown} of its ${graph.edges.length} edges drawn so far.`}
+      />
+      <Legend items={legend} />
+      <Strips strips={step.strips} />
+      {step.chips && (
+        <div className="graph-chips">
+          {step.chips.map((chip) => (
+            <span key={chip.label} className={`graph-chip wide${chip.hot ? ' hot' : ''}`}><i>{chip.label}</i>{chip.value}</span>
+          ))}
+        </div>
+      )}
+      {(adj !== undefined || matrix !== undefined) && <GraphStore graph={graph} adj={adj} matrix={matrix} hot={hot} diagonal={step.directed === false} />}
+    </>
+  )
+}
+
 // A B-tree: boxes of several keys, with the open calls of a recursive search
 // or insert listed underneath.
 //   tree: as drawn by BTreeView, frontier: ids of the open calls (the running
@@ -267,7 +389,9 @@ function BTreeStage({ step }) {
 // }
 // `view` is 'bars' (default), 'iso' (a row of isometric cubes, for searching)
 // 'tree' (a tree with its queue or stack, for BFS and DFS) or 'btree' (boxes
-// of several keys, for B-trees; see BTreeStage for its step fields).
+// of several keys, for B-trees; see BTreeStage for its step fields) or 'graph'
+// (a graph drawn beside its adjacency list and matrix; see GraphStage) or
+// 'isogrid' (isometric tiles being searched; see GridStage).
 // buildSteps(values, preset) receives the chosen preset too, e.g. for a target.
 function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   const [presetIndex, setPresetIndex] = useState(0)
@@ -369,6 +493,10 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
             <TreeStage step={step} />
           ) : view === 'btree' ? (
             <BTreeStage step={step} />
+          ) : view === 'graph' ? (
+            <GraphStage step={step} />
+          ) : view === 'isogrid' ? (
+            <GridStage step={step} />
           ) : (
             <div
               className="tracer-bars"

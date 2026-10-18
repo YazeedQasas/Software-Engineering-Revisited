@@ -9,6 +9,11 @@ const TONES = {
   queued: { fill: '#ffe27a', stroke: '#b8912a', text: '#1f2023' },
   pending: { fill: '#fff3bf', stroke: '#b8912a', text: '#1f2023', dash: '3 2' },
   bad: { fill: '#f2a5a5', stroke: '#c44a4a', text: '#1f2023' },
+  // groups of nodes that are already joined (Kruskal's algorithm)
+  grp1: { fill: '#bcd2f7', stroke: '#3f6fbf', text: '#1f2023' },
+  grp2: { fill: '#fbd0a5', stroke: '#c26a1a', text: '#1f2023' },
+  grp3: { fill: '#e1c7f2', stroke: '#8a4fb5', text: '#1f2023' },
+  grp4: { fill: '#bfe8e0', stroke: '#2a8f7e', text: '#1f2023' },
 }
 
 // The edges and nodes of a tree as SVG, so several trees can share one <svg>.

@@ -4,6 +4,226 @@ All notable changes to this project are logged here, newest first.
 
 ## [Unreleased]
 
+## [0.6] - 2026-10-18
+
+### Added
+
+- **Kruskal's Algorithm** page (Graph Data Structures), built animation-first
+  with short, plain explanations, on the same seven-town map as Prim's so the
+  two can be compared. It opens with a looping animation: the edges are sorted
+  cheapest first and shown as a list of chips under the graph (kept in green,
+  skipped in red, never looked at faded), node colours show which nodes are
+  already joined into one group, and a caption explains each decision. Kruskal
+  keeps six of the twelve edges (total cost 23, the same tree as Prim's) and
+  stops after looking at only eight. Then a short recap, the idea in four
+  steps, and "The Loop Test": an animation of the one question asked of every
+  edge (are its two ends already in the same group?), with A-B skipped because
+  both ends are in one group and C-D kept because it joins two groups, and a
+  short explanation of Union-Find (parent pointers, find, join). The
+  interactive code tracer runs the real Python, including `find` with path
+  halving, line by line, with a badge on each node showing its root after every
+  `find`, the sorted edge list, the groups and the edges kept, and presets for
+  the seven towns and for two separate groups where every edge is looked at but
+  only four are kept (a spanning forest). A side-by-side picture shows Prim and
+  Kruskal after three edges (one growing tree against separate groups that join
+  later), with a comparison table. It also covers a one-sentence definition,
+  what it costs (O(E log E), with a bar picture of edges sorted, looked at and
+  kept, and a table including Union-Find without shortcuts), when to use it
+  (sparse graphs, graphs in pieces, clustering), and an 8-question self-quiz.
+- New shared `kruskalRun` helper (it runs Union-Find the same way as the Python
+  on the page), four group colours for nodes, and the styles for the sorted
+  edge chips.
+- **Prim's Algorithm** page (Graph Data Structures), built animation-first
+  with short, plain explanations. It uses a map of seven towns (a ring of six
+  with one in the middle joined to all of them) and the cost of every possible
+  cable. It opens with a looping animation that grows the tree one edge at a
+  time: tree nodes and edges green, the edges leaving the tree in gold, the
+  cheapest one in blue, and a caption listing the candidates and the winner.
+  Then a short recap, "What is a spanning tree?" (a tree costing 37, the minimum
+  spanning tree costing 23, and the loop an extra edge creates, with a small
+  words table), the idea in four steps, and "Why the cheapest edge is safe"
+  (the edges crossing from the tree to the outside, the cheapest one, and an
+  edge with both ends inside the tree shown red because it would close a loop).
+  The interactive code tracer runs the real `heapq` version line by line and
+  shows the heap of (weight, from, to), the nodes in the tree and the edges
+  chosen, with presets for starting at A, starting at D (a different pick order
+  but the same tree and cost) and two separate groups where Prim only reaches
+  its own piece. A side-by-side picture puts Dijkstra's tree (cost 50) next to
+  Prim's (cost 23), with a comparison table. It also covers a one-sentence
+  definition, what it costs (O(E log V), with a picture of the heap work from a
+  real run and a table), when to use it, and an 8-question self-quiz.
+- New weighted example graph for minimum spanning trees, a gold "candidate"
+  edge colour, and `crossingEdges` and `primRounds` helpers in the shared graph
+  data.
+- **A* Algorithm** page (Graph Data Structures), built around an isometric
+  grid world (the cube-tile look of the search pages) and a nine-step
+  walkthrough where every step adds one idea. A 7x7 map has tall dark walls, a
+  teal start tile on the left and a purple goal tile on the right, plus a
+  dead-end pocket near the goal. It opens with a looping race: Dijkstra and A*
+  side by side, tile by tile, until each turns its route green (Dijkstra visits
+  38 tiles, A* only 17). Then "A* Step by Step" (Back / Next step with step
+  dots), every picture read from a real run of the algorithm: the map, what
+  Dijkstra would do, the guess h (tiles across plus tiles up) shown on every
+  tile, g + h = f with a callout, tiles waiting in the heap, taking the
+  smallest f, looking at neighbours, a dead end that costs time but not
+  correctness, and reaching the goal with the route numbered by cost so far.
+  Then a short recap, the idea in four steps, a table for choosing a guess
+  (straight line, Manhattan, diagonal, 0), and "never overestimate": the same
+  search with an honest guess and with a guess four times too big, which
+  charges up the left side of a second map and comes back with 20 steps
+  instead of 12. A section "The Same Map as a Graph" shows the grid turning
+  into a graph: a dot appears on every open tile (walls get none), the tiles
+  fade away while the dots slide into a flat lattice and a line fades in
+  between every two touching tiles, then A* finds the same 14-step route on it,
+  with a table matching tile, wall, step cost and guess to node, no node, edge
+  weight and a guess worked out from coordinates. A "Tiles / A graph" switch on
+  the walkthrough and on the tracer redraws any step as dots and lines, with
+  light green lines for where each node was reached from. The interactive code
+  tracer runs the real Python on the grid
+  (a number on each tile is its f, a pointer floats over the neighbour being
+  checked, with the heap and visited list underneath), with presets for the
+  honest guess and the too-big guess. It also covers a one-sentence
+  definition, what it costs (worst case the same as Dijkstra, with a bar
+  picture of tiles visited and a table), an A* versus Dijkstra table, when to
+  use it, and an 8-question self-quiz.
+- New shared `IsoGrid` component (a grid of isometric tiles with a pointer and
+  a callout, and a graph drawing of the same grid), extra tile colours in `IsoRow` (wall, start, goal, visited), and
+  an `isogrid` view in the code tracer. The tracer's colour key and rows of
+  slots are now shared pieces used by the graph and grid views.
+- **Bellman-Ford Algorithm** page (Graph Data Structures), built
+  animation-first with short, plain explanations. It opens with a looping
+  animation on a five-node graph with one negative road: each frame is one
+  pass over every edge, showing which distances change, which nodes already
+  have their cheapest cost (green) and the routes found so far. The edges are
+  listed in an unlucky order on purpose, so the news from the start takes all
+  four passes to reach the last node. Then a short recap, an animation of the
+  graph that broke Dijkstra (a negative road locks in the wrong answer) now
+  solved correctly, the idea in three steps, and "Why V - 1 passes?" (after
+  pass k, every cheapest route of up to k roads is correct). The interactive
+  code tracer runs the real Python line by line and shows the edge list (with
+  the edge being checked), the distances and the green routes, with presets for
+  the unlucky edge order, a lucky edge order (everything settles in pass 1 and
+  the rest of the passes do nothing) and a negative cycle where the extra
+  check pass still improves something and the function returns `None`. A
+  further animation shows a loop that costs -1 per lap getting cheaper on every
+  pass. It also covers a one-sentence definition, what it costs (O(V x E),
+  with a grid of passes by edges showing how few of the checks change
+  anything, and a table), a Dijkstra versus Bellman-Ford comparison table, when
+  to use it, and an 8-question self-quiz.
+- New directed example graphs with negative roads (one with a negative cycle)
+  and a `bellmanFordPasses` helper were added to the shared graph data.
+- **Dijkstra's Algorithm** page (Graph Data Structures), built animation-first
+  with short, plain explanations. It opens with a looping animation on a map of
+  six towns with road costs: Dijkstra finishes the closest open node each
+  frame, with the best distance so far on every node and the cheapest road into
+  each node drawn green. Then a short recap, an animation of the route with the
+  fewest roads (cost 15) next to the cheapest route (more roads, cost 13), the
+  idea in four steps, and an animation of "relaxing" a road (B drops from 4 to
+  3 once C is finished). The interactive code tracer runs the real `heapq`
+  version line by line and shows the heap, the distances and the visited set,
+  with out-of-date heap entries being skipped, and has presets for starting at
+  A, starting in the middle, and two separate groups where unreachable nodes
+  stay at ∞. Another animation reads the route back by following `previous`
+  (with the `route_to` function), and one shows why a single negative road
+  breaks the algorithm (a node is locked in too early). It also covers a
+  one-sentence definition, what it costs (O((V + E) log V), with a picture of
+  the heap work from a real run and a table including the plain-list O(V²)
+  version), when to use it (and when to use BFS, Bellman-Ford or A*), and an
+  8-question self-quiz.
+- The graph animation frames can now show a colour legend, and the graph
+  tracer's rows of slots can be green or wide. New weighted example graphs and
+  a `dijkstraRounds` helper were added to the shared graph data.
+- **Graph Search Algorithms (BFS & DFS)** page (Graph Data Structures), built
+  animation-first with short, plain explanations. It opens with a looping
+  race: breadth-first and depth-first search side by side on the same graph,
+  with each node numbered in the order it is visited and the edge that found it
+  drawn green, so the ripple and the dive are obvious. Then a short recap and
+  "why remember where you have been?", an animation of a search with no memory
+  going round a cycle for ever and then stopping once it has a visited set. A
+  comparison table of the two searches follows. The interactive code tracer has
+  a BFS / DFS switch (iterative BFS with a queue, recursive DFS with its call
+  stack) and shows the node being visited in blue, the neighbour being checked
+  dashed, waiting nodes in yellow, visited nodes grey and numbered, green edges
+  for the ones that found a new node, and a live queue (or call stack) and
+  visited set underneath, with presets for starting at 0, starting in the
+  middle, and a graph in two separate pieces where the search stops short.
+  Another animation shows breadth-first search reaching nodes ring by ring and
+  following "who found me" back to a shortest path. It also covers a
+  one-sentence definition, what it costs (O(V + E), with a picture of the work
+  and a table covering the adjacency matrix, a visited list instead of a set,
+  and list.pop(0) as a queue), when to use each, and an 8-question self-quiz.
+- The graph tracer view can now show rows of slots (a queue, a call stack, a
+  visited set), and colour edges as well as nodes. The animation frames with a
+  caption and step dots are now a shared component.
+- **Undirected Graphs** page (Graph Data Structures), built animation-first
+  like the other graph pages, with short, plain explanations. It opens with a
+  looping animation of a graph of six friends in seven short frames (a line
+  that works both ways, going from 0 to 1 and straight back, the neighbours of
+  a node, degree, and a path), then a short recap and the key idea "a line is
+  two arrows", shown as a plain line swapping into a pair of opposite arrows,
+  with a small table comparing directed and undirected graphs and a table of
+  the words to know. "Two ways to write it down" animates each edge lighting up
+  twice in the adjacency list and twice in the adjacency matrix, with the
+  matrix diagonal shaded to show the grid is a mirror image of itself, plus the
+  Python for each and an `add_edge` that writes both ends. The interactive code
+  tracer builds an undirected graph edge by edge (each edge appears as a plain
+  line and is written into the list twice and into the grid twice), with
+  presets for friends, roads between towns and two separate groups. Two more
+  animations cover a graph that falls into separate pieces (components) and a
+  tree that grows a cycle when one extra edge is added. It also has a
+  one-sentence definition, what it costs (how many entries the list and grid
+  need, counting two per edge, and a table of five questions), when to use it,
+  and an 8-question self-quiz.
+- `GraphStore` can now light up several entries at once and shade the matrix
+  diagonal, and the list-versus-grid size picture takes its numbers as
+  options so directed and undirected pages can share it.
+- **Graph Theory Basics** page (Graph Data Structures), a new first page of the
+  Graphs section, placed before Directed Graphs and built animation-first with
+  short, plain explanations. It opens with a looping animation of the seven
+  bridges of Königsberg (1736): a map of four pieces of land and seven bridges
+  fades into a graph, each land becomes a node, each bridge an edge, the
+  degrees (3, 5, 3, 3) appear, and the answer to "can you cross every bridge
+  exactly once?" falls out of counting. Then a short recap, a table of
+  everyday things as graphs (friends, roads, the web, flights, a degree plan),
+  a gallery of six kinds of graph (undirected, directed, weighted,
+  disconnected, with a cycle, and a tree) with the words connected, component,
+  cycle and tree explained in a few sentences, and degree with the rule that
+  all degrees add up to twice the edges. The interactive code tracer counts
+  every node's degree edge by edge and then applies Euler's rule, with presets
+  for the seven bridges (no walk), a small town (a walk exists) and a ring
+  (a walk that comes back to the start). It also covers where the graph tools
+  coming up (search, shortest paths, spanning trees) fit in, a one-sentence
+  definition, how big a graph can get (a picture of complete graphs of 3 to 7
+  nodes, a table of the most edges up to a million nodes, and sparse versus
+  dense), when to think "graph", and an 8-question self-quiz.
+- `GraphView` can now draw several edges between the same two nodes (they fan
+  out), give an edge its own `id`, and put a small badge on a node. The
+  graph tracer view can show undirected graphs, node badges and a row of
+  labelled values without the list and grid. The looping-animation helper and
+  step dots are now shared between pages.
+- **Directed Graphs** page (Graph Data Structures), the first page of the
+  Graphs section. It is built animation-first with shorter, plainer
+  explanations: after a two-sentence introduction it opens with a looping
+  animation (with clickable step dots) that shows, in six short captions,
+  nodes, an edge, an arrow that only goes one way, two people who follow each
+  other, a path and a cycle. Then a short recap, a small table of the words to
+  know (node, edge, neighbour, in- and out-degree, path, cycle), and "two ways
+  to write it down": an animation that lights up one edge at a time in the
+  drawing, the adjacency list and the adjacency matrix together, plus the
+  Python for each and a mention of the plain list of pairs. The interactive
+  code tracer builds a graph one edge at a time: the edge appears in the
+  drawing, then lands in the list and in the grid, with presets for a "who
+  follows who" graph, a task-order graph and a graph of mutual friends. It
+  also covers loops and order (a looping cycle animation beside a graph with no
+  cycle, and what a DAG is), a one-sentence definition, what it costs (a
+  picture of how many entries the list and the grid need for a spread-out and
+  a crowded graph, and a table comparing the two on six questions), when to
+  use it, and an 8-question self-quiz.
+- Reusable `GraphView` component for drawing graphs with one-way arrows
+  (edges bend apart when two nodes point at each other, and can show weights),
+  a `GraphStore` component that writes a graph as an adjacency list beside an
+  adjacency matrix, and a `view="graph"` option on `CodeTracer`.
+
 
 ## [0.5] - 2026-10-13
 

@@ -13,7 +13,7 @@ this repo, the quickest way to judge the work is to open one finished page
 ## What's inside
 
 The curriculum follows the [roadmap.sh Data Structures & Algorithms
-roadmap](https://roadmap.sh/datastructures-and-algorithms): **40 topics across
+roadmap](https://roadmap.sh/datastructures-and-algorithms): **41 topics across
 9 sections**, all in Python. Every topic has a page. Some are fully written;
 the rest show a short plain-English summary until their turn comes.
 
@@ -24,18 +24,19 @@ the rest show a short plain-English summary until their turn comes.
 | 3 | Sorting Algorithms | Bubble, Insertion, Selection, Merge, Quick, Heap | All six written |
 | 4 | Search Algorithms | Linear, Binary | All two written |
 | 5 | Tree Data Structures | Tree search, Traversals, Binary Trees, BST, AVL, B-Trees, Heaps | **Written** (all 7) |
-| 6 | Graph Data Structures | Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | Planned |
+| 6 | Graph Data Structures | Graph Theory Basics, Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | **Written** (all 9) |
 | 7 | Advanced Data Structures | Trie, Segment Tree, Fenwick Tree, Union-Find, Suffix Trees | Planned |
 | 8 | Indexing | Linear, Tree-based | Planned |
 | 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.5**, which adds the seven Tree Data Structures pages
-(Tree Search, Traversals, Binary Trees, Binary Search Trees, AVL Trees,
-B-Trees and Heaps, each with an interactive code tracer) on top of the two
-Search Algorithms pages from 0.4, the six Sorting Algorithms pages from 0.3,
-the Algorithmic Complexity pages from 0.2 and the five Basic Data Structures
-pages from 0.1.
+current release is **0.6**, which adds the nine Graph Data Structures pages
+(Graph Theory Basics, Directed Graphs, Undirected Graphs, Graph Search,
+Dijkstra's, Bellman-Ford, A*, Prim's and Kruskal's, most with an interactive
+code tracer and an isometric or graph animation) on top of the seven Tree Data
+Structures pages from 0.5, the two Search Algorithms pages from 0.4, the six
+Sorting Algorithms pages from 0.3, the Algorithmic Complexity pages from 0.2
+and the five Basic Data Structures pages from 0.1.
 
 ## What a finished page looks like
 
@@ -102,6 +103,7 @@ src/
     IsoRow.jsx               Isometric 3D cubes, used for the search animations
     TreeView.jsx             A tree drawn as coloured nodes, used by the tree pages
     BTreeView.jsx            A B-tree drawn as boxes holding several keys
+    GraphView.jsx            A graph drawn with arrows, plus its list and matrix forms
   pages/
     index.js                 Maps a topic id to its page component
     Placeholder.jsx          Shown for topics that aren't written yet
