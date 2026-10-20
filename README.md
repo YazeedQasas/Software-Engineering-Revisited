@@ -25,18 +25,18 @@ the rest show a short plain-English summary until their turn comes.
 | 4 | Search Algorithms | Linear, Binary | All two written |
 | 5 | Tree Data Structures | Tree search, Traversals, Binary Trees, BST, AVL, B-Trees, Heaps | **Written** (all 7) |
 | 6 | Graph Data Structures | Graph Theory Basics, Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | **Written** (all 9) |
-| 7 | Advanced Data Structures | Trie, Segment Tree, Fenwick Tree, Union-Find, Suffix Trees | Planned |
+| 7 | Advanced Data Structures | Trie, Segment Tree, Fenwick Tree, Union-Find, Suffix Trees and Arrays | **Written** (all 5) |
 | 8 | Indexing | Linear, Tree-based | Planned |
 | 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.6**, which adds the nine Graph Data Structures pages
-(Graph Theory Basics, Directed Graphs, Undirected Graphs, Graph Search,
-Dijkstra's, Bellman-Ford, A*, Prim's and Kruskal's, most with an interactive
-code tracer and an isometric or graph animation) on top of the seven Tree Data
-Structures pages from 0.5, the two Search Algorithms pages from 0.4, the six
-Sorting Algorithms pages from 0.3, the Algorithmic Complexity pages from 0.2
-and the five Basic Data Structures pages from 0.1.
+current release is **0.7**, which adds the five Advanced Data Structures pages
+(Trie, Segment Trees, Fenwick Trees, Disjoint Sets and Suffix Trees and Arrays,
+each with an interactive code tracer and looping animations) on top of the
+nine Graph Data Structures pages from 0.6, the seven Tree Data Structures pages
+from 0.5, the two Search Algorithms pages from 0.4, the six Sorting Algorithms
+pages from 0.3, the Algorithmic Complexity pages from 0.2 and the five Basic
+Data Structures pages from 0.1.
 
 ## What a finished page looks like
 
@@ -104,6 +104,8 @@ src/
     TreeView.jsx             A tree drawn as coloured nodes, used by the tree pages
     BTreeView.jsx            A B-tree drawn as boxes holding several keys
     GraphView.jsx            A graph drawn with arrows, plus its list and matrix forms
+    FenwickView.jsx          Fenwick tree bars over an array, plus numbers in binary
+    SuffixRows.jsx           The sorted suffixes of a word as rows that slide into place
   pages/
     index.js                 Maps a topic id to its page component
     Placeholder.jsx          Shown for topics that aren't written yet
@@ -127,6 +129,5 @@ CHANGELOG.md                 What changed in each release
 
 ## Roadmap
 
-Next up are the Graph Data Structures, followed by the advanced structures and
-Indexing, along with a rebuild of the Big-O and Problem Solving pages to match
-the structure above.
+Next up is Indexing, along with a rebuild of the Big-O and Problem Solving
+pages to match the structure above.

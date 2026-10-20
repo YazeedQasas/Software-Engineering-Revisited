@@ -57,6 +57,14 @@
   color: var(--text-h);
 }
 
+/* The name in front of a row of cells, e.g. "parent" */
+.cell-name {
+  align-self: center;
+  margin-right: 6px;
+  font-size: 12px;
+  color: var(--text);
+}
+
 .cell-row span i {
   font-style: normal;
   font-size: 10px;
@@ -126,5 +134,53 @@
 @media (prefers-reduced-motion: reduce) {
   .tree-node circle {
     transition: none;
+  }
+}
+
+/* A trie drawn on its own: not as wide as the page, so the nodes stay a sensible size */
+.tree-view.trie-view {
+  max-width: 460px;
+}
+
+/* The letters typed so far in the autocomplete animation */
+.trie-typed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 240px;
+  min-height: 38px;
+  margin: 0 auto 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text-h);
+}
+
+.trie-typed-label {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.trie-typed-text {
+  font-weight: 700;
+}
+
+.trie-caret {
+  width: 2px;
+  height: 18px;
+  background: var(--text-h);
+  animation: trie-blink 1s steps(1) infinite;
+}
+
+@keyframes trie-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trie-caret {
+    animation: none;
   }
 }

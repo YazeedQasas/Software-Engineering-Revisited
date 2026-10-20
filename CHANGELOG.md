@@ -4,6 +4,114 @@ All notable changes to this project are logged here, newest first.
 
 ## [Unreleased]
 
+## [0.7] - 2026-10-20
+
+### Added
+
+- **Trie** page (Advanced Data Structures), built animation-first with short,
+  plain explanations. It opens with a looping animation that builds a trie from
+  five words: new nodes green, reused nodes blue, a double ring where a word
+  ends, and a caption saying what is new each time (14 letters, only 8 nodes).
+  Then a one-page recap, the idea in four steps with the `TrieNode` class (plus
+  a note that a trie is not balanced and that the flag can be a value), "Where a
+  Word Ends" (two tries with identical nodes where only the ring says whether
+  "do" is a word) and "Autocomplete: Walk, Then Collect", an animation of typing
+  a prefix that shows the walk down, the branches ruled out and the suggestions.
+  The interactive code tracer runs the real Python for insert, search and
+  starts-with (autocomplete) line by line, including the recursive `collect`
+  with its call stack and output list, with presets for a new node, a new
+  branch, a word that is a prefix of another, a path that breaks and a prefix
+  that is not a word. It also covers a trie against a hash set, a one-sentence
+  definition, what it costs (O(L) per word, with a picture of memory and lookup
+  steps counted from a real word list and a table), when to use it, and an
+  8-question self-quiz.
+- New shared `rings` option for tree nodes (a double outer ring) in `TreeView`
+  and the code tracer, and a `trieData.js` helper that builds and lays out a
+  trie.
+- **Segment Trees** page (Advanced Data Structures), built animation-first. It
+  opens with a looping animation that asks a segment tree for the sum of
+  positions 2 to 6 (green nodes used whole, yellow nodes opened, grey nodes
+  ignored), then a one-page recap, the idea in four steps and a table of the
+  three cases a node can be in (outside, inside, partly inside). Looping
+  animations show building the tree from the bottom up and changing one number
+  (only one node per level is fixed). The interactive code tracer runs the real
+  Python for build, query and update line by line, with the call stack under
+  the tree and presets such as a range, the whole array, a single position and
+  six numbers (an uneven tree). It also covers the same tree answering minimums
+  instead of sums, a segment tree against a plain loop and prefix sums, a
+  one-sentence definition, what it costs (with a picture of steps for 1000
+  numbers and a table, plus a note on lazy propagation), when to use it and an
+  8-question self-quiz.
+- New shared `sub` caption for tree nodes (e.g. the range a node covers), and
+  `good` and `slotLabels` options in the code tracer's tree view, with a
+  `segData.js` helper that builds and lays out a segment tree.
+- **Fenwick Trees** page (Advanced Data Structures), built animation-first. It
+  opens with a looping animation that asks for the sum of the first 7 numbers,
+  drawn as bars above the array: each stored sum is as wide as the part of the
+  array it adds up. Then a one-page recap, the idea in four steps, and "Who
+  Adds Up What", a looping animation of every bar with its number in binary and
+  the lowest 1 picked out (that is what decides the width), plus a table.
+  Looping animations show asking for a prefix (removing the lowest 1 hops left),
+  changing a number (adding the lowest 1 hops right to every bar over it), any
+  range as two prefixes (one taken away from the other) and the tree hiding in
+  the list (bar i joined to bar i + (i & -i)). The interactive code tracer runs
+  the real Python for prefix sum, update, range sum and the O(n) build line by
+  line, with the binary numbers and the sums read so far beside the bars, and
+  presets such as a range where one bar cancels out and six numbers (not a power
+  of 2). It also covers a Fenwick tree against a segment tree, a one-sentence
+  definition, what it costs (with a picture of steps for 1000 numbers and a
+  table), when to use it and an 8-question self-quiz.
+- New shared `FenwickView` (bars over an array, and a `Bits` row showing a
+  number in binary with its lowest 1 picked out) and a `fenwick` view in the
+  code tracer, with a `fenData.js` helper.
+- **Disjoint Sets (Union-Find)** page (Advanced Data Structures), built
+  animation-first. It opens with a looping animation of eight things being
+  joined into groups, one union at a time (one colour per group, a parent list
+  underneath, and two "same group?" questions answered by climbing to the
+  roots). Then a one-page recap, the idea in four steps, and "Finding the Root",
+  an animation of find climbing a chain, which shows why a find can take O(n).
+  "Two Tricks That Keep Trees Short" has an animation of the same two groups
+  joined both ways (the smaller group goes under the bigger one, with the
+  reason the height stays near log n) and an animation of path halving
+  flattening the chain over two finds. The interactive code tracer runs the real
+  Python for find and union line by line, with group colours, the size under
+  each root and the parent list, and presets such as a long chain, a lone
+  thing joining a group (the swap), two things already together and four
+  unions in a row where the last returns False. It also covers what you can
+  ask (and what you cannot: no splitting, no path), a comparison with group
+  labels and with graph search, a one-sentence definition, what it costs (with
+  a log-scale picture for a million things and a table), when to use it, and an
+  8-question self-quiz.
+- New shared `states`, `legend` and `strips` options in the code tracer's tree
+  view, and a `.cell-name` label for rows of cells, with a `ufData.js` helper
+  that runs the real find and union and lays out a forest.
+- **Suffix Trees and Arrays** page (Advanced Data Structures), built
+  animation-first on the word banana. It opens with a looping animation that cuts
+  the word into its six suffixes, slides them together and sorts them (the rows
+  physically move to their new places), reads off the suffix array, and ends by
+  showing that every place "ana" appears is a suffix that starts with it, and
+  that those suffixes sit side by side. Then a one-page recap, the idea in four
+  steps (every substring is the start of some suffix), "The Suffix Array" with a
+  table of the sorted suffixes and the one-line Python, and "The LCP List", an
+  animation of what neighbouring suffixes share (the biggest number is the
+  longest repeated piece, and the sum gives the number of different
+  substrings). "The Suffix Tree" is an animation of the trie of all suffixes
+  (23 nodes) being squashed into the suffix tree (11 nodes), with the leaves
+  read left to right giving the suffix array again. The interactive code tracer
+  runs the real Python for two searches line by line: a binary search of the
+  suffix array (lo, mid and hi markers, the matching letters in green, the first
+  differing letter in red, then the block of matches) and a walk down the suffix
+  tree (a thick trail along the edges followed, the pattern matched so far),
+  with presets for a pattern that appears twice, once, three times, not at all
+  and one that ends inside an edge. It also covers scanning against the array and
+  the tree, a one-sentence definition, what it costs (with a log-scale picture
+  for a 10-letter pattern in a million letters and a table), when to use it, and
+  an 8-question self-quiz.
+- New shared `SuffixRows` (sorted suffixes as rows that slide when re-ordered)
+  and a `suffix` view in the code tracer, edge text and highlighted edges
+  (`hotEdges`) for `TreeView`, and a `suffixData.js` helper that builds the
+  suffix array, the LCP list, the suffix trie and the suffix tree.
+
 ## [0.6] - 2026-10-18
 
 ### Added

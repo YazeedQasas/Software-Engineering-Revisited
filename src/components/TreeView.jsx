@@ -17,30 +17,60 @@ const TONES = {
 }
 
 // The edges and nodes of a tree as SVG, so several trees can share one <svg>.
-//   tree: { nodes: [{ id, x, y, label? }], edges: [[parentId, childId]] }
+//   tree: { nodes: [{ id, x, y, label?, sub? }], edges: [[parentId, childId]] }
+//   (sub is a small caption under the node, e.g. the range of an array it covers)
 //   states: { id: 'plain' | 'active' | 'checked' | 'found' | 'queued' | 'pending' | 'bad' }
 //   order: { id: number } draws a small numbered badge on that node
-function TreeNodes({ tree, states = {}, order = {}, r = 17, labels = true }) {
+//   rings: ids that get a second, outer ring (e.g. a word ends at this trie node)
+//   An edge can carry text as a third item: [parentId, childId, 'na'] (e.g. the
+//   letters on an edge of a suffix tree). hotEdges: 'parentId-childId' keys of
+//   edges to draw thick and blue (e.g. the edge a search is following).
+function TreeNodes({ tree, states = {}, order = {}, rings = [], hotEdges = [], r = 17, labels = true }) {
   const byId = Object.fromEntries(tree.nodes.map((node) => [node.id, node]))
 
   return (
     <g>
-      {tree.edges.map(([from, to]) => (
-        <line
-          key={`${from}-${to}`}
-          x1={byId[from].x}
-          y1={byId[from].y}
-          x2={byId[to].x}
-          y2={byId[to].y}
-          stroke="#c4c4c2"
-          strokeWidth={Math.max(1, r * 0.09)}
-        />
-      ))}
+      {tree.edges.map(([from, to]) => {
+        const hot = hotEdges.includes(`${from}-${to}`)
+        return (
+          <line
+            key={`${from}-${to}`}
+            x1={byId[from].x}
+            y1={byId[from].y}
+            x2={byId[to].x}
+            y2={byId[to].y}
+            stroke={hot ? '#2d4f9e' : '#c4c4c2'}
+            strokeWidth={Math.max(1, r * (hot ? 0.22 : 0.09))}
+          />
+        )
+      })}
+      {tree.edges.map(([from, to, text]) =>
+        text === undefined ? null : (
+          <text
+            key={`t${from}-${to}`}
+            x={(byId[from].x + byId[to].x) / 2}
+            y={(byId[from].y + byId[to].y) / 2 + r * 0.25}
+            fontSize={Math.max(12, r * 0.85)}
+            fontWeight="600"
+            textAnchor="middle"
+            fill="var(--text-h)"
+            stroke="var(--code-bg, #fff)"
+            strokeWidth={Math.max(3, r * 0.25)}
+            paintOrder="stroke"
+            style={{ fontFamily: 'var(--mono)' }}
+          >
+            {text}
+          </text>
+        ),
+      )}
       {tree.nodes.map((node) => {
         const tone = TONES[states[node.id] ?? 'plain']
         const badge = order[node.id]
         return (
           <g key={node.id} className="tree-node">
+            {rings.includes(node.id) && (
+              <circle cx={node.x} cy={node.y} r={r + Math.max(3, r * 0.24)} fill="none" stroke="#6b6c70" strokeWidth={Math.max(1, r * 0.09)} />
+            )}
             <circle
               cx={node.x}
               cy={node.y}
@@ -53,6 +83,20 @@ function TreeNodes({ tree, states = {}, order = {}, r = 17, labels = true }) {
             {labels && (
               <text x={node.x} y={node.y + r * 0.32} fontSize={r * 0.85} fontWeight="700" textAnchor="middle" fill={tone.text}>
                 {node.label ?? node.id}
+              </text>
+            )}
+            {node.sub !== undefined && (
+              <text
+                x={node.x}
+                y={node.y + r + r * 0.62}
+                fontSize={r * 0.58}
+                textAnchor="middle"
+                fill="var(--text)"
+                stroke="var(--code-bg, #fff)"
+                strokeWidth={r * 0.3}
+                paintOrder="stroke"
+              >
+                {node.sub}
               </text>
             )}
             {badge !== undefined && (

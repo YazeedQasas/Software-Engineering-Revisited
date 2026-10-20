@@ -1,0 +1,83 @@
+.fenwick-view {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.fenwick-bar rect {
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+
+/* A number written in binary, with its lowest 1 picked out */
+.bits {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  margin: 10px auto 0;
+}
+
+.bits-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bits-label {
+  min-width: 72px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.bits-dec {
+  min-width: 22px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.bits-digits {
+  display: flex;
+  gap: 2px;
+}
+
+.bits-digits i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.bits-digits i.one {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.bits-digits i.low {
+  background: #ffe27a;
+  border-color: #b8912a;
+  color: #1f2023;
+}
+
+.bits-row.dim {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fenwick-bar rect {
+    transition: none;
+  }
+}

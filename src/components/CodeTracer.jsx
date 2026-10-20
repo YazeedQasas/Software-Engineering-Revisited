@@ -4,6 +4,8 @@ import TreeView from './TreeView.jsx'
 import BTreeView from './BTreeView.jsx'
 import GraphView, { GraphStore, edgeKey } from './GraphView.jsx'
 import IsoGrid, { GridViewToggle, searchCell, searchEdges } from './IsoGrid.jsx'
+import FenwickView, { Bits } from './FenwickView.jsx'
+import SuffixRows from './SuffixRows.jsx'
 import './CodeTracer.css'
 
 const speeds = [
@@ -104,7 +106,7 @@ function TreeStage({ step }) {
   const listName = isQueue ? 'Queue' : isCalls ? 'Call stack' : 'Stack'
   // Ids are what identify a node; its label can change (e.g. a search tree
   // delete copies a value into a node).
-  const labelOf = (id) => step.tree.nodes.find((node) => node.id === id)?.label ?? id
+  const labelOf = (id) => step.slotLabels?.[id] ?? step.tree.nodes.find((node) => node.id === id)?.label ?? id
   const states = {}
   const order = {}
   step.order.forEach((id, i) => {
@@ -115,12 +117,16 @@ function TreeStage({ step }) {
   frontier?.forEach((id) => {
     states[id] = 'queued'
   })
+  step.good?.forEach((id) => {
+    states[id] = 'found'
+  })
   if (step.pending) states[step.pending] = 'pending'
   if (step.current) states[step.current] = 'active'
   step.bad?.forEach((id) => {
     states[id] = 'bad'
   })
   if (step.foundAt) states[step.foundAt] = 'found'
+  Object.assign(states, step.states)
   const next = isQueue ? 0 : (frontier?.length ?? 0) - 1 // the slot that comes out next
 
   return (
@@ -130,17 +136,24 @@ function TreeStage({ step }) {
         tree={step.tree}
         states={states}
         order={order}
+        rings={step.rings}
+        hotEdges={step.hotEdges}
         ariaLabel={`A tree of ${step.tree.nodes.length} nodes. Visited so far, in order: ${step.order.map(labelOf).join(', ') || 'none'}.${frontier ? ` ${listName}: ${frontier.map(labelOf).join(', ') || 'empty'}.` : ''}`}
       />
-      <ul className="visual-legend">
-        <li><span className="swatch" style={{ background: '#8aa8ea' }} /> {isCalls ? 'the call running now' : 'looking at now'}</li>
-        {frontier && <li><span className="swatch" style={{ background: '#ffe27a' }} /> {isCalls ? 'a call waiting on the stack' : 'waiting its turn'}</li>}
-        <li><span className="swatch" style={{ background: '#e4e4e2' }} /> {step.doneLabel ?? (frontier && !isCalls ? 'done (numbered in order)' : 'passed (numbered in order)')}</li>
-        {(!isCalls || step.foundLabel) && <li><span className="swatch" style={{ background: '#86d69f' }} /> {step.foundLabel ?? 'the match'}</li>}
-        {step.pendingLabel && <li><span className="swatch" style={{ background: '#fff3bf', border: '1px dashed #b8912a' }} /> {step.pendingLabel}</li>}
-        {step.bad?.length > 0 && <li><span className="swatch" style={{ background: '#f2a5a5' }} /> {step.badLabel ?? 'out of place'}</li>}
-        {step.markLabel && <li>{step.markLabel}</li>}
-      </ul>
+      {step.legend ? (
+        <Legend items={step.legend} />
+      ) : (
+        <ul className="visual-legend">
+          <li><span className="swatch" style={{ background: '#8aa8ea' }} /> {isCalls ? 'the call running now' : 'looking at now'}</li>
+          {frontier && <li><span className="swatch" style={{ background: '#ffe27a' }} /> {isCalls ? 'a call waiting on the stack' : 'waiting its turn'}</li>}
+          {step.doneLabel !== false && <li><span className="swatch" style={{ background: '#e4e4e2' }} /> {step.doneLabel ?? (frontier && !isCalls ? 'done (numbered in order)' : 'passed (numbered in order)')}</li>}
+          {(!isCalls || step.foundLabel) && <li><span className="swatch" style={{ background: '#86d69f' }} /> {step.foundLabel ?? 'the match'}</li>}
+          {step.pendingLabel && <li><span className="swatch" style={{ background: '#fff3bf', border: '1px dashed #b8912a' }} /> {step.pendingLabel}</li>}
+          {step.good?.length > 0 && <li><span className="swatch" style={{ background: '#86d69f' }} /> {step.goodLabel ?? 'done'}</li>}
+          {step.bad?.length > 0 && <li><span className="swatch" style={{ background: '#f2a5a5' }} /> {step.badLabel ?? 'out of place'}</li>}
+          {step.markLabel && <li>{step.markLabel}</li>}
+        </ul>
+      )}
       {frontier && (
         <>
           <div className="tracer-frontier" aria-label={listName}>
@@ -170,6 +183,7 @@ function TreeStage({ step }) {
           </div>
         </div>
       )}
+      <Strips strips={step.strips} />
     </>
   )
 }
@@ -355,6 +369,39 @@ function BTreeStage({ step }) {
   )
 }
 
+// A Fenwick tree as bars above the array it adds up (see FenwickView).
+//   fen: { n, values, tree, states, cells } as for FenwickView,
+//   legend: [{ color, text }], bits: [{ label, value, dim? }] numbers shown in
+//   binary under the picture (bitsWidth: how many digits), strips: rows of slots
+//   as for the graph view (e.g. the sums added so far).
+function FenwickStage({ step }) {
+  const { n, values, tree, states, cells } = step.fen
+
+  return (
+    <>
+      <FenwickView n={n} values={values} tree={tree} states={states} cells={cells} />
+      {step.legend && <Legend items={step.legend} />}
+      {step.bits && <Bits rows={step.bits} width={step.bitsWidth} />}
+      <Strips strips={step.strips} />
+    </>
+  )
+}
+
+// The sorted suffixes of a word, one per row (see SuffixRows).
+//   sfx: { rows, tags, header, mode } as for SuffixRows, legend: [{ color, text }],
+//   strips: rows of slots as for the graph view.
+function SuffixStage({ step }) {
+  const { rows, tags, header, mode } = step.sfx
+
+  return (
+    <>
+      <SuffixRows rows={rows} tags={tags} header={header} mode={mode} />
+      {step.legend && <Legend items={step.legend} />}
+      <Strips strips={step.strips} />
+    </>
+  )
+}
+
 // Plays a precomputed list of steps: the line of code that is running on one
 // side, and the list (as bars) with its variables on the other.
 //
@@ -378,11 +425,20 @@ function BTreeStage({ step }) {
 //     so far, current: id being looked at, pending: id about to be added,
 //     foundAt: id of the match, output: values printed so far (optional),
 //     badges: { id: text } shown on the nodes in `order` instead of their
-//     position in it, doneLabel: legend text for those nodes (optional),
+//     position in it, doneLabel: legend text for those nodes (optional, false
+//     leaves it out),
 //     foundLabel / pendingLabel: legend text for the green / dashed node,
 //     marks: { id: text } a small badge on any node (e.g. its balance factor),
 //     markLabel: legend text for them, bad: ids drawn red (e.g. out of
-//     balance), badLabel: legend text for those,
+//     balance), badLabel: legend text for those, rings: ids drawn with a
+//     second outer ring (e.g. where a word ends in a trie), good: ids drawn
+//     green (goodLabel: legend text; unlike foundAt there can be several),
+//     slotLabels: { id: text } to show in the waiting list instead of a
+//     node's label, states: { id: state } to colour nodes yourself (applied
+//     last, any state TreeView knows, e.g. 'grp1'), legend: [{ color, text }]
+//     to replace the colour key, strips: rows of slots under the tree (as for
+//     the graph view), hotEdges: ['parentId-childId'] edges drawn thick (an
+//     edge in tree.edges can carry text as a third item, e.g. letters),
 //     leave `frontier` out for a single walk down with no waiting list,
 //     (array can be left empty),
 //   vars: { name: value }, note: string
@@ -391,7 +447,9 @@ function BTreeStage({ step }) {
 // 'tree' (a tree with its queue or stack, for BFS and DFS) or 'btree' (boxes
 // of several keys, for B-trees; see BTreeStage for its step fields) or 'graph'
 // (a graph drawn beside its adjacency list and matrix; see GraphStage) or
-// 'isogrid' (isometric tiles being searched; see GridStage).
+// 'isogrid' (isometric tiles being searched; see GridStage) or 'fenwick' (a
+// Fenwick tree as bars over its array; see FenwickStage) or 'suffix' (the
+// sorted suffixes of a word, one per row; see SuffixStage).
 // buildSteps(values, preset) receives the chosen preset too, e.g. for a target.
 function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   const [presetIndex, setPresetIndex] = useState(0)
@@ -497,6 +555,10 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
             <GraphStage step={step} />
           ) : view === 'isogrid' ? (
             <GridStage step={step} />
+          ) : view === 'fenwick' ? (
+            <FenwickStage step={step} />
+          ) : view === 'suffix' ? (
+            <SuffixStage step={step} />
           ) : (
             <div
               className="tracer-bars"

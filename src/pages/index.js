@@ -26,6 +26,11 @@ import BellmanFord from './dataStructures/BellmanFord.jsx'
 import AStar from './dataStructures/AStar.jsx'
 import Prims from './dataStructures/Prims.jsx'
 import Kruskals from './dataStructures/Kruskals.jsx'
+import Trie from './dataStructures/Trie.jsx'
+import SegmentTrees from './dataStructures/SegmentTrees.jsx'
+import FenwickTrees from './dataStructures/FenwickTrees.jsx'
+import DisjointSets from './dataStructures/DisjointSets.jsx'
+import SuffixTrees from './dataStructures/SuffixTrees.jsx'
 import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
@@ -70,6 +75,11 @@ export const topicPages = {
       'a-star': AStar,
       prims: Prims,
       kruskals: Kruskals,
+      trie: Trie,
+      'segment-tree': SegmentTrees,
+      'fenwick-tree': FenwickTrees,
+      'union-find': DisjointSets,
+      'suffix-trees': SuffixTrees,
       'big-o': BigO,
       'problem-solving': ProblemSolving,
     },
