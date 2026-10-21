@@ -1,0 +1,242 @@
+.ix {
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 13px;
+}
+
+.ix-title {
+  position: absolute;
+  top: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.ix-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--text-h);
+  transition: transform 0.6s ease, opacity 0.4s ease, background 0.3s ease;
+}
+
+.ix-entry {
+  gap: 6px;
+}
+
+.ix-key {
+  min-width: 22px;
+  font-weight: 700;
+}
+
+.ix-arrow {
+  color: var(--text);
+}
+
+.ix-ptr {
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.ix-row {
+  gap: 8px;
+}
+
+.ix-slot {
+  min-width: 14px;
+  font-size: 11px;
+  color: var(--text);
+}
+
+.ix-id {
+  min-width: 20px;
+  font-weight: 700;
+}
+
+.ix-name {
+  color: var(--text);
+}
+
+.ix-item.read {
+  background: #e4e4e2;
+  border-color: #bdbdba;
+  color: #1f2023;
+}
+
+.ix-item.range {
+  background: #ffe27a;
+  border-color: #b8912a;
+  color: #1f2023;
+}
+
+.ix-item.active {
+  background: #8aa8ea;
+  border-color: #2d4f9e;
+  color: #1f2023;
+}
+
+.ix-item.hit {
+  background: #86d69f;
+  border-color: #237a35;
+  color: #1f2023;
+}
+
+.ix-item.active .ix-ptr,
+.ix-item.active .ix-arrow,
+.ix-item.active .ix-slot,
+.ix-item.active .ix-name,
+.ix-item.hit .ix-ptr,
+.ix-item.hit .ix-arrow,
+.ix-item.hit .ix-slot,
+.ix-item.hit .ix-name,
+.ix-item.range .ix-ptr,
+.ix-item.range .ix-arrow,
+.ix-item.range .ix-slot,
+.ix-item.range .ix-name,
+.ix-item.read .ix-ptr,
+.ix-item.read .ix-arrow,
+.ix-item.read .ix-slot,
+.ix-item.read .ix-name {
+  color: #1f2023;
+}
+
+.ix-item.dim {
+  opacity: 0.38;
+}
+
+.ix-end {
+  position: absolute;
+  left: 0;
+  height: 22px;
+  margin-top: 1px;
+  box-sizing: border-box;
+  border: 1px dashed var(--border);
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--text);
+}
+
+.ix-tags {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 26px;
+  padding-left: 4px;
+}
+
+.ix-tag {
+  white-space: nowrap;
+  padding: 0 6px;
+  line-height: 17px;
+  border: 1px solid #b8912a;
+  border-radius: 999px;
+  background: #ffe27a;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #1f2023;
+}
+
+.ix-tag.tag-mid {
+  border-color: #2d4f9e;
+  background: #8aa8ea;
+}
+
+.ix-links {
+  position: absolute;
+  top: 0;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ix-item {
+    transition: none;
+  }
+}
+
+/* Sorted keys as a row of chips, and a hash index as columns of chips */
+.ix-label {
+  margin: 8px 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.ix-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ix-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 26px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-h);
+  transition: background 0.3s ease;
+}
+
+.ix-chip.range {
+  background: #ffe27a;
+  border-color: #b8912a;
+  color: #1f2023;
+}
+
+.ix-chip.hit {
+  background: #86d69f;
+  border-color: #237a35;
+  color: #1f2023;
+}
+
+.ix-buckets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.ix-bucket {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 150px;
+  padding: 6px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+}
+
+.ix-bucket.on {
+  border-style: solid;
+  border-color: #2d4f9e;
+  background: rgba(138, 168, 234, 0.18);
+}
+
+.ix-bucket-name {
+  font-size: 11px;
+  color: var(--text);
+  text-align: center;
+}

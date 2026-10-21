@@ -4,6 +4,60 @@ All notable changes to this project are logged here, newest first.
 
 ## [Unreleased]
 
+## [0.8] - 2026-10-21
+
+### Added
+
+- **Indexing: Linear** page (Indexing), built animation-first on a table of
+  twelve employees. It opens with a looping animation that finds one row with no
+  index (nine rows read) and then with a sorted index (a binary search of the
+  index, three reads, and a curved arrow from the index entry to its row, then
+  one row read). Then a one-page recap, the idea in four steps with the Python to
+  build the index, and three kinds of linear index: the sorted (dense) index, the
+  sparse index (an animation over a table kept sorted in blocks of three, with
+  one index entry per block) and the hash index (an animation of buckets, showing
+  why it is fast for "equals" but cannot answer a range). "The Price of an
+  Index" is an animation of adding a row: the table just appends it, but the
+  sorted index has to slide everything after it down. The interactive code tracer
+  runs the real Python line by line for scanning the table, binary-searching the
+  sorted index and finding a block with the sparse index, with the index
+  beside the table, lo, mid and hi markers, and a counter of index reads and
+  table reads, and presets such as the first row, a missing id and an id smaller
+  than every block. It also covers a comparison of no index, sorted, sparse and
+  hash, a one-sentence definition, what it costs (with a log-scale picture for a
+  million rows and a table), when to use it, and an 8-question self-quiz.
+- New shared `IndexTables` (an index beside its table, with entries that slide
+  when the list changes, optional blocks, lo/mid/hi tags and connector arrows),
+  an `index` view in the code tracer, and an `indexData.js` helper with the
+  employee table and the dense, sparse and hash indexes.
+- **Indexing: Tree-Based** page (Indexing), built animation-first on the same
+  twelve employees, now indexed by a B+ tree. It opens with a looping animation
+  of a lookup walking from the root, through a page of signposts, to the leaf
+  that holds the key and its row's slot (each page numbered in the order it was
+  read, then the row fetched from the table). Then a one-page recap, the idea in
+  four steps (cut the sorted keys into pages, index the pages, repeat up to a
+  single root, look up by choosing a branch at each level) with the `Page`
+  class, "Why Not Just a Sorted List?" with a table of reads for a thousand, a
+  million and a billion rows, and "B+ Tree, Not B-Tree" with a comparison table.
+  "Ranges" is an animation that walks down once and then follows the dashed
+  links between the leaves, and "Changing It" is an animation of a full page
+  splitting and the first key of the new page being copied up into the parent.
+  The interactive code tracer runs the real Python line by line for a lookup and
+  for a range scan, with the pages numbered as they are read, the rows found so
+  far, the links followed drawn thick, and presets such as the smallest id, a
+  missing id, an id bigger than all, a range inside one leaf, a range that runs
+  off the end and an empty range. "In a Real Database" shows real
+  `EXPLAIN QUERY PLAN` output from Python's built-in `sqlite3` module (a scan
+  turning into a search with an index, a range using the index, ORDER BY needing
+  no sort, and a leading-wildcard LIKE that cannot use one), plus a note on
+  multi-column indexes. It also covers a comparison of no index, a sorted list,
+  a hash and a B+ tree, a one-sentence definition, what it costs (with a
+  log-scale picture for a million rows and a table), when to use it, and an
+  8-question self-quiz.
+- Dashed links between leaves and the table slot under each key for
+  `BTreeView`, and a `bplus` view in the code tracer, with a B+ tree in the
+  shared `indexData.js` helper.
+
 ## [0.7] - 2026-10-20
 
 ### Added

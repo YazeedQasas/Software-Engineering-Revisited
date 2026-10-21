@@ -31,6 +31,8 @@ import SegmentTrees from './dataStructures/SegmentTrees.jsx'
 import FenwickTrees from './dataStructures/FenwickTrees.jsx'
 import DisjointSets from './dataStructures/DisjointSets.jsx'
 import SuffixTrees from './dataStructures/SuffixTrees.jsx'
+import IndexingLinear from './dataStructures/IndexingLinear.jsx'
+import IndexingTree from './dataStructures/IndexingTree.jsx'
 import BigO from './dataStructures/BigO.jsx'
 import Arrays from './dataStructures/Arrays.jsx'
 import HashTables from './dataStructures/HashTables.jsx'
@@ -80,6 +82,8 @@ export const topicPages = {
       'fenwick-tree': FenwickTrees,
       'union-find': DisjointSets,
       'suffix-trees': SuffixTrees,
+      'indexing-linear': IndexingLinear,
+      'indexing-tree': IndexingTree,
       'big-o': BigO,
       'problem-solving': ProblemSolving,
     },

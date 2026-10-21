@@ -9,7 +9,11 @@ const CELL = 24 // must match the cell width the tree was laid out with (btree.j
 //   states: { id: 'plain' | 'active' | 'checked' | 'found' | 'queued' | 'bad' }
 //   marks: { id: text } a small badge on the top-right of a node
 //   hot: { id: [key positions] } keys drawn green, e.g. the one that matched
-function BTreeView({ tree, states = {}, marks = {}, hot = {}, ariaLabel, className = '' }) {
+//   A B+ tree can also give tree.links: [[leftLeafId, rightLeafId]] (drawn as
+//   dashed arrows between neighbouring leaves; hotLinks lists the
+//   'leftId-rightId' ones to draw thick and blue) and, on a node, ptrs: the
+//   table slot of each key, drawn small underneath.
+function BTreeView({ tree, states = {}, marks = {}, hot = {}, hotLinks = [], ariaLabel, className = '' }) {
   const byId = Object.fromEntries(tree.nodes.map((node) => [node.id, node]))
   const pad = tree.pad ?? 10
 
@@ -35,6 +39,19 @@ function BTreeView({ tree, states = {}, marks = {}, hot = {}, ariaLabel, classNa
           />
         )
       })}
+      {(tree.links ?? []).map(([from, to]) => {
+        const a = byId[from]
+        const b = byId[to]
+        const isHot = hotLinks.includes(`${from}-${to}`)
+        const [x1, x2, y] = [a.x + a.w, b.x, a.y + a.h / 2]
+        const color = isHot ? '#2d4f9e' : '#8d8d8a'
+        return (
+          <g key={`l${from}-${to}`}>
+            <line x1={x1} y1={y} x2={x2 - 3} y2={y} stroke={color} strokeWidth={isHot ? 2.4 : 1.3} strokeDasharray={isHot ? undefined : '3 2'} />
+            <polygon points={`${x2},${y} ${x2 - 6},${y - 3.5} ${x2 - 6},${y + 3.5}`} fill={color} />
+          </g>
+        )
+      })}
       {tree.nodes.map((node) => {
         const tone = TONES[states[node.id] ?? 'plain']
         const cells = Math.max(1, node.keys.length)
@@ -52,6 +69,11 @@ function BTreeView({ tree, states = {}, marks = {}, hot = {}, ariaLabel, classNa
                   <text x={cx + CELL / 2} y={node.y + node.h / 2 + 5} fontSize="13" fontWeight="700" textAnchor="middle" fill={hot[node.id]?.includes(i) ? '#1f2023' : tone.text}>
                     {key}
                   </text>
+                  {node.ptrs?.[i] != null && (
+                    <text x={cx + CELL / 2} y={node.y + node.h + 11} fontSize="9.5" textAnchor="middle" fill={hot[node.id]?.includes(i) ? '#237a35' : 'var(--text)'} fontWeight={hot[node.id]?.includes(i) ? 700 : 400}>
+                      →{node.ptrs[i]}
+                    </text>
+                  )}
                   {i > 0 && !hot[node.id]?.includes(i) && !hot[node.id]?.includes(i - 1) && (
                     <line x1={cx} y1={node.y + 5} x2={cx} y2={node.y + node.h - 5} stroke={tone.stroke} strokeWidth="0.8" />
                   )}

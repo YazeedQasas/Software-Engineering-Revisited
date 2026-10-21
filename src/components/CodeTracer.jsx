@@ -6,6 +6,7 @@ import GraphView, { GraphStore, edgeKey } from './GraphView.jsx'
 import IsoGrid, { GridViewToggle, searchCell, searchEdges } from './IsoGrid.jsx'
 import FenwickView, { Bits } from './FenwickView.jsx'
 import SuffixRows from './SuffixRows.jsx'
+import IndexTables from './IndexTables.jsx'
 import './CodeTracer.css'
 
 const speeds = [
@@ -402,6 +403,43 @@ function SuffixStage({ step }) {
   )
 }
 
+// A table with an index beside it (see IndexTables).
+//   idx: { rows, entries, blockSize, tags, links, indexTitle } as for
+//   IndexTables, legend: [{ color, text }], strips: rows of slots as for the
+//   graph view (e.g. how many reads so far).
+function IndexStage({ step }) {
+  const { rows, entries, blockSize, tags, links, indexTitle } = step.idx
+
+  return (
+    <>
+      <IndexTables rows={rows} entries={entries} blockSize={blockSize} tags={tags} links={links} indexTitle={indexTitle} />
+      {step.legend && <Legend items={step.legend} />}
+      <Strips strips={step.strips} />
+    </>
+  )
+}
+
+// A B+ tree: boxes of keys with a link from each leaf to the next (see
+// BTreeView). tree, states, marks and hot are as for BTreeView, hotLinks lists
+// the 'leftId-rightId' leaf links to draw thick, legend and strips as above.
+function BPlusStage({ step }) {
+  return (
+    <>
+      <BTreeView
+        className="tracer-tree tracer-btree"
+        tree={step.tree}
+        states={step.states}
+        marks={step.marks}
+        hot={step.hot}
+        hotLinks={step.hotLinks}
+        ariaLabel={`A B+ tree with ${step.tree.nodes.length} pages. The leaves, left to right, hold ${step.tree.nodes.filter((n) => n.ptrs).map((n) => n.keys.join(' ')).join(' | ')}.`}
+      />
+      {step.legend && <Legend items={step.legend} />}
+      <Strips strips={step.strips} />
+    </>
+  )
+}
+
 // Plays a precomputed list of steps: the line of code that is running on one
 // side, and the list (as bars) with its variables on the other.
 //
@@ -449,7 +487,9 @@ function SuffixStage({ step }) {
 // (a graph drawn beside its adjacency list and matrix; see GraphStage) or
 // 'isogrid' (isometric tiles being searched; see GridStage) or 'fenwick' (a
 // Fenwick tree as bars over its array; see FenwickStage) or 'suffix' (the
-// sorted suffixes of a word, one per row; see SuffixStage).
+// sorted suffixes of a word, one per row; see SuffixStage), 'index' (a table
+// with an index beside it; see IndexStage) or 'bplus' (a B+ tree; see
+// BPlusStage).
 // buildSteps(values, preset) receives the chosen preset too, e.g. for a target.
 function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   const [presetIndex, setPresetIndex] = useState(0)
@@ -559,6 +599,10 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
             <FenwickStage step={step} />
           ) : view === 'suffix' ? (
             <SuffixStage step={step} />
+          ) : view === 'index' ? (
+            <IndexStage step={step} />
+          ) : view === 'bplus' ? (
+            <BPlusStage step={step} />
           ) : (
             <div
               className="tracer-bars"
