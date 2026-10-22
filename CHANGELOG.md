@@ -4,6 +4,75 @@ All notable changes to this project are logged here, newest first.
 
 ## [Unreleased]
 
+## [1.0] - 2026-10-21
+
+The first major release. Everything from 0.0 to 0.8 was building towards this:
+the full curriculum, planned in 0.0 as a roadmap of 9 sections, is now
+written. There are no placeholder pages left. Longer release notes are in
+`docs/releases/v1.0-complete-curriculum.md`.
+
+### Added
+
+- **The curriculum is complete.** All 41 topics across the 9 sections (Basic
+  Data Structures, Algorithmic Complexity, Sorting Algorithms, Search
+  Algorithms, Tree Data Structures, Graph Data Structures, Advanced Data
+  Structures, Indexing and Problem Solving) have a written page.
+- **Island counter** (on the Island Traversal card of Problem Solving): an
+  interactive step-through of the classic "count islands" algorithm on a grid
+  of land and water. A pure `buildSteps(grid)` runs the algorithm once and
+  records every event (water skipped, land already seen, a new island, the
+  flood fill reaching a cell), and the component only remembers which step it
+  is on: the grid colours (water blue, unreached land grey, one colour per
+  island), the outline on the current cell, the "Islands: N" counter and the
+  one-line message are all worked out again from the steps so far. The flood
+  fill is a recursive depth-first search that tries down, up, right, then left.
+  Next step, Play / Pause (a step every 0.6 seconds, stopping at the end) and
+  Reset, plus the right arrow (and Space, when the box has the focus) for the
+  next step. It keeps the same height as the message changes and works on a
+  phone-width screen.
+- Unit tests for the island step builder and replay, run with `npm test` (Node's
+  built-in test runner, so no new dependency): the default grid has 4 islands,
+  every land cell is reached exactly once, every cell is scanned exactly once,
+  and the edge cases (an empty grid, all water, all land, cells that only touch
+  diagonally, uneven rows).
+- New shared `.step-arrow` back and next buttons for pictures that are stepped
+  through by hand.
+
+### Changed
+
+- **Problem Solving Techniques** page rebuilt as a plain list of the 16
+  techniques, in the same three groups as before (general strategies, array and
+  list patterns, heap, search and grid patterns). Every technique has the same
+  four parts: its title, what it is, how it works and where it is usually used.
+  The "how it works" part is now a short plain-English explanation of the steps
+  (for example, the two-pointer technique moves the left pointer right when the
+  sum is too small and the right pointer left when it is too big, so each move
+  rules out a number for good), including the cost where it matters and the
+  warnings that go with it (greedy can be wrong, as the coins 1, 3 and 4 show,
+  and backtracking is still exponential in the worst case).
+- Each technique also has a small isometric picture, built from the same cubes
+  and tiles as the search pages, that you step through with back and next arrows
+  (nothing plays by itself): a grid of every pair for brute force, a stack of
+  calls unwinding for recursion, a row halved and recombined for divide and
+  conquer, coins where greedy loses, a board with a dead end and an undo for
+  backtracking, a table filled from the two cubes before for dynamic
+  programming, a random pivot, two pointers closing in, a sliding window,
+  fast and slow pointers meeting on a loop, merging meetings on a timeline,
+  cyclic sort swapping numbers home, two towers of cubes for two heaps, a
+  stream where only the k biggest are kept, and one worker against four threads
+  for multi-threading. Every picture keeps the same height from step to step.
+  Island Traversal uses the island counter above instead.
+- Each technique has a short piece of real Python, and every snippet was run
+  and checked against its expected answer.
+- The **Multi-threaded** card now explains the danger of threads sharing the
+  same memory, a race condition (two threads each doing `counter += 1` can read
+  the same number and lose one of the two additions), and the three ways to
+  prevent it: mutex / locking, atomic operations and data isolation, with what
+  each costs and how each looks in Python, and a short lock example.
+- The code tracer now reserves room for the longest variables row and note of
+  the steps it is playing, so the page no longer jumps up and down while a
+  tracer plays (it moved by up to about 75 pixels on a phone-width screen).
+
 ## [0.8] - 2026-10-21
 
 ### Added

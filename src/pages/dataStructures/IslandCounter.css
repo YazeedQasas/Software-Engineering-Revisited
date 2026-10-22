@@ -1,0 +1,77 @@
+.island-counter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.island-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto 10px;
+}
+
+.island-count,
+.island-step {
+  margin: 0;
+}
+
+.island-count {
+  font-size: 18px;
+  color: var(--text-h);
+}
+
+.island-step {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Square cells, sized by the width available, so it works on a phone too */
+.island-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 4px;
+  max-width: calc(var(--cols) * 64px);
+  margin: 0 auto;
+}
+
+.island-cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: clamp(14px, 4vw, 20px);
+  font-weight: 700;
+  color: #1f2023;
+  transition: background 0.25s ease;
+}
+
+/* The cell the latest step is about */
+.island-cell.current {
+  outline: 3px solid #2d4f9e;
+  outline-offset: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.island-swatch-current {
+  background: transparent;
+  outline: 2px solid #2d4f9e;
+  outline-offset: -1px;
+}
+
+.island-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-cell {
+    transition: none;
+  }
+}

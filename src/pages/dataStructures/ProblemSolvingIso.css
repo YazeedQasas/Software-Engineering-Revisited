@@ -1,0 +1,44 @@
+/* The back and next arrows under a picture that is stepped through by hand */
+.step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.step-nav .visual-dots {
+  margin-top: 0;
+}
+
+.step-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.step-arrow:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.step-arrow:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.step-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

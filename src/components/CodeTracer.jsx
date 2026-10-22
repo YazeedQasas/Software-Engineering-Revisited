@@ -503,6 +503,17 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
   )
   const last = steps.length - 1
   const step = steps[stepIndex]
+  // The variables and notes of every step, once each, to reserve room for them.
+  const sizers = useMemo(() => {
+    const vars = new Map()
+    const notes = new Set()
+    steps.forEach((s) => {
+      const entries = Object.entries(s.vars)
+      vars.set(entries.map(([name, value]) => `${name}=${String(value)}`).join('|'), entries)
+      notes.add(s.note)
+    })
+    return { vars: [...vars.values()], notes: [...notes] }
+  }, [steps])
   const speed = speeds[speedIndex]
   const isPlaying = playing && stepIndex < last
 
@@ -659,16 +670,35 @@ function CodeTracer({ code, presets, buildSteps, view = 'bars' }) {
 
           {step.heapSize !== undefined && <HeapTree step={step} total={count} />}
 
-          <div className="tracer-vars" aria-label="Variables">
-            {varEntries.length === 0 && <span className="tracer-var-empty">no variables yet</span>}
-            {varEntries.map(([name, value]) => (
-              <span key={name} className="tracer-var">
-                <code>{name}</code> = <strong>{String(value)}</strong>
-              </span>
+          {/* Every step's variables and note are laid out in the same spot,
+              invisibly, so this area is as tall as the tallest one and the
+              page does not jump about while the steps play. */}
+          <div style={{ display: 'grid' }}>
+            {sizers.vars.map((entries, k) => (
+              <div key={k} className="tracer-vars" aria-hidden="true" style={{ gridArea: '1 / 1', visibility: 'hidden' }}>
+                {entries.map(([name, value]) => (
+                  <span key={name} className="tracer-var">
+                    <code>{name}</code> = <strong>{String(value)}</strong>
+                  </span>
+                ))}
+              </div>
             ))}
+            <div className="tracer-vars" aria-label="Variables" style={{ gridArea: '1 / 1' }}>
+              {varEntries.length === 0 && <span className="tracer-var-empty">no variables yet</span>}
+              {varEntries.map(([name, value]) => (
+                <span key={name} className="tracer-var">
+                  <code>{name}</code> = <strong>{String(value)}</strong>
+                </span>
+              ))}
+            </div>
           </div>
 
-          <p className="tracer-note" aria-live="polite">{step.note}</p>
+          <div style={{ display: 'grid' }}>
+            {sizers.notes.map((note, k) => (
+              <p key={k} className="tracer-note" aria-hidden="true" style={{ gridArea: '1 / 1', visibility: 'hidden' }}>{note}</p>
+            ))}
+            <p className="tracer-note" aria-live="polite" style={{ gridArea: '1 / 1' }}>{step.note}</p>
+          </div>
         </div>
       </div>
 

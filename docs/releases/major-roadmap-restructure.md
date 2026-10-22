@@ -1,7 +1,7 @@
 # Major Release: Curriculum rebuilt on the roadmap.sh DSA plan
 
 **Type:** Major (breaking change to the curriculum structure)
-**Version:** _to be assigned by the maintainer_
+**Version:** released as part of 0.0, and completed in 1.0 (see `v1.0-complete-curriculum.md`)
 **Date:** 2026-10-07
 **Source plan:** https://roadmap.sh/datastructures-and-algorithms
 **Language:** Python

@@ -14,8 +14,7 @@ this repo, the quickest way to judge the work is to open one finished page
 
 The curriculum follows the [roadmap.sh Data Structures & Algorithms
 roadmap](https://roadmap.sh/datastructures-and-algorithms): **41 topics across
-9 sections**, all in Python. Every topic has a page. Some are fully written;
-the rest show a short plain-English summary until their turn comes.
+9 sections**, all in Python. Every topic has a fully written page.
 
 | # | Section | Topics | Status |
 |---|---------|--------|--------|
@@ -27,16 +26,18 @@ the rest show a short plain-English summary until their turn comes.
 | 6 | Graph Data Structures | Graph Theory Basics, Directed, Undirected, BFS/DFS, Dijkstra, Bellman-Ford, A*, Prim's, Kruskal's | **Written** (all 9) |
 | 7 | Advanced Data Structures | Trie, Segment Tree, Fenwick Tree, Union-Find, Suffix Trees and Arrays | **Written** (all 5) |
 | 8 | Indexing | Linear, Tree-based | **Written** (both) |
-| 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | Written |
+| 9 | Problem Solving | Techniques overview (recursion, greedy, backtracking, DP, two pointers, and more) | **Written** (all 16 techniques) |
 
 Progress is tracked release by release in [CHANGELOG.md](CHANGELOG.md). The
-current release is **0.8**, which adds the two Indexing pages (Linear and
-Tree-Based, each with an interactive code tracer and looping animations of an
-index beside its table and a B+ tree) on top of the five Advanced Data
-Structures pages from 0.7, the nine Graph Data Structures pages from 0.6, the
-seven Tree Data Structures pages from 0.5, the two Search Algorithms pages from
-0.4, the six Sorting Algorithms pages from 0.3, the Algorithmic Complexity pages
-from 0.2 and the five Basic Data Structures pages from 0.1.
+current release is **1.0**, the first major version: the curriculum is complete,
+with a written page for every one of the 41 topics. The last section added was
+Problem Solving (16 techniques, each with a small isometric picture you step
+through, and a short piece of Python), after the two Indexing pages from 0.8,
+the five Advanced Data Structures pages from 0.7, the nine Graph Data Structures
+pages from 0.6, the seven Tree Data Structures pages from 0.5, the two Search
+Algorithms pages from 0.4, the six Sorting Algorithms pages from 0.3, the
+Algorithmic Complexity pages from 0.2 and the five Basic Data Structures pages
+from 0.1. Longer notes on the major releases are in `docs/releases/`.
 
 ## What a finished page looks like
 
@@ -58,6 +59,10 @@ look:
 8. **When to use it**: real situations where you'd pick it.
 9. **Test yourself**: a quiz where you guess the time and space complexity
    before the answer is revealed.
+
+The Problem Solving page is the one exception: it is a list of techniques, each
+with what it is, how it works and where it is usually used, plus a small picture
+and a short piece of code.
 
 Pages are written to be read by a beginner: new terms are explained where
 they first appear, and later pages build on earlier ones (for example,
@@ -87,6 +92,7 @@ Other commands:
 npm run build     # production build into dist/
 npm run preview   # serve the production build locally
 npm run lint      # run oxlint
+npm test           # run the unit tests (Node's built-in test runner)
 ```
 
 ## Project layout
@@ -130,5 +136,5 @@ CHANGELOG.md                 What changed in each release
 
 ## Roadmap
 
-Next up is a rebuild of the Big-O and Problem Solving pages to match the
-structure above.
+With 1.0 the curriculum is complete. Next up is a rebuild of the Big-O page to
+match the structure above, as the pages written since it have.
